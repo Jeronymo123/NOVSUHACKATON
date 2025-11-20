@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniAttend - Система учёта посещаемости</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Хедер -->
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>UniAttend</span>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Главная</a></li>
+                <li><a href="#features">Возможности</a></li>
+                <li><a href="#about">О системе</a></li>
+                <li><a href="#contact">Контакты</a></li>
+            </ul>
+            
+            <div class="auth-buttons">
+                <a href="entry_form.html" class="btn btn-secondary">
+                    <i class="fas fa-sign-in-alt"></i>Войти
+                </a>
+                <a href="register.html" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i>Регистрация
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="main-content">
+        <!-- Герой секция -->
+        <section class="hero-section">
+            <h1>UniAttend</h1>
+            <p>Современная система автоматизации учёта посещаемости студентов. 
+               Эффективное управление учебным процессом с использованием QR-кодов 
+               и интеллектуальной аналитики.</p>
+            
+            <div class="button-group">
+                <a href="register.html" class="btn btn-primary btn-large">
+                    <i class="fas fa-rocket"></i>Начать работу
+                </a>
+                <a href="#features" class="btn btn-secondary btn-large">
+                    <i class="fas fa-info-circle"></i>Узнать больше
+                </a>
+            </div>
+        </section>
+
+        <!-- Секция возможностей -->
+        <section class="features-section" id="features">
+            <h2>Наши возможности</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-qrcode"></i>
+                    <h3>QR-отметка</h3>
+                    <p>Студенты отмечаются сканированием QR-кода. Быстро, удобно и безошибочно.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Аналитика</h3>
+                    <p>Детальная статистика посещаемости и автоматическое формирование отчетов.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>Доступность</h3>
+                    <p>Работает на любом устройстве с браузером. Никаких дополнительных установок.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>Экономия времени</h3>
+                    <p>Сократите время на учет посещаемости на 80% с нашей автоматизированной системой.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-database"></i>
+                    <h3>Надёжное хранение</h3>
+                    <p>Все данные надежно защищены и доступны в любое время с любого устройства.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Для всех участников</h3>
+                    <p>Отдельные интерфейсы для преподавателей, студентов и администрации.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Футер -->
+    <footer>
+        <div class="footer-content">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>UniAttend</span>
+            </div>
+            <p>&copy; 2024 Система учёта посещаемости. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>

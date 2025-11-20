@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Таблица посещаемости - UniAttend</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="dashboard.html" class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>UniAttend</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">Главная</a></li>
+                <li><a href="attendance.html" class="active">Посещаемость</a></li>
+                <li><a href="schedule.html">Расписание</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <a href="profile.html" class="btn btn-secondary">
+                    <i class="fas fa-user-circle"></i>Проф. Иванов А.С.
+                </a>
+                <a href="index.html" class="btn btn-primary">Выйти</a>
+            </div>
+        </nav>
+    </header>
+
+    <main style="margin-top: 100px; padding: 2rem;">
+        <div class="container">
+            <div class="controls">
+                <button id="AddColumn">Добавить колонку</button>
+                
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="Editing">
+                        <label for="Editing">Режим редактирования</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="Presence" checked style="display: none">
+                        <label for="Presence" style="display: none">Присутствие</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="Pass" style="display: none">
+                        <label for="Pass" style="display: none">Пропуск</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="Disease" style="display: none">
+                        <label for="Disease" style="display: none">Болезнь</label>
+                    </div>
+                </div>
+                
+                <button id="AddStudent">Cохранить</button>
+                <select id="Subject"></select>
+            </div>
+
+            <div class="table-container">
+                <table id="Table">
+                    <thead>
+                        
+                        <tr id="Keyword">
+                            <td>№</td>
+                            <td>ФИО</td>
+                        </tr>
+                        <tr id="DeleteColumn" style="display: none;">
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+                        <tr id="TypeWork">
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="Body"></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="scriptTable.js" type="module"></script>
+    <script src="scriptStudent.js" type="module"></script>
+    <script src="scriptSelector.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniAttend - Авторизация и Регистрация</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .auth-container {
+            display: flex;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .auth-forms {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .auth-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .form-tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            background: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-button.active {
+            color: #2563eb;
+            border-bottom-color: #2563eb;
+        }
+
+        .form-content {
+            display: none;
+        }
+
+        .form-content.active {
+            display: block;
+        }
+
+        .name-fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .demo-accounts {
+            background: #f1f5f9;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-forms">
+            <div class="auth-card">
+                <div class="logo" style="justify-content: center; margin-bottom: 2rem; font-size: 2rem;">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>UniAttend</span>
+                </div>
+
+                <div class="form-tabs">
+                    <button class="tab-button active" onclick="showTab('login')">Вход</button>
+                    <button class="tab-button" onclick="showTab('registration')">Регистрация</button>
+                </div>
+
+                <!-- Форма входа -->
+                <div id="loginForm" class="form-content active">
+                    <h2 style="text-align: center; margin-bottom: 2rem; color: #1e293b;">Вход в систему</h2>
+                    
+                    <div class="Login">
+                        <div class="form-group">
+                            <label for="Login">Логин</label>
+                            <input type="text" id="Login" class="form-control" placeholder="Введите ваш логин" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="PasswordLog">Пароль</label>
+                            <input type="password" id="PasswordLog" class="form-control" placeholder="Введите ваш пароль" required>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; font-size: 0.9rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; color: #64748b; cursor: pointer;">
+                                <input type="checkbox" style="width: 16px; height: 16px; accent-color: #2563eb;">
+                                Запомнить меня
+                            </label>
+                            <a href="#" style="color: #2563eb; text-decoration: none; font-weight: 500;">Забыли пароль?</a>
+                        </div>
+
+                        <button id="LogBut" class="btn btn-primary" style="width: 100%; margin-bottom: 1.5rem;">
+                            <i class="fas fa-sign-in-alt"></i>Войти в систему
+                        </button>
+                    </div>
+
+                    <div class="demo-accounts">
+                        <h3 style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem; text-align: center;">Демо-доступ для тестирования</h3>
+                        <div style="padding: 0.75rem; background: white; border-radius: 8px; margin-bottom: 0.5rem; border: 1px solid #e2e8f0;">
+                            <div style="font-weight: 600; color: #1e293b; font-size: 0.9rem;">Преподаватель</div>
+                            <div style="font-size: 0.8rem; color: #64748b;">Логин: ivanov | Пароль: professor123</div>
+                        </div>
+                        <div style="padding: 0.75rem; background: white; border-radius: 8px; border: 1px solid #e2e8f0;">
+                            <div style="font-weight: 600; color: #1e293b; font-size: 0.9rem;">Администратор</div>
+                            <div style="font-size: 0.8rem; color: #64748b;">Логин: admin | Пароль: admin123</div>
+                        </div>
+                    </div>
+
+                    <script src="scriptAuthorization.js" type="module"></script>
+                </div>
+
+                <!-- Форма регистрации -->
+                <div id="registrationForm" class="form-content">
+                    <h2 style="text-align: center; margin-bottom: 2rem; color: #1e293b;">Создать аккаунт</h2>
+                    
+                    <div class="Registartion">
+                        <div class="form-group">
+                            <label for="LogReg">Логин</label>
+                            <input type="text" id="LogReg" class="form-control" placeholder="Придумайте логин" required>
+                        </div>
+
+                        <div class="name-fields">
+                            <div class="form-group">
+                                <label for="Surname">Фамилия</label>
+                                <input type="text" id="Surname" class="form-control" placeholder="Иванов" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="Name">Имя</label>
+                                <input type="text" id="Name" class="form-control" placeholder="Иван" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Secondname">Отчество</label>
+                            <input type="text" id="Secondname" class="form-control" placeholder="Иванович">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="Email">Email</label>
+                            <input type="email" id="Email" class="form-control" placeholder="example@university.ru" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="PasswordReg">Пароль</label>
+                            <input type="password" id="PasswordReg" class="form-control" placeholder="Минимум 8 символов" required minlength="8">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Group">Группа</label>
+                            <input type="text" id="Group" class="form-control" placeholder="ПИ-201">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="Role">Роль</label>
+                            <select id="Role" class="form-select" required>
+                                <option value="">Выберите роль</option>
+                                <option value="professor">Преподаватель</option>
+                                <option value="student">Студент</option>
+                                <option value="admin">Администратор</option>
+                            </select>
+                        </div>
+                        
+                        <div style="margin-bottom: 2rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; color: #64748b; cursor: pointer; font-size: 0.9rem;">
+                                <input type="checkbox" required style="width: 16px; height: 16px; accent-color: #2563eb;">
+                                Я согласен с <a href="#" style="color: #2563eb; text-decoration: none;">условиями использования</a>
+                            </label>
+                        </div>
+                        
+                        <button id="RegBut" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">
+                            <i class="fas fa-user-plus"></i>Зарегистрироваться
+                        </button>
+                    </div>
+
+                    <script src="scriptRegistration.js" type="module"></script>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Функции для переключения между вкладками
+        function showTab(tabName) {
+            // Скрыть все формы
+            document.querySelectorAll('.form-content').forEach(form => {
+                form.classList.remove('active');
+            });
+            
+            // Убрать активный класс со всех кнопок
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Показать выбранную форму
+            document.getElementById(tabName + 'Form').classList.add('active');
+            
+            // Активировать выбранную кнопку
+            event.target.classList.add('active');
+        }
+
+        // Обработка успешной авторизации/регистрации
+        window.handleAuthSuccess = function(userData) {
+            // Редирект на дашборд после успешной авторизации
+            window.location.href = 'dashboard.html';
+        };
+
+        // Обработка ошибок авторизации/регистрации
+        window.handleAuthError = function(errorMessage) {
+            alert('Ошибка: ' + errorMessage);
+        };
+
+        // Инициализация кнопок
+        // Обработка авторизации
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginButton = document.getElementById('LogBut');
+            const loginInput = document.getElementById('Login');
+            const passwordInput = document.getElementById('PasswordLog');
+
+            if (loginButton && loginInput && passwordInput) {
+                loginButton.addEventListener('click', function() {
+                    const login = loginInput.value.trim();
+                    const password = passwordInput.value;
+
+                    if (!login || !password) {
+                        window.handleAuthError('Заполните все поля');
+                        return;
+                    }
+
+                    // Имитация запроса к серверу
+                    console.log('Авторизация:', { login, password });
+                    
+                    // В реальном приложении здесь будет fetch запрос
+                    setTimeout(() => {
+                        // Демо-логика для тестирования
+                        if ((login === 'ivanov' && password === 'professor123') || 
+                            (login === 'admin' && password === 'admin123')) {
+                            
+                            const userData = {
+                                login: login,
+                                role: login === 'admin' ? 'admin' : 'professor',
+                                name: login === 'admin' ? 'Администратор' : 'Проф. Иванов А.С.'
+                            };
+                            
+                            window.handleAuthSuccess(userData);
+                        } else {
+                            window.handleAuthError('Неверный логин или пароль');
+                        }
+                    }, 1000);
+                });
+
+                // Обработка нажатия Enter
+                passwordInput.addEventListener('keypress', function(event) {
+                    if (event.key === 'Enter') {
+                        loginButton.click();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

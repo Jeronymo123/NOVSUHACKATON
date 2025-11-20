@@ -115,10 +115,10 @@ export function DeleteTable() {
 
 function create_delete_Column() {
     const DeleteCol = document.getElementById("DeleteColumn").insertCell();
+    
     DeleteCol.className = `Delete Column${indexColumn}`;
 
     const DeleteButton = document.createElement("button");
-
     DeleteCol.onclick = function () {
         const Columns = document.querySelectorAll(`.${DeleteCol.className.slice(7)}`);
         Columns.forEach(element => {
@@ -480,7 +480,7 @@ function create_edit() {
         document.getElementById('Pass').style.display = "inline-block";
         document.getElementById('Presence').style.display = "inline-block";
         document.getElementById('Disease').style.display = "inline-block";
-        document.getElementById("DeleteColumn").style.display = "inline-block";
+        document.getElementById("DeleteColumn").style.display = "flex";
 
         const Grade = document.querySelectorAll(".Grades");
         Grade.forEach(element => {

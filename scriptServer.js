@@ -104,7 +104,7 @@ app.post('/registration', (req, res) => {
         fs.mkdirSync(main_directory, { recursive: true });
         const file = path.join(main_directory, "User.json");
         console.log(req.body);
-        var data=[];
+        var data = [];
         try {
             const FileContent = fs.readFileSync(file, 'utf8');
             const parsed = FileContent ? JSON.parse(FileContent) : [];
@@ -115,7 +115,8 @@ app.post('/registration', (req, res) => {
         }
         const indexFind = data.findIndex(user => user.Login === req.body.Login);
         if (indexFind !== -1) {
-            data[indexFind] = req.body;
+            console.log("Пользователь уже зарегистрирован!!!");
+            return;
         }
         else {
             data.push(req.body);
@@ -129,6 +130,18 @@ app.post('/registration', (req, res) => {
         res.status(500).json({ status: "error", message: err.message });
     }
 });
+
+app.get('/login', (req, res) => {
+    try{
+        const file = path.join(main_directory, "User.json");
+
+    }   
+    catch{
+        console.error("Invalid login!!!");
+        res.status(400).json({ status: "error", message: err.message });
+    }
+
+})
 // function GeneratorFile() {
 //     const Person = {
 //         id: 0,
@@ -151,4 +164,6 @@ app.post('/registration', (req, res) => {
 //     fs.writeFileSync("Person.json", JSON.stringify(data, null, 2), 'utf8');
 // }
 // GeneratorFile();
+
+
 app.listen(port, () => console.log(`127.0.0.1:${port}`));
