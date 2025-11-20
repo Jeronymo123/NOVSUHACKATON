@@ -16,10 +16,7 @@ var PersonData = [];
 var data = [];
 
 function send_to_Server() {
-    for (let i = 0; i < countPerson; i++) {
-        for (let j = 0; j < data.length; j++)
-            PersonData[i][j] = data[j];
-    }
+    console.log(PersonData);
     PersonData.forEach(item => {
         fetch("/savestudent", {
             method: "POST",
@@ -49,55 +46,58 @@ export async function AddTable(group) {
 
         Cell.innerHTML = PersonData[i].info.name;
         Cell.id = i;
-        const InputName = document.createElement("input");
+        // const InputName = document.createElement("input");
 
-        InputName.className = "RowInput";
-        InputName.type = 'text'
-        InputName.style.display = "none";
-        InputName.value = Cell.textContent;
-        Cell.appendChild(InputName);
+        // InputName.className = "RowInput";
+        // InputName.type = 'text'
+        // InputName.style.display = "none";
+        // InputName.value = Cell.textContent;
+        // Cell.appendChild(InputName);
 
-        Cell.addEventListener("click", function () {
-            if (document.getElementById("Editing").checked) {
-                Cell.firstChild.nodeValue = "";
-                InputName.style.display = "inline-block";
-                InputName.focus();
-            }
-        });
+        // Cell.addEventListener("click", function () {
+        //     if (document.getElementById("Editing").checked) {
+        //         Cell.firstChild.nodeValue = "";
+        //         InputName.style.display = "inline-block";
+        //         InputName.focus();
+        //     }
+        // });
 
-        InputName.addEventListener("blur", function () {
-            if (document.getElementById("Editing").checked) {
-                InputName.style.display = "none";
-                Cell.firstChild.nodeValue = InputName.value;
-                change_data_Name(Cell.id / countPerson, InputName.value)
+        // InputName.addEventListener("blur", function () {
+        //     if (document.getElementById("Editing").checked) {
+        //         InputName.style.display = "none";
+        //         Cell.firstChild.nodeValue = InputName.value;
+        //         change_data_Name(Cell.id / countPerson, InputName.value)
 
-            }
-        });
-        1
-        InputName.addEventListener("keypress", function (event) {
-            if (document.getElementById("Editing").checked) {
-                if (event.key === "Enter") {
-                    InputName.style.display = "none";
-                    Cell.firstChild.nodeValue = InputName.value;
-                    change_data_Name(Cell.id / countPerson, InputName.value)
-                }
-            }
-        })
+        //     }
+        // });
+        // 1
+        // InputName.addEventListener("keypress", function (event) {
+        //     if (document.getElementById("Editing").checked) {
+        //         if (event.key === "Enter") {
+        //             InputName.style.display = "none";
+        //             Cell.firstChild.nodeValue = InputName.value;
+        //             change_data_Name(Cell.id / countPerson, InputName.value)
+        //         }
+        //     }
+        // })
 
     }
-    Object.keys(PersonData[0]).forEach(element => {
-        let regex = /\d/;
-        if (regex.test(element)) {
-            var PersonGrades = [];
-            for (let i = 0; i < countPerson; i++) {
-                PersonGrades.push(PersonData[i][element].Value);
-            }
-            LoadHeader(PersonData[0][element].Date, PersonData[0][element].TypeWork);
-            LoadGrade(PersonGrades);
-            indexColumn++;
-        }
-    })
+    if (PersonData.length > 0) {
+        Object.keys(PersonData[0]).forEach(element => {
+            let regex = /\d/;
+            if (regex.test(element)) {
+                var PersonGrades = [];
+                for (let i = 0; i < countPerson; i++) {
+                    PersonGrades.push(PersonData[i][element].Value);
+                }
+                LoadHeader(PersonData[0][element].Date);
+                LoadTypeWork(PersonData[0][element].TypeWork);
+                LoadGrade(PersonGrades);
 
+                indexColumn++;
+            }
+        })
+    }
 }
 
 export function DeleteTable() {
@@ -108,7 +108,7 @@ export function DeleteTable() {
     indexColumn = 0;
     countCell = 0;
     indexInput = 0;
-    data=[];
+    data = [];
 }
 
 function create_delete_Column() {
@@ -140,16 +140,26 @@ function AddColumn() {
     const elements = document.querySelectorAll('.Row');
     elements.forEach(element => {
         const Cell = element.insertCell();
+        const GradeInput = document.createElement("input");
+
         Cell.id = countCell;
-        Cell.className = `Column${indexColumn}`;
+        Cell.className = `Column${indexColumn} Grade`;
         Cell.innerHTML = change_attendance(Cell.id);
-        countCell++;
+
+        GradeInput.style.display = 'none';
+        GradeInput.value = Cell.textContent;
         Cell.addEventListener("click", function () {
             if (document.getElementById("Editing").checked) {
                 Cell.innerHTML = change_attendance(Cell.id);
             }
         });
+        GradeInput.addEventListener("change", function () {
+            change_data_Value(Cell.id % countPerson, Cell.className.replace(/Grades/, '').slice(6), GradeInput.value);
+        });
+        Cell.appendChild(GradeInput);
     });
+
+    countCell++;
     indexColumn++;
 }
 
@@ -229,29 +239,50 @@ function AddTypeWork() {
 
     TypeWork.addEventListener("click", function () {
         if (document.getElementById("Editing").checked) {
-            TypeWork.firstChild.nodeValue = "";
+            TypeWork.firstChild.textContent = "";
             Work.style.display = "inline-block";
-            Work.focus();
+            Work.showPicker();
+        }
+    });
+
+    Work.addEventListener("change", function () {
+        if (document.getElementById("Editing").checked) {
+            Work.style.display = "none";
+            TypeWork.firstChild.textContent = Work.options[Work.selectedIndex].text;
+            change_data_TypeWork(TypeWork.id.slice(8), Work.options[Work.selectedIndex].text);
+            var ColumnGrade = document.querySelectorAll(`.Column${TypeWork.id.slice(8)}.Grade`);
+            if (ColumnGrade.length === 0) {
+                ColumnGrade = document.querySelectorAll(`.Column${TypeWork.id.slice(8)}.Grades`);
+            }
+
+            ColumnGrade.forEach(element => {
+                if (Work.options[Work.selectedIndex].text !== "Посещаемость") {
+                    const Int = element.querySelector("input");
+                    console.log(element.className)
+                    if (element.className === `Column${TypeWork.id.slice(8)} Grade`) {
+                        element.className += "s";
+                    }
+                    Int.style.display = 'inline-block';
+                    Int.value = 0;
+                    element.firstChild.textContent = "";
+                }
+                else {
+                    const Int = element.querySelector("input");
+                    Int.style.display = 'none';
+                    element.firstChild.textContent = "+";
+                    element.className = String(element.className).replace("s", '');
+                }
+            });
         }
     });
 
     Work.addEventListener("blur", function () {
         if (document.getElementById("Editing").checked) {
             Work.style.display = "none";
-            TypeWork.firstChild.nodeValue = Work.options[Work.selectedIndex].text;
+            TypeWork.firstChild.textContent = Work.options[Work.selectedIndex].text;
             change_data_TypeWork(TypeWork.id.slice(8), Work.options[Work.selectedIndex].text);
         }
     });
-
-    Work.addEventListener("keypress", function (event) {
-        if (document.getElementById("Editing").checked) {
-            if (event.key === "Enter") {
-                Work.style.display = "none";
-                TypeWork.firstChild.nodeValue = Work.options[Work.selectedIndex].text;
-                change_data_TypeWork(TypeWork.id.slice(8), Work.options[Work.selectedIndex].text);
-            }
-        }
-    })
     TypeWork.appendChild(Work);
     change_data_TypeWork(TypeWork.id.slice(8), Work.options[Work.selectedIndex].text);
 }
@@ -260,13 +291,12 @@ function LoadHeader(date, typework) {
     create_data();
     create_delete_Column();
     LoadDate(date);
-    LoadTypeWork(typework)
 
 }
 
 function LoadDate(today) {
     const DateKey = document.getElementById("Keyword").insertCell();
-    const normDate=today.slice(6)+"-"+today.slice(3,5)+"-"+today.slice(0,2)
+    const normDate = today.slice(6) + "-" + today.slice(3, 5) + "-" + today.slice(0, 2)
     DateKey.innerHTML = today;
     DateKey.id = "Date" + indexColumn;
     DateKey.className = `Delete Column${indexColumn}`;
@@ -334,29 +364,51 @@ function LoadTypeWork(typework) {
 
     TypeWork.addEventListener("click", function () {
         if (document.getElementById("Editing").checked) {
-            TypeWork.firstChild.nodeValue = "";
+            TypeWork.firstChild.textContent = "";
             Work.style.display = "inline-block";
-            Work.focus();
+            Work.showPicker();
+        }
+    });
+
+    Work.addEventListener("change", function () {
+        if (document.getElementById("Editing").checked) {
+            Work.style.display = "none";
+            TypeWork.firstChild.textContent = Work.options[Work.selectedIndex].text;
+            change_data_TypeWork(TypeWork.id.slice(8), Work.options[Work.selectedIndex].text);
+            var ColumnGrade = document.querySelectorAll(`.Column${TypeWork.id.slice(8)}.Grade`);
+            if (ColumnGrade.length === 0) {
+                ColumnGrade = document.querySelectorAll(`.Column${TypeWork.id.slice(8)}.Grades`);
+            }
+
+            ColumnGrade.forEach(element => {
+                if (Work.options[Work.selectedIndex].text !== "Посещаемость") {
+                    console.log(element.className);
+                    const Int = element.querySelector("input");
+                    if (element.className === `Column${TypeWork.id.slice(8)} Grade`) {
+                        element.className += "s";
+                    }
+                    Int.style.display = 'inline-block';
+                    Int.value = 0;
+                    element.firstChild.textContent = "";
+                }
+                else {
+                    const Int = element.querySelector("input");
+                    Int.style.display = 'none';
+                    element.firstChild.textContent = "+";
+                    element.className = String(element.className).replace("s", '');
+                }
+            });
         }
     });
 
     Work.addEventListener("blur", function () {
         if (document.getElementById("Editing").checked) {
             Work.style.display = "none";
-            TypeWork.firstChild.nodeValue = Work.options[Work.selectedIndex].text;
+            TypeWork.firstChild.textContent = Work.options[Work.selectedIndex].text;
             change_data_TypeWork(TypeWork.id.slice(8), Work.options[Work.selectedIndex].text);
+
         }
     });
-
-    Work.addEventListener("keypress", function (event) {
-        if (document.getElementById("Editing").checked) {
-            if (event.key === "Enter") {
-                Work.style.display = "none";
-                TypeWork.firstChild.nodeValue = Work.options[Work.selectedIndex].text;
-                change_data_TypeWork(TypeWork.id.slice(8), Work.options[Work.selectedIndex].text);
-            }
-        }
-    })
     TypeWork.appendChild(Work);
     change_data_TypeWork(TypeWork.id.slice(8), Work.options[Work.selectedIndex].text);
 }
@@ -370,27 +422,30 @@ function LoadGrade(Grades) {
 
         Cell.id = countCell;
         Cell.className = `Column${indexColumn}`;
-        Cell.innerHTML = Grades[cCell];
+        const typework = document.getElementById(`TypeWork${Cell.className.slice(6)}`);
 
-        cCell++;
         countCell++;
 
+
+        const work = typework.querySelector("select");
+        if (work.options[work.selectedIndex].text !== "Посещаемость") {
+            Cell.className += " Grades";
+            if (Number(Grades[cCell])) {
+                Cell.innerHTML = Grades[cCell];
+            }
+            else{
+                Cell.innerHTML = 0;
+            }
+        } else {
+            Cell.className += " Grade";
+            Cell.innerHTML = "+";
+        }
         GradeInput.value = Cell.textContent;
         GradeInput.style.display = "none";
-
-        let TypeWorkElement = document.getElementById(`Work${indexColumn}`);
-        let workType = TypeWorkElement ? TypeWorkElement.options[TypeWorkElement.selectedIndex].text.trim() : "";
-        if (workType === "Посещаемость") {
-            Cell.addEventListener("click", function () {
-                if (document.getElementById("Editing").checked) {
-                    Cell.innerHTML = change_attendance(Cell.id);
-                }
-            });
-        }
-        else {
-            GradeInput.style.display = "inline-block";
-            Cell.firstChild.nodeValue = "";
-        }
+        GradeInput.addEventListener("change", function () {
+            change_data_Value(Cell.id % countPerson, Cell.className.replace(/Grades/, '').slice(6), GradeInput.value);
+        });
+        cCell++;
         Cell.appendChild(GradeInput);
     });
 }
@@ -418,13 +473,25 @@ function create_edit() {
         document.getElementById('Disease').style.display = "inline-block";
         document.getElementById("DeleteColumn").style.display = "inline-block";
 
+        const Grade = document.querySelectorAll(".Grades");
+        Grade.forEach(element => {
+            element.querySelector("input").style.display = "inline-block";
+            element.firstChild.textContent = "";
+        });
+
     }
     else {
         document.getElementById('Pass').style.display = "none";
         document.getElementById('Presence').style.display = "none";
         document.getElementById('Disease').style.display = "none";
         document.getElementById("DeleteColumn").style.display = "none";
-
+        const Grade = document.querySelectorAll(".Grades");
+        Grade.forEach(element => {
+            const GradeInput = element.querySelector("input");
+            GradeInput.style.display = "none";
+            element.firstChild.textContent = !isNaN(Number(GradeInput.value)) ? GradeInput.value : 0;
+            change_data_Value(element.id % countPerson, element.className.replace(/Grades/, '').slice(6), !isNaN(Number(GradeInput.value)) ? GradeInput.value : 0);
+        });
     }
 }
 
@@ -458,7 +525,9 @@ function create_data() {
 function change_data_date(id, date) {
     data[id].Date = date;
     for (let i = 0; i < countPerson; i++) {
-        PersonData[i][id] = data[id];
+        if (!PersonData[i][id]) {
+            PersonData[i][id] = data[id];
+        }
         PersonData[i][id].Date = date;
     }
 }
@@ -466,24 +535,19 @@ function change_data_date(id, date) {
 function change_data_TypeWork(id, typework) {
     data[id].TypeWork = typework;
     for (let i = 0; i < countPerson; i++) {
-        PersonData[i][id] = data[id];
+        if (!PersonData[i][id]) {
+            PersonData[i][id] = data[id];
+        }
         PersonData[i][id].TypeWork = typework;
     }
 }
 
 function change_data_Value(id, ind, grade) {
-    data[ind].Value = grade;
-    change_info(id, ind);
+    data[Number(ind)].Value = grade;
+    PersonData[id][Number(ind)].Value = grade;
 }
 
-function change_data_Name(ind, Name) {
-    PersonData[ind].info.name = Name;
-}
+// function change_data_Name(ind, Name) {
+//     PersonData[ind].info.name = Name;
+// }
 
-function change_info(id, ind) {
-    PersonData[id][ind] = data[ind];
-}
-
-window.onbeforeunload = function () {
-    return confirm('Точно хотите выйти?');
-}

@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
+const { dir } = require('console');
 
 const app = express();
 const port = 3000;
@@ -34,6 +35,7 @@ app.post('/savestudent', (req, res) => {
             data.push(req.body);
         }
         fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf8');
+        console.log(`Successful ${req.body.info.group}`);
         res.json({ status: "ok" });
     }
     catch (err) {
@@ -60,17 +62,25 @@ app.get('/loadstudent', (req, res) => {
 });
 
 app.get('/loadclasses', (req, res) => {
-    const file = path.join(main_directory, "Classes.json");
-    const folders = fs.readdirSync(main_directory, { withFileTypes: true })
-        .filter(dirent => dirent.isDirectory())
-        .map(dirent => path.join(dirent.name));
-    fs.writeFileSync(file, JSON.stringify(folders, null, 2), 'utf8');
-    if (fs.existsSync(file)) {
-        const data = fs.readFileSync(file, "utf8");
-        res.send(data);
+    try {
+        fs.mkdirSync(main_directory, { recursive: true });
+        const file = path.join(main_directory, "Classes.json");
+        
+        const folders = fs.readdirSync(main_directory, { withFileTypes: true })
+            .filter(dirent => dirent.isDirectory())
+            .map(dirent => dirent.name);
+        fs.writeFileSync(file, JSON.stringify(folders, null, 2), 'utf8');
+        if (fs.existsSync(file)) {
+            const data = fs.readFileSync(file, "utf8");
+            res.send(data);
+        }
+        else {
+            res.send("{}");
+        }
     }
-    else {
-        res.send("{}");
+    catch (err) {
+        console.error("Invalid filesystem!!!");
+        res.status(400).json({ status: "error", message: err.message });
     }
 });
 function GeneratorFile() {
