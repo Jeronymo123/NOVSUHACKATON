@@ -14,11 +14,12 @@ var indexColumn = 0;
 var countCell = 0;
 var PersonData = [];
 var data = [];
-
+var subject;
+var group;
 function send_to_Server() {
     console.log(PersonData);
     PersonData.forEach(item => {
-        fetch("/savestudent", {
+        fetch(`/savestudent?subject=${subject}&group=${group}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -28,9 +29,11 @@ function send_to_Server() {
     });
 }
 
-export async function AddTable(group) {
-    PersonData = await parseJSONStudent(group);
+export async function AddTable(Subject, Group) {
+    PersonData = await parseJSONStudent(Subject,Group);
     countPerson = PersonData.length;
+    subject=Subject;
+    group=Group;
     var Table = document.getElementById("Table");
     for (let i = 0; i < countPerson; i++) {
 
@@ -120,11 +123,18 @@ function create_delete_Column() {
     DeleteCol.onclick = function () {
         const Columns = document.querySelectorAll(`.${DeleteCol.className.slice(7)}`);
         Columns.forEach(element => {
-            for (let i = 0; i < countPerson; i++) {
-                delete PersonData[i][`${DeleteCol.className.slice(13)}`]
-            };
             element.remove();
         })
+        for (let i = 0; i < countPerson; i++) {
+                console.log(`${DeleteCol.className.slice(13)}`);
+                for(let j=Number(`${DeleteCol.className.slice(13)}`);j<data.length-1;j++){
+                    PersonData[i][j]=PersonData[i][j+1]
+                    
+                }
+                delete PersonData[i][data.length-1];
+                
+            };
+            data.pop();
     };
     DeleteCol.appendChild(DeleteButton);
 
@@ -188,7 +198,7 @@ function AddDate() {
         if (document.getElementById("Editing").checked) {
             InputDate.style.display = "none";
             DateKey.firstChild.nodeValue = InputDate.value.slice(8) + "." + InputDate.value.slice(5, 7) + "." + InputDate.value.slice(0, 4);
-            (DateKey.id.slice(4), DateKey.textContent);
+            change_data_date(DateKey.id.slice(4), DateKey.textContent);
         }
     });
 

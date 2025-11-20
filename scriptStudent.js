@@ -1,8 +1,8 @@
 document.getElementById("AddStudent").onclick = fLoadClasses;
 
 
-export async function parseJSONStudent(group) {
-    const Student = await fetch(`/loadstudent?group=${group}`);
+export async function parseJSONStudent(subject, group) {
+    const Student = await fetch(`/loadstudent?subject=${subject}&group=${group}`);
     const jsonStudent = await Student.json();
     return jsonStudent;
 }

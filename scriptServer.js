@@ -2,7 +2,6 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
-const { dir } = require('console');
 
 const app = express();
 const port = 3000;
@@ -14,9 +13,10 @@ app.use(express.json());
 app.use(express.static(__dirname))
 
 app.post('/savestudent', (req, res) => {
-    const dir = path.join(__dirname, `data/${req.body.info.group}`);
+    console.log(req.query.subject)
+    const dir = path.join(__dirname, `data/${req.query.subject}`);
     fs.mkdirSync(dir, { recursive: true });
-    const file = path.join(dir, "Inf.json");
+    const file = path.join(dir, `${req.query.group}`);
     try {
         console.log(req.body);
         try {
@@ -46,7 +46,7 @@ app.post('/savestudent', (req, res) => {
 
 app.get('/loadstudent', (req, res) => {
     try {
-        const file = path.join(main_directory + req.query.group, "Inf.json");
+        const file = path.join(main_directory + req.query.subject,req.query.group);
         if (fs.existsSync(file)) {
             const data = fs.readFileSync(file, "utf8");
             res.send(data);
@@ -61,14 +61,27 @@ app.get('/loadstudent', (req, res) => {
     }
 });
 
+function getAllFiles(dir, result = []) {
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    for (const entry of entries) {
+        const fullPath = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+            getAllFiles(fullPath, result);
+        } else {
+            result.push(fullPath);
+        }
+    }
+
+    return result;
+}
+
 app.get('/loadclasses', (req, res) => {
     try {
         fs.mkdirSync(main_directory, { recursive: true });
         const file = path.join(main_directory, "Classes.json");
-        
-        const folders = fs.readdirSync(main_directory, { withFileTypes: true })
-            .filter(dirent => dirent.isDirectory())
-            .map(dirent => dirent.name);
+
+        const folders = getAllFiles(main_directory);
+        folders.shift();
         fs.writeFileSync(file, JSON.stringify(folders, null, 2), 'utf8');
         if (fs.existsSync(file)) {
             const data = fs.readFileSync(file, "utf8");
@@ -83,26 +96,26 @@ app.get('/loadclasses', (req, res) => {
         res.status(400).json({ status: "error", message: err.message });
     }
 });
-function GeneratorFile() {
-    const Person = {
-        id: 0,
-        info: {
-            name: "",
-            group: 5092,
-        },
-        study: {
-            index: 0,
-            Date: "DD.MM.YYYY",
-            TypeWork: "typeWork",
-            Value: "+"
-        }
-    }
-    let data = [];
-    for (let i = 0; i < 19; i++) {
-        Person.id = i;
-        data.push(Person);
-    }
-    fs.writeFileSync("Person.json", JSON.stringify(data, null, 2), 'utf8');
-}
-GeneratorFile();
+// function GeneratorFile() {
+//     const Person = {
+//         id: 0,
+//         info: {
+//             name: "",
+//             group: 5092,
+//         },
+//         study: {
+//             index: 0,
+//             Date: "DD.MM.YYYY",
+//             TypeWork: "typeWork",
+//             Value: "+"
+//         }
+//     }
+//     let data = [];
+//     for (let i = 0; i < 19; i++) {
+//         Person.id = i;
+//         data.push(Person);
+//     }
+//     fs.writeFileSync("Person.json", JSON.stringify(data, null, 2), 'utf8');
+// }
+// GeneratorFile();
 app.listen(port, () => console.log(`127.0.0.1:${port}`));
