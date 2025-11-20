@@ -2,7 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
-
+const bcrypt = require("bcrypt");
 const app = express();
 const port = 3000;
 
@@ -81,6 +81,7 @@ app.get('/loadclasses', (req, res) => {
 
         const folders = getAllFiles(main_directory);
         folders.shift();
+        folders.shift();
         fs.writeFileSync(file, JSON.stringify(folders, null, 2), 'utf8');
         if (fs.existsSync(file)) {
             const data = fs.readFileSync(file, "utf8");
@@ -134,7 +135,6 @@ app.post('/registration', (req, res) => {
 app.get('/login', (req, res) => {
     try{
         const file = path.join(main_directory, "User.json");
-
     }   
     catch{
         console.error("Invalid login!!!");

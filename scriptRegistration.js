@@ -18,11 +18,11 @@ function generateWindow() {
     RoleSelect.selectedIndex = 0;
 }
 
-function toTable() {
+function toTable() {    
     const data = {
         Role: document.getElementById("Role").options[document.getElementById("Role").selectedIndex].textContent,
         Group: document.getElementById("Group").value,
-        Login: document.getElementById("LogReg").value,
+        Login: HashChangeEvent(document.getElementById("LogReg").value,
         Email: document.getElementById("Email").value,
         Password: document.getElementById("PasswordReg").value,
         Name: document.getElementById("Name").value,

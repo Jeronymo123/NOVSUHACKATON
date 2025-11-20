@@ -17,6 +17,7 @@ var data = [];
 var subject;
 var group;
 function send_to_Server() {
+    change_new_data_Value();
     PersonData.forEach(item => {
         fetch(`/savestudent?subject=${subject}&group=${group}`, {
             method: "POST",
@@ -29,10 +30,10 @@ function send_to_Server() {
 }
 
 export async function AddTable(Subject, Group) {
-    PersonData = await parseJSONStudent(Subject,Group);
+    PersonData = await parseJSONStudent(Subject, Group);
     countPerson = PersonData.length;
-    subject=Subject;
-    group=Group;
+    subject = Subject;
+    group = Group;
     var Table = document.getElementById("Table");
     for (let i = 0; i < countPerson; i++) {
 
@@ -115,9 +116,10 @@ export function DeleteTable() {
 
 function create_delete_Column() {
     const DeleteCol = document.getElementById("DeleteColumn").insertCell();
-    
     DeleteCol.className = `Delete Column${indexColumn}`;
-
+    DeleteCol.innerHTML = ".";
+    DeleteCol.style.color = "rgba(0, 0, 0, 0)";
+    DeleteCol.style.alignItems = "center";
     const DeleteButton = document.createElement("button");
     DeleteCol.onclick = function () {
         const Columns = document.querySelectorAll(`.${DeleteCol.className.slice(7)}`);
@@ -125,18 +127,20 @@ function create_delete_Column() {
             element.remove();
         })
         for (let i = 0; i < countPerson; i++) {
-                console.log(`${DeleteCol.className.slice(13)}`);
-                for(let j=Number(`${DeleteCol.className.slice(13)}`);j<data.length-1;j++){
-                    PersonData[i][j]=PersonData[i][j+1]
-                    
-                }
-                delete PersonData[i][data.length-1];
-                
-            };
-            data.pop();
-    };
-    DeleteCol.appendChild(DeleteButton);
+            for (let j = Number(`${DeleteCol.className.slice(13)}`); j < data.length - 1; j++) {
+                PersonData[i][j] = PersonData[i][j + 1]
 
+            }
+            delete PersonData[i][data.length - 1];
+
+        };
+        indexColumn--;
+        countCell -= countPerson;
+        data.pop();
+    };
+
+    DeleteButton.style.display = 'none';
+    DeleteCol.appendChild(DeleteButton);
 }
 
 function AddColumn() {
@@ -144,7 +148,7 @@ function AddColumn() {
     create_data();
     create_delete_Column();
     AddDate();
-    AddTypeWork()
+    AddTypeWork();
 
     const elements = document.querySelectorAll('.Row');
     elements.forEach(element => {
@@ -152,23 +156,31 @@ function AddColumn() {
         const GradeInput = document.createElement("input");
 
         Cell.id = countCell;
-        Cell.className = `Column${indexColumn} Grade`;
-        Cell.innerHTML = change_attendance(Cell.id);
+        Cell.className = `Column${indexColumn}`;
 
-        GradeInput.style.display = 'none';
+        countCell++;
+
+        if (!Cell._clickFunc) {
+            Cell._clickFunc = function () {
+                if (document.getElementById("Editing").checked) {
+                    Cell.firstChild.textContent = change_attendance(Cell.id);
+                }
+            };
+
+        }
+        Cell.className += " Grade";
+        Cell.innerHTML = "+";
+        Cell.addEventListener("click", Cell._clickFunc);
         GradeInput.value = Cell.textContent;
-        Cell.addEventListener("click", function () {
-            if (document.getElementById("Editing").checked) {
-                Cell.innerHTML = change_attendance(Cell.id);
-            }
-        });
+        GradeInput.style.display = "none";
         GradeInput.addEventListener("change", function () {
             change_data_Value(Cell.id % countPerson, Cell.className.replace(/Grades/, '').slice(6), GradeInput.value);
         });
         Cell.appendChild(GradeInput);
     });
 
-    countCell++;
+
+
     indexColumn++;
 }
 
@@ -254,7 +266,7 @@ function AddTypeWork() {
         }
     });
 
-    Work.addEventListener("change", function () {
+     Work.addEventListener("change", function () {
         if (document.getElementById("Editing").checked) {
             Work.style.display = "none";
             TypeWork.firstChild.textContent = Work.options[Work.selectedIndex].text;
@@ -265,20 +277,23 @@ function AddTypeWork() {
             }
 
             ColumnGrade.forEach(element => {
+
                 if (Work.options[Work.selectedIndex].text !== "Посещаемость") {
+                    element.removeEventListener("click", element._clickFunc);
                     const Int = element.querySelector("input");
-                    console.log(element.className)
+
+                    Int.style.display = 'inline-block';
+                    Int.value = 0;
                     if (element.className === `Column${TypeWork.id.slice(8)} Grade`) {
                         element.className += "s";
                     }
-                    Int.style.display = 'inline-block';
-                    Int.value = 0;
                     element.firstChild.textContent = "";
                 }
                 else {
                     const Int = element.querySelector("input");
                     Int.style.display = 'none';
                     element.firstChild.textContent = "+";
+                    element.addEventListener("click", element._clickFunc);
                     element.className = String(element.className).replace("s", '');
                 }
             });
@@ -290,6 +305,7 @@ function AddTypeWork() {
             Work.style.display = "none";
             TypeWork.firstChild.textContent = Work.options[Work.selectedIndex].text;
             change_data_TypeWork(TypeWork.id.slice(8), Work.options[Work.selectedIndex].text);
+
         }
     });
     TypeWork.appendChild(Work);
@@ -390,20 +406,23 @@ function LoadTypeWork(typework) {
             }
 
             ColumnGrade.forEach(element => {
+
                 if (Work.options[Work.selectedIndex].text !== "Посещаемость") {
-                    console.log(element.className);
+                    element.removeEventListener("click", element._clickFunc);
                     const Int = element.querySelector("input");
+
+                    Int.style.display = 'inline-block';
+                    Int.value = 0;
                     if (element.className === `Column${TypeWork.id.slice(8)} Grade`) {
                         element.className += "s";
                     }
-                    Int.style.display = 'inline-block';
-                    Int.value = 0;
                     element.firstChild.textContent = "";
                 }
                 else {
                     const Int = element.querySelector("input");
                     Int.style.display = 'none';
                     element.firstChild.textContent = "+";
+                    element.addEventListener("click", element._clickFunc);
                     element.className = String(element.className).replace("s", '');
                 }
             });
@@ -435,19 +454,28 @@ function LoadGrade(Grades) {
 
         countCell++;
 
+        if (!Cell._clickFunc) {
+            Cell._clickFunc = function () {
+                if (document.getElementById("Editing").checked) {
+                    Cell.firstChild.textContent = change_attendance(Cell.id);
+                }
+            };
 
+        }
         const work = typework.querySelector("select");
         if (work.options[work.selectedIndex].text !== "Посещаемость") {
             Cell.className += " Grades";
             if (Number(Grades[cCell])) {
                 Cell.innerHTML = Grades[cCell];
             }
-            else{
+            else {
                 Cell.innerHTML = 0;
             }
         } else {
+
             Cell.className += " Grade";
-            Cell.innerHTML = "+";
+            Cell.innerHTML = Grades[cCell];
+            Cell.addEventListener("click", Cell._clickFunc);
         }
         GradeInput.value = Cell.textContent;
         GradeInput.style.display = "none";
@@ -480,11 +508,11 @@ function create_edit() {
         document.getElementById('Pass').style.display = "inline-block";
         document.getElementById('Presence').style.display = "inline-block";
         document.getElementById('Disease').style.display = "inline-block";
-        document.getElementById("DeleteColumn").style.display = "flex";
+        document.getElementById("DeleteColumn").style.display = "table-row";
 
         const Grade = document.querySelectorAll(".Grades");
         Grade.forEach(element => {
-            element.querySelector("input").style.display = "inline-block";
+            element.querySelector("input").style.display = "flex";
             element.firstChild.textContent = "";
         });
 
@@ -532,11 +560,13 @@ function create_data() {
 }
 
 function change_data_date(id, date) {
-    data[id].Date = date;
+
+    data[Number(id)].Date = date;
     for (let i = 0; i < countPerson; i++) {
         if (!PersonData[i][id]) {
             PersonData[i][id] = data[id];
         }
+
         PersonData[i][id].Date = date;
     }
 }
@@ -550,10 +580,22 @@ function change_data_TypeWork(id, typework) {
         PersonData[i][id].TypeWork = typework;
     }
 }
-
+function change_new_data_Value(i){
+    for(let i=0;i<indexColumn;i++){
+    const Column=document.querySelectorAll(`.Column${i}.Grade`);
+    if(Column.length===0){
+        Column=document.querySelectorAll(`.Column${i}.Grades`);
+    }
+    const j=0;
+    Column.forEach(item=>{
+        PersonData[j][i].Value=item.firstChild.textContent;
+        j++
+    });}
+}
 function change_data_Value(id, ind, grade) {
     data[Number(ind)].Value = grade;
     PersonData[id][Number(ind)].Value = grade;
+
 }
 
 // function change_data_Name(ind, Name) {
