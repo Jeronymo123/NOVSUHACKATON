@@ -13,7 +13,6 @@ app.use(express.json());
 app.use(express.static(__dirname))
 
 app.post('/savestudent', (req, res) => {
-    console.log(req.query.subject)
     const dir = path.join(__dirname, `data/${req.query.subject}`);
     fs.mkdirSync(dir, { recursive: true });
     const file = path.join(dir, `${req.query.group}`);
@@ -46,7 +45,7 @@ app.post('/savestudent', (req, res) => {
 
 app.get('/loadstudent', (req, res) => {
     try {
-        const file = path.join(main_directory + req.query.subject,req.query.group);
+        const file = path.join(main_directory + req.query.subject, req.query.group);
         if (fs.existsSync(file)) {
             const data = fs.readFileSync(file, "utf8");
             res.send(data);
@@ -92,8 +91,42 @@ app.get('/loadclasses', (req, res) => {
         }
     }
     catch (err) {
-        console.error("Invalid filesystem!!!");
+        console.error("Invalid reg!!!");
         res.status(400).json({ status: "error", message: err.message });
+    }
+
+});
+
+app.post('/registration', (req, res) => {
+
+
+    try {
+        fs.mkdirSync(main_directory, { recursive: true });
+        const file = path.join(main_directory, "User.json");
+        console.log(req.body);
+        var data=[];
+        try {
+            const FileContent = fs.readFileSync(file, 'utf8');
+            const parsed = FileContent ? JSON.parse(FileContent) : [];
+            data = Array.isArray(parsed) ? parsed : [parsed];
+        }
+        catch (err) {
+            console.warn("Error");
+        }
+        const indexFind = data.findIndex(user => user.Login === req.body.Login);
+        if (indexFind !== -1) {
+            data[indexFind] = req.body;
+        }
+        else {
+            data.push(req.body);
+        }
+        fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf8');
+        console.log(`Successful ${req.body.Login}`);
+        res.json({ status: "ok" });
+    }
+    catch (err) {
+        console.error("Invalid registration!!!");
+        res.status(500).json({ status: "error", message: err.message });
     }
 });
 // function GeneratorFile() {

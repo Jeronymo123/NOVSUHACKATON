@@ -17,7 +17,6 @@ var data = [];
 var subject;
 var group;
 function send_to_Server() {
-    console.log(PersonData);
     PersonData.forEach(item => {
         fetch(`/savestudent?subject=${subject}&group=${group}`, {
             method: "POST",
