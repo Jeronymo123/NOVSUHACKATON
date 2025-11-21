@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль - UniAttend</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="dashboard.html" class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>UniAttend</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">Главная</a></li>
+                <li><a href="table.html">Посещаемость</a></li>
+                <li><a href="schedule.html">Расписание</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <a href="profile.html" class="btn btn-secondary active">
+                    <i class="fas fa-user-circle"></i><p id="NameProfile">Проф. Иванов А.С.</p>
+                </a>
+                <a href="entry_form.html" class="btn btn-primary" id="Logout">Выйти</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <div class="profile-info">
+                    <h1 class="profile-name" id="Name">Иванов Александр Сергеевич</h1>
+                    <div class="profile-role" id="Role">Преподаватель</div>
+                    <p style="color: var(--text-light); margin-bottom: 1rem;">Факультет информационных технологий</p>
+                    
+                    <div class="profile-stats" id="Stats" style="display: none;">
+                        <div class="stat-item">
+                            <div class="stat-value">28</div>
+                            <div class="stat-label">Студентов</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Предметов</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">87%</div>
+                            <div class="stat-label">Посещаемость</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-content">
+                <div>
+                    <div class="profile-section">
+                        <h2>Личная информация</h2>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Логин:</span>
+                                <span class="info-value" id="Login">ivanov</span>
+                                <!-- <button class="edit-button" onclick="toggleEdit('personalInfo')">
+                                    <i class="fas fa-edit"></i>
+                                </button> -->
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Email:</span>
+                                <span class="info-value" id="Email">ivanov@university.ru</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Телефон:</span>
+                                <span class="info-value" id="Phone">+7 (900) 123-45-67</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label" style="display: none;">Кафедра:</span>
+                                <span class="info-value">Программной инженерии</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label"style="display: none;">Стаж работы:</span>
+                                <span class="info-value">8 лет</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-section" id="Stats" style="display: none;">
+                        <h2>Академическая информация</h2>
+                        <div class="info-grid">
+                            <div class="info-item" >
+                                <span class="info-label">Ученая степень:</span>
+                                <span class="info-value">Кандидат технических наук</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label" style="display: none;">Должность:</span>
+                                <span class="info-value" style="display: none;">Доцент</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Основные предметы:</span>
+                                <span class="info-value">Веб-разработка, Базы данных, Алгоритмы</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="quick-actions">
+                    <a href="schedule.html" class="action-button">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Мое расписание</span>
+                    </a>
+                    <a href="table.html" class="action-button">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Статистика посещаемости</span>
+                    </a>
+                    <button class="action-button">
+                        <i class="fas fa-key"></i>
+                        <span>Сменить пароль</span>
+                    </button>
+                    <button class="action-button">
+                        <i class="fas fa-download"></i>
+                        <span>Экспорт данных</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>UniAttend</span>
+            </div>
+            <p>&copy; 2025 Система учёта посещаемости. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="scriptProfile.js" type="module"></script>
+</body>
+</html>

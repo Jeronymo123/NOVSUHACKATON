@@ -18,5 +18,15 @@
     "Name": "1515",
     "SurName": "1515",
     "SecondName": "1515"
+  },
+  {
+    "Role": "Студент",
+    "Group": "\n                            Группа\n                            \n                        ",
+    "Login": "1234",
+    "Email": "Rusik@gmail.com",
+    "Password": "$2b$10$Yl/D0WS9Jgw6/DypPMQ7A../yZtkcbmnFHA3MWmHhRLk4E4aSPZY2",
+    "Name": "Руслан",
+    "SurName": "Коротков",
+    "SecondName": "Романович"
   }
 ]
