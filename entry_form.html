@@ -117,18 +117,6 @@
                         </button>
                     </div>
 
-                    <div class="demo-accounts">
-                        <h3 style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem; text-align: center;">Демо-доступ для тестирования</h3>
-                        <div style="padding: 0.75rem; background: white; border-radius: 8px; margin-bottom: 0.5rem; border: 1px solid #e2e8f0;">
-                            <div style="font-weight: 600; color: #1e293b; font-size: 0.9rem;">Преподаватель</div>
-                            <div style="font-size: 0.8rem; color: #64748b;">Логин: ivanov | Пароль: professor123</div>
-                        </div>
-                        <div style="padding: 0.75rem; background: white; border-radius: 8px; border: 1px solid #e2e8f0;">
-                            <div style="font-weight: 600; color: #1e293b; font-size: 0.9rem;">Администратор</div>
-                            <div style="font-size: 0.8rem; color: #64748b;">Логин: admin | Пароль: admin123</div>
-                        </div>
-                    </div>
-
                     <script src="scriptAuthorization.js" type="module"></script>
                 </div>
 
@@ -139,29 +127,33 @@
                         <div class="form-group">
                             <label for="LogReg">Логин</label>
                             <input type="text" id="LogReg" class="form-control" placeholder="Придумайте логин" required>
+                            <label for="LogReg" id="ErrorLog" style="display:none">Неверный логин</label>
                         </div>
 
                         <div class="name-fields">
                             <div class="form-group">
                                 <label for="Surname">Фамилия</label>
                                 <input type="text" id="Surname" class="form-control" placeholder="Иванов" required>
+                                <label for="Surname" id="ErrorSurname" style="display:none">Неверная фамилия</label>
                             </div>
                             
                             <div class="form-group">
                                 <label for="Name">Имя</label>
                                 <input type="text" id="Name" class="form-control" placeholder="Иван" required>
+                                <label for="Name" id="ErrorName" style="display:none">Неверное имя</label>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="Secondname">Отчество</label>
                             <input type="text" id="Secondname" class="form-control" placeholder="Иванович">
+                            <label for="Secondname" id="ErrorSecondName" style="display:none">Неверное отчество</label>
                         </div>
                         
                         <div class="form-group">
                             <label for="Email">Email</label>
                             <input type="email" id="Email" class="form-control" placeholder="example@university.ru" required>
-                            <label for="PasswordReg" id="ErrorEmail" style="display:none">Неверная электронная почта</label>
+                            <label for="Email" id="ErrorEmail" style="display:none">Неверная электронная почта</label>
                         </div>
                         
                         <div class="form-group">
@@ -170,24 +162,27 @@
                             <label for="PasswordReg"  id="ErrorPassword" style="display:none">Неверный пароль</label>
                         </div>
 
-                        <div class="form-group">
-                            <label for="Group">Группа</label>
-                            <input type="text" id="Group" class="form-control" placeholder="ПИ-201">
+                        <div class="form-group" id="Group" style="display: none;">
+                            <label for="Group" >Группа</label>
+                            <input type="text" id="Group" class="form-control" placeholder="5092">
                         </div>
-                        
+                        <div class="form-group">
+                            <label id="SubjecT">Предмет</label>
+                            <select id="Subject" class="form-select" required>
+                            </select>
+                        </div>
                         <div class="form-group">
                             <label for="Role">Роль</label>
                             <select id="Role" class="form-select" required>
-                                <option value="">Выберите роль</option>
                                 <option value="professor">Преподаватель</option>
                                 <option value="student">Студент</option>
-                                <option value="admin">Администратор</option>
+                                <!-- <option value="admin">Администратор</option> -->
                             </select>
                         </div>
                         
                         <div style="margin-bottom: 2rem;">
-                            <label style="display: flex; align-items: center; gap: 0.5rem; color: #64748b; cursor: pointer; font-size: 0.9rem;">
-                                <input type="checkbox" required style="width: 16px; height: 16px; accent-color: #2563eb;">
+                            <label id="Check" style="display: flex; align-items: center; gap: 0.5rem; color: #64748b; cursor: pointer; font-size: 0.9rem;">
+                                <input type="checkbox" id="Doc" required style="width: 16px; height: 16px; accent-color: #2563eb;">
                                 Я согласен с <a href="#" style="color: #2563eb; text-decoration: none;">условиями использования</a>
                             </label>
                         </div>

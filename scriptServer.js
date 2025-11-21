@@ -139,10 +139,25 @@ app.post('/registration', async (req, res) => {
         else {
             req.body.Password = await bcrypt.hash(req.body.Password, 10);
             data.push(req.body);
+            const user = req.body;
+            req.session.user = {
+                Login: user.Login,
+                Name: user.Name,
+                Surname: user.SurName,
+                Secondname: user.SecondName,
+                Group: user.Group,
+                Role: user.Role,
+                Email: user.Email
+            }
+            req.session.save(err => {
+                if (err) {
+                    return res.status(500).json({ status: "error" });
+                }
+            });
+            fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf8');
+            console.log(`Successful ${req.body.Login}`);
+            res.json({ status: "ok" });
         }
-        fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf8');
-        console.log(`Successful ${req.body.Login}`);
-        res.json({ status: "ok" });
     }
     catch (err) {
         console.error("Invalid registration!!!");
@@ -168,8 +183,9 @@ app.post('/authorization', async (req, res) => {
             req.session.user = {
                 Login: user.Login,
                 Name: user.Name,
-                Surname:user.SurName,
-                Group:user.Group,
+                Surname: user.SurName,
+                Secondname: user.SecondName,
+                Group: user.Group,
                 Role: user.Role,
                 Email: user.Email
             }
