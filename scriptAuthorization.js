@@ -16,5 +16,9 @@ async function toTable() {
     if (res.status === "login") {
         window.location.href = "dashboard.html";
     }
+    else{
+        document.getElementById("ErrorLogin").style.display="";
+        document.getElementById("ErrorPass").style.display="";
+    }
 }
 

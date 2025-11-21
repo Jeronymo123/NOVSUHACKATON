@@ -10,23 +10,21 @@ document.getElementById('AddStudent').onclick = send_to_Server;
 async function get_User() {
     const response = await fetch("/profile", { credentials: "include" });
     const res = await response.json();
-
     if (res.status === "ok") {
-        console.log(res.user.Role)
         return res.user;
     } else {
         window.location.href = "entry_form.html"
     }
 }
 async function LoadDoc() {
+    
     const user = await get_User();
     const divRole = document.getElementById("Role");
     if (user.Role !== "Студент") {
-        divRole.style.display = "flex";
+        divRole.style.display = "";
     }
 }
 
-window.onload = LoadDoc;
 
 
 var indexInput = 0;
@@ -55,7 +53,7 @@ async function send_to_Server() {
 }
 
 export async function AddTable(Subject, Group) {
-    
+    LoadDoc()
     PersonData = await parseJSONStudent(Subject, Group);
     countPerson = PersonData.length;
     subject = Subject;
@@ -170,47 +168,46 @@ function create_delete_Column() {
 }
 
 async function AddColumn() {
-    const user = await get_User();
-    if (user.Role !== "Студент") {
-        create_data();
-        create_delete_Column();
-        AddDate();
-        AddTypeWork();
 
-        const elements = document.querySelectorAll('.Row');
-        elements.forEach(element => {
-            const Cell = element.insertCell();
-            const GradeInput = document.createElement("input");
+    create_data();
+    create_delete_Column();
+    AddDate();
+    AddTypeWork();
 
-            Cell.id = countCell;
-            Cell.className = `Column${indexColumn}`;
+    const elements = document.querySelectorAll('.Row');
+    elements.forEach(element => {
+        const Cell = element.insertCell();
+        const GradeInput = document.createElement("input");
 
-            countCell++;
+        Cell.id = countCell;
+        Cell.className = `Column${indexColumn}`;
 
-            if (!Cell._clickFunc) {
-                Cell._clickFunc = function () {
-                    if (document.getElementById("Editing").checked) {
-                        Cell.firstChild.textContent = change_attendance(Cell.id);
-                    }
-                };
+        countCell++;
 
-            }
-            Cell.className += " Grade";
-            Cell.innerHTML = "+";
-            Cell.addEventListener("click", Cell._clickFunc);
-            GradeInput.value = Cell.textContent;
-            GradeInput.style.display = "none";
-            GradeInput.addEventListener("change", function () {
-                change_data_Value(Cell.id % countPerson, Cell.className.replace(/Grades/, '').slice(6), GradeInput.value);
-            });
-            Cell.appendChild(GradeInput);
+        if (!Cell._clickFunc) {
+            Cell._clickFunc = function () {
+                if (document.getElementById("Editing").checked) {
+                    Cell.firstChild.textContent = change_attendance(Cell.id);
+                }
+            };
+
+        }
+        Cell.className += " Grade";
+        Cell.innerHTML = "+";
+        Cell.addEventListener("click", Cell._clickFunc);
+        GradeInput.value = Cell.textContent;
+        GradeInput.style.display = "none";
+        GradeInput.addEventListener("change", function () {
+            change_data_Value(Cell.id % countPerson, Cell.className.replace(/Grades/, '').slice(6), GradeInput.value);
         });
+        Cell.appendChild(GradeInput);
+    });
 
 
 
-        indexColumn++;
-    }
+    indexColumn++;
 }
+
 
 function AddDate() {
     const DateKey = document.getElementById("Keyword").insertCell();
@@ -611,13 +608,13 @@ function change_data_TypeWork(id, typework) {
         PersonData[i][id].TypeWork = typework;
     }
 }
-function change_new_data_Value(i) {
+function change_new_data_Value() {
     for (let i = 0; i < indexColumn; i++) {
-        const Column = document.querySelectorAll(`.Column${i}.Grade`);
+        var Column = document.querySelectorAll(`.Column${i}.Grade`);
         if (Column.length === 0) {
             Column = document.querySelectorAll(`.Column${i}.Grades`);
         }
-        const j = 0;
+        var j = 0;
         Column.forEach(item => {
             PersonData[j][i].Value = item.firstChild.textContent;
             j++

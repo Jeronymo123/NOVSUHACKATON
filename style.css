@@ -9,6 +9,16 @@
     font-weight: bold;
     font-size: 16px;
 }
+#ErrorLogin {
+    color: red;
+    font-weight: bold;
+    font-size: 16px;
+}
+#ErrorPass {
+    color: red;
+    font-weight: bold;
+    font-size: 16px;
+}
 #ErrorEmail {
     color: red;
     font-weight: bold;

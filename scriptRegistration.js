@@ -2,8 +2,6 @@ document.getElementById("RegBut").onclick = toTable;
 
 async function toTable() {
 
-    // document.getElementById("ErrorPassword").style.display = "none";
-    // document.getElementById("ErrorEmail").style.display = "none";
     let bool = true;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(document.getElementById("Email").value)) {

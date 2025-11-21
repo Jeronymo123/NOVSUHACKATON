@@ -6,7 +6,6 @@ async function get_User() {
     const res = await response.json();
 
     if (res.status === "ok") {
-        console.log(res.user.Role)
         return res.user;
     } else {
         window.location.href = "entry_form.html"
@@ -23,7 +22,6 @@ async function fill_selector() {
     if (user.Role === "Студент") {
         Classes = oldClasses.filter(item => item.slice(item.lastIndexOf('\\') + 1).replace(/.json/, '') === user.Group);
         CountClasses = Classes.length;
-        console.log(user.Group);
 
         document.getElementById("LabelSubject").textContent = "Предмет";
         if (CountClasses !== 0) {
@@ -45,7 +43,6 @@ async function fill_selector() {
     }
     else {
         document.getElementById("LabelSubject").textContent = "Группы";
-        console.log(oldClasses[0].slice(oldClasses[0].indexOf('\\') + 1, oldClasses[0].lastIndexOf('\\')),user.Group);
         Classes = oldClasses.filter(item => item.slice(item.indexOf('\\') + 1, item.lastIndexOf('\\')) === user.Group);
         CountClasses = Classes.length;
         if (CountClasses !== 0) {
