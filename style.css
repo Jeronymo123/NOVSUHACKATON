@@ -1,10 +1,20 @@
 /* Общие стили */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
+#ErrorPassword {
+    color: red;
+    font-weight: bold;
+    font-size: 16px;
+}
+#ErrorEmail {
+    color: red;
+    font-weight: bold;
+    font-size: 16px;
+}
 :root {
     --primary: #2563eb;
     --primary-dark: #1d4ed8;
@@ -684,7 +694,6 @@ button:disabled {
     outline: none;
     border-color: var(--primary);
 }
-
 .form-select {
     width: 100%;
     padding: 1rem;

@@ -1,12 +1,42 @@
 [
   {
     "Role": "Преподаватель",
-    "Group": "7",
+    "Group": "123",
     "Login": "1",
-    "Email": "5",
-    "Password": "6",
+    "Email": "1@gmail.com",
+    "Password": "$2b$10$5t0Ngxb6DCC1kdr.F/uAeOk2OJFFqJHGRRG6W2xzBBJdrFWwjMLQy",
+    "Name": "1",
+    "SurName": "1",
+    "SecondName": "1"
+  },
+  {
+    "Role": "Преподаватель",
+    "Group": "12345678",
+    "Login": "2",
+    "Email": "2@gmail.com",
+    "Password": "$2b$10$aV1l5j./dogDZ00vBMTs3eSFiFk5o03L54hod8ZlcK3K4k6JO8B1.",
     "Name": "2",
-    "SurName": "3",
-    "SecondName": "4"
+    "SurName": "2",
+    "SecondName": "2"
+  },
+  {
+    "Role": "Преподаватель",
+    "Group": "123",
+    "Login": "23",
+    "Email": "2@gmail.com",
+    "Password": "$2b$10$QWL8Gx62RrGBRfT0rmMmp.cxB9Ac89Kv29ygFOTWW9TiOrc.OruGq",
+    "Name": "2",
+    "SurName": "2",
+    "SecondName": "2"
+  },
+  {
+    "Role": "Студент",
+    "Group": "234",
+    "Login": "233",
+    "Email": "23@gmail.com",
+    "Password": "$2b$10$0HMiL7IwZfxCp9JYla7LJez8ANMHwrmHx7yDOTjtMXmcUlel1jmZy",
+    "Name": "dfdf",
+    "SurName": "def",
+    "SecondName": "dfdf"
   }
 ]

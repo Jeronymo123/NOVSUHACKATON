@@ -1,6 +1,20 @@
-document.getElementById("LogBut").onclick=toTable;
+document.getElementById("LogBut").onclick = toTable;
 
-function toTable(){
-    fetch(`/authorization?login=${document.getElementById("Login").value}&password=${document.getElementById("PasswordLog").value}`)
-    window.location.href="table.html";
+async function toTable() {
+    const response = await fetch(`/authorization`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({
+            Login: document.getElementById("Login").value,
+            Password: document.getElementById("PasswordLog").value
+        })
+    });
+    const res = await response.json();
+    if (res.status === "login") {
+        window.location.href = "dashboard.html";
+    }
 }
+

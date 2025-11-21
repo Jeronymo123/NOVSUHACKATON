@@ -3,13 +3,29 @@ const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
 const bcrypt = require("bcrypt");
+const session = require("express-session");
+
 const app = express();
 const port = 3000;
 
 const main_directory = "data/";
 
-app.use(express.json());
+app.use(session({
+    secret: 'secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 60 * 60 * 1000,
+        sameSite: 'lax', // или 'none' если фронтенд на другом домене
+        secure: false    // true только если https
+    }
+}));
 
+app.use(express.json());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}))
 app.use(express.static(__dirname))
 
 app.post('/savestudent', (req, res) => {
@@ -98,7 +114,7 @@ app.get('/loadclasses', (req, res) => {
 
 });
 
-app.post('/registration', (req, res) => {
+app.post('/registration', async (req, res) => {
 
 
     try {
@@ -117,9 +133,11 @@ app.post('/registration', (req, res) => {
         const indexFind = data.findIndex(user => user.Login === req.body.Login);
         if (indexFind !== -1) {
             console.log("Пользователь уже зарегистрирован!!!");
+            res.json({ status: "invlog" });
             return;
         }
         else {
+            req.body.Password = await bcrypt.hash(req.body.Password, 10);
             data.push(req.body);
         }
         fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf8');
@@ -132,16 +150,66 @@ app.post('/registration', (req, res) => {
     }
 });
 
-app.get('/login', (req, res) => {
-    try{
-        const file = path.join(main_directory, "User.json");
-    }   
-    catch{
+app.post('/authorization', async (req, res) => {
+    try {
+        const dir = path.join(main_directory, "User.json");
+        const file = fs.readFileSync(dir, 'utf8');
+        const users = JSON.parse(file);
+        const indexLogin = users.findIndex(user => user.Login === req.body.Login);
+        if (indexLogin === -1) {
+            console.log("Пользователь не зарегистрирован!!!");
+            res.json({ status: "WrongLogin" });
+            return;
+        }
+        const valid = await bcrypt.compare(req.body.Password, users[indexLogin].Password);
+        if (valid) {
+
+            const user = users[indexLogin];
+            req.session.user = {
+                Login: user.Login,
+                Name: user.Name,
+                Surname:user.SurName,
+                Group:user.Group,
+                Role: user.Role,
+                Email: user.Email
+            }
+            req.session.save(err => {
+                if (err) {
+                    return res.status(500).json({ status: "error" });
+                }
+                res.json({ status: "login" });
+            });
+            console.log(`Login: ${user.Login} ${user.Email}`);
+        }
+        else {
+            res.json({ status: "WrongPassword" });
+            return;
+        }
+
+    }
+    catch (err) {
         console.error("Invalid login!!!");
-        res.status(400).json({ status: "error", message: err.message });
+        res.status(404).json({ status: "error", message: err.message });
     }
 
 })
+
+app.get('/profile', (req, res) => {
+    if (!req.session.user) return res.status(401).json({ status: 'not_logged_in' });
+    res.json({ status: 'ok', user: req.session.user });
+});
+
+app.post('/logout', (req, res) => {
+    if (req.session.user) {
+        console.log(`Logout: ${req.session.user.Login} ${req.session.user.Email}`);
+    }
+    req.session.destroy(err => {
+        if (err) {
+            return res.status(500).json({ status: 'error' });
+        }
+        res.json({ status: 'logout' });
+    });
+});
 // function GeneratorFile() {
 //     const Person = {
 //         id: 0,

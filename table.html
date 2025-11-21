@@ -16,21 +16,27 @@
             </a>
             <ul class="nav-links">
                 <li><a href="dashboard.html">Главная</a></li>
-                <li><a href="attendance.html" class="active">Посещаемость</a></li>
+                <li><a href="table.html" class="active">Посещаемость</a></li>
                 <li><a href="schedule.html">Расписание</a></li>
             </ul>
             <div class="auth-buttons">
                 <a href="profile.html" class="btn btn-secondary">
-                    <i class="fas fa-user-circle"></i>Проф. Иванов А.С.
+                    <i class="fas fa-user-circle"></i><p id="NameProfile">Проф. Иванов А.С.</p>
                 </a>
-                <a href="index.html" class="btn btn-primary">Выйти</a>
+                <a href="index.html" class="btn btn-primary" id="Logout">Выйти</a>
             </div>
         </nav>
     </header>
 
     <main style="margin-top: 100px; padding: 2rem;">
+        
         <div class="container">
             <div class="controls">
+                <select id="Subject">
+
+            </select>
+            </div>
+            <div class="controls" id="Role" style="display: none">
                 <button id="AddColumn">Добавить колонку</button>
                 
                 <div class="checkbox-group">
@@ -41,22 +47,21 @@
                     
                     <div class="checkbox-item">
                         <input type="checkbox" id="Presence" checked style="display: none">
-                        <label for="Presence" style="display: none">Присутствие</label>
+                        <label for="Presence">Присутствие</label>
                     </div>
                     
                     <div class="checkbox-item">
                         <input type="checkbox" id="Pass" style="display: none">
-                        <label for="Pass" style="display: none">Пропуск</label>
+                        <label for="Pass">Пропуск</label>
                     </div>
                     
                     <div class="checkbox-item">
                         <input type="checkbox" id="Disease" style="display: none">
-                        <label for="Disease" style="display: none">Болезнь</label>
+                        <label for="Disease">Болезнь</label>
                     </div>
                 </div>
                 
                 <button id="AddStudent">Cохранить</button>
-                <select id="Subject"></select>
             </div>
 
             <div class="table-container">
@@ -83,9 +88,10 @@
             </div>
         </div>
     </main>
-
+    
     <script src="scriptTable.js" type="module"></script>
     <script src="scriptStudent.js" type="module"></script>
     <script src="scriptSelector.js" type="module"></script>
+    <script src="scriptAttendance.js" type="module"></script>
 </body>
 </html>

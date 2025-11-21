@@ -7,6 +7,28 @@ document.getElementById('Presence').addEventListener("change", Presence);
 document.getElementById('Disease').addEventListener("change", Disease);
 document.getElementById('AddStudent').onclick = send_to_Server;
 
+async function get_User() {
+    const response = await fetch("/profile", { credentials: "include" });
+    const res = await response.json();
+
+    if (res.status === "ok") {
+        console.log(res.user.Role)
+        return res.user;
+    } else {
+        window.location.href = "entry_form.html"
+    }
+}
+async function LoadDoc() {
+    const user = await get_User();
+    const divRole = document.getElementById("Role");
+    if (user.Role !== "Студент") {
+        divRole.style.display = "flex";
+    }
+}
+
+window.onload = LoadDoc;
+
+
 var indexInput = 0;
 var countPerson = 0;
 var type_editing = 0;
@@ -16,20 +38,24 @@ var PersonData = [];
 var data = [];
 var subject;
 var group;
-function send_to_Server() {
-    change_new_data_Value();
-    PersonData.forEach(item => {
-        fetch(`/savestudent?subject=${subject}&group=${group}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(item)
+async function send_to_Server() {
+    const user = await get_User();
+    if (user.Role !== "Студент") {
+        change_new_data_Value();
+        PersonData.forEach(item => {
+            fetch(`/savestudent?subject=${subject}&group=${group}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(item)
+            });
         });
-    });
+    }
 }
 
 export async function AddTable(Subject, Group) {
+    
     PersonData = await parseJSONStudent(Subject, Group);
     countPerson = PersonData.length;
     subject = Subject;
@@ -143,45 +169,47 @@ function create_delete_Column() {
     DeleteCol.appendChild(DeleteButton);
 }
 
-function AddColumn() {
+async function AddColumn() {
+    const user = await get_User();
+    if (user.Role !== "Студент") {
+        create_data();
+        create_delete_Column();
+        AddDate();
+        AddTypeWork();
 
-    create_data();
-    create_delete_Column();
-    AddDate();
-    AddTypeWork();
+        const elements = document.querySelectorAll('.Row');
+        elements.forEach(element => {
+            const Cell = element.insertCell();
+            const GradeInput = document.createElement("input");
 
-    const elements = document.querySelectorAll('.Row');
-    elements.forEach(element => {
-        const Cell = element.insertCell();
-        const GradeInput = document.createElement("input");
+            Cell.id = countCell;
+            Cell.className = `Column${indexColumn}`;
 
-        Cell.id = countCell;
-        Cell.className = `Column${indexColumn}`;
+            countCell++;
 
-        countCell++;
+            if (!Cell._clickFunc) {
+                Cell._clickFunc = function () {
+                    if (document.getElementById("Editing").checked) {
+                        Cell.firstChild.textContent = change_attendance(Cell.id);
+                    }
+                };
 
-        if (!Cell._clickFunc) {
-            Cell._clickFunc = function () {
-                if (document.getElementById("Editing").checked) {
-                    Cell.firstChild.textContent = change_attendance(Cell.id);
-                }
-            };
-
-        }
-        Cell.className += " Grade";
-        Cell.innerHTML = "+";
-        Cell.addEventListener("click", Cell._clickFunc);
-        GradeInput.value = Cell.textContent;
-        GradeInput.style.display = "none";
-        GradeInput.addEventListener("change", function () {
-            change_data_Value(Cell.id % countPerson, Cell.className.replace(/Grades/, '').slice(6), GradeInput.value);
+            }
+            Cell.className += " Grade";
+            Cell.innerHTML = "+";
+            Cell.addEventListener("click", Cell._clickFunc);
+            GradeInput.value = Cell.textContent;
+            GradeInput.style.display = "none";
+            GradeInput.addEventListener("change", function () {
+                change_data_Value(Cell.id % countPerson, Cell.className.replace(/Grades/, '').slice(6), GradeInput.value);
+            });
+            Cell.appendChild(GradeInput);
         });
-        Cell.appendChild(GradeInput);
-    });
 
 
 
-    indexColumn++;
+        indexColumn++;
+    }
 }
 
 function AddDate() {
@@ -266,7 +294,7 @@ function AddTypeWork() {
         }
     });
 
-     Work.addEventListener("change", function () {
+    Work.addEventListener("change", function () {
         if (document.getElementById("Editing").checked) {
             Work.style.display = "none";
             TypeWork.firstChild.textContent = Work.options[Work.selectedIndex].text;
@@ -503,32 +531,35 @@ function change_attendance(ind) {
     }
 }
 
-function create_edit() {
-    if (document.getElementById('Editing').checked) {
-        document.getElementById('Pass').style.display = "inline-block";
-        document.getElementById('Presence').style.display = "inline-block";
-        document.getElementById('Disease').style.display = "inline-block";
-        document.getElementById("DeleteColumn").style.display = "table-row";
+async function create_edit() {
+    const user = await get_User();
+    if (user.Role !== "Студент") {
+        if (document.getElementById('Editing').checked) {
+            document.getElementById('Pass').style.display = "inline-block";
+            document.getElementById('Presence').style.display = "inline-block";
+            document.getElementById('Disease').style.display = "inline-block";
+            document.getElementById("DeleteColumn").style.display = "table-row";
 
-        const Grade = document.querySelectorAll(".Grades");
-        Grade.forEach(element => {
-            element.querySelector("input").style.display = "flex";
-            element.firstChild.textContent = "";
-        });
+            const Grade = document.querySelectorAll(".Grades");
+            Grade.forEach(element => {
+                element.querySelector("input").style.display = "flex";
+                element.firstChild.textContent = "";
+            });
 
-    }
-    else {
-        document.getElementById('Pass').style.display = "none";
-        document.getElementById('Presence').style.display = "none";
-        document.getElementById('Disease').style.display = "none";
-        document.getElementById("DeleteColumn").style.display = "none";
-        const Grade = document.querySelectorAll(".Grades");
-        Grade.forEach(element => {
-            const GradeInput = element.querySelector("input");
-            GradeInput.style.display = "none";
-            element.firstChild.textContent = !isNaN(Number(GradeInput.value)) ? GradeInput.value : 0;
-            change_data_Value(element.id % countPerson, element.className.replace(/Grades/, '').slice(6), !isNaN(Number(GradeInput.value)) ? GradeInput.value : 0);
-        });
+        }
+        else {
+            document.getElementById('Pass').style.display = "none";
+            document.getElementById('Presence').style.display = "none";
+            document.getElementById('Disease').style.display = "none";
+            document.getElementById("DeleteColumn").style.display = "none";
+            const Grade = document.querySelectorAll(".Grades");
+            Grade.forEach(element => {
+                const GradeInput = element.querySelector("input");
+                GradeInput.style.display = "none";
+                element.firstChild.textContent = !isNaN(Number(GradeInput.value)) ? GradeInput.value : 0;
+                change_data_Value(element.id % countPerson, element.className.replace(/Grades/, '').slice(6), !isNaN(Number(GradeInput.value)) ? GradeInput.value : 0);
+            });
+        }
     }
 }
 
@@ -580,17 +611,18 @@ function change_data_TypeWork(id, typework) {
         PersonData[i][id].TypeWork = typework;
     }
 }
-function change_new_data_Value(i){
-    for(let i=0;i<indexColumn;i++){
-    const Column=document.querySelectorAll(`.Column${i}.Grade`);
-    if(Column.length===0){
-        Column=document.querySelectorAll(`.Column${i}.Grades`);
+function change_new_data_Value(i) {
+    for (let i = 0; i < indexColumn; i++) {
+        const Column = document.querySelectorAll(`.Column${i}.Grade`);
+        if (Column.length === 0) {
+            Column = document.querySelectorAll(`.Column${i}.Grades`);
+        }
+        const j = 0;
+        Column.forEach(item => {
+            PersonData[j][i].Value = item.firstChild.textContent;
+            j++
+        });
     }
-    const j=0;
-    Column.forEach(item=>{
-        PersonData[j][i].Value=item.firstChild.textContent;
-        j++
-    });}
 }
 function change_data_Value(id, ind, grade) {
     data[Number(ind)].Value = grade;

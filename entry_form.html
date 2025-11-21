@@ -132,7 +132,6 @@
                     <script src="scriptAuthorization.js" type="module"></script>
                 </div>
 
-                <!-- Форма регистрации -->
                 <div id="registrationForm" class="form-content">
                     <h2 style="text-align: center; margin-bottom: 2rem; color: #1e293b;">Создать аккаунт</h2>
                     
@@ -162,11 +161,13 @@
                         <div class="form-group">
                             <label for="Email">Email</label>
                             <input type="email" id="Email" class="form-control" placeholder="example@university.ru" required>
+                            <label for="PasswordReg" id="ErrorEmail" style="display:none">Неверная электронная почта</label>
                         </div>
                         
                         <div class="form-group">
                             <label for="PasswordReg">Пароль</label>
                             <input type="password" id="PasswordReg" class="form-control" placeholder="Минимум 8 символов" required minlength="8">
+                            <label for="PasswordReg"  id="ErrorPassword" style="display:none">Неверный пароль</label>
                         </div>
 
                         <div class="form-group">
@@ -202,84 +203,26 @@
         </div>
     </div>
 
-    <script>
-        // Функции для переключения между вкладками
+    <script >
         function showTab(tabName) {
-            // Скрыть все формы
-            document.querySelectorAll('.form-content').forEach(form => {
-                form.classList.remove('active');
-            });
-            
-            // Убрать активный класс со всех кнопок
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.classList.remove('active');
-            });
-            
-            // Показать выбранную форму
-            document.getElementById(tabName + 'Form').classList.add('active');
-            
-            // Активировать выбранную кнопку
-            event.target.classList.add('active');
-        }
 
-        // Обработка успешной авторизации/регистрации
-        window.handleAuthSuccess = function(userData) {
-            // Редирект на дашборд после успешной авторизации
-            window.location.href = 'dashboard.html';
-        };
+    document.querySelectorAll('.form-content').forEach(form => {
+        form.classList.remove('active');
+    });
 
-        // Обработка ошибок авторизации/регистрации
-        window.handleAuthError = function(errorMessage) {
-            alert('Ошибка: ' + errorMessage);
-        };
 
-        // Инициализация кнопок
-        // Обработка авторизации
-        document.addEventListener('DOMContentLoaded', function() {
-            const loginButton = document.getElementById('LogBut');
-            const loginInput = document.getElementById('Login');
-            const passwordInput = document.getElementById('PasswordLog');
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+    });
 
-            if (loginButton && loginInput && passwordInput) {
-                loginButton.addEventListener('click', function() {
-                    const login = loginInput.value.trim();
-                    const password = passwordInput.value;
 
-                    if (!login || !password) {
-                        window.handleAuthError('Заполните все поля');
-                        return;
-                    }
+    document.getElementById(tabName + 'Form').classList.add('active');
 
-                    // Имитация запроса к серверу
-                    console.log('Авторизация:', { login, password });
-                    
-                    // В реальном приложении здесь будет fetch запрос
-                    setTimeout(() => {
-                        // Демо-логика для тестирования
-                        if ((login === 'ivanov' && password === 'professor123') || 
-                            (login === 'admin' && password === 'admin123')) {
-                            
-                            const userData = {
-                                login: login,
-                                role: login === 'admin' ? 'admin' : 'professor',
-                                name: login === 'admin' ? 'Администратор' : 'Проф. Иванов А.С.'
-                            };
-                            
-                            window.handleAuthSuccess(userData);
-                        } else {
-                            window.handleAuthError('Неверный логин или пароль');
-                        }
-                    }, 1000);
-                });
 
-                // Обработка нажатия Enter
-                passwordInput.addEventListener('keypress', function(event) {
-                    if (event.key === 'Enter') {
-                        loginButton.click();
-                    }
-                });
-            }
-        });
+    event.target.classList.add('active');
+}
+
     </script>
+
 </body>
 </html>
