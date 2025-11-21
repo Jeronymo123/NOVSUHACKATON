@@ -33,7 +33,7 @@ async function toTable() {
     }
     var Role;
     if (document.getElementById("Role").options[document.getElementById("Role").selectedIndex].value === "student") {
-        Role = document.getElementById("Group").textContent;
+        Role = document.getElementById("GrouP").value;
     }
     else {
         Role = document.getElementById("Subject").options[document.getElementById("Subject").selectedIndex].text;
