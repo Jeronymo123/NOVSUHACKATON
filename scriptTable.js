@@ -17,7 +17,7 @@ async function get_User() {
     }
 }
 async function LoadDoc() {
-    
+
     const user = await get_User();
     const divRole = document.getElementById("Role");
     if (user.Role !== "Студент") {
@@ -117,7 +117,7 @@ export async function AddTable(Subject, Group) {
                 for (let i = 0; i < countPerson; i++) {
                     PersonGrades.push(PersonData[i][element].Value);
                 }
-                LoadHeader(PersonData[0][element].Date);
+                LoadHeader(PersonData[0][element].Date, PersonData[0][element].Description);
                 LoadTypeWork(PersonData[0][element].TypeWork);
                 LoadGrade(PersonGrades);
 
@@ -173,7 +173,7 @@ async function AddColumn() {
     create_delete_Column();
     AddDate();
     AddTypeWork();
-
+    AddDesciption();
     const elements = document.querySelectorAll('.Row');
     elements.forEach(element => {
         const Cell = element.insertCell();
@@ -208,7 +208,51 @@ async function AddColumn() {
     indexColumn++;
 }
 
+function AddDesciption() {
+    const Description = document.getElementById("Description").insertCell();
 
+    Description.innerHTML = "Описание";
+
+    Description.id = "Description" + indexColumn;
+    Description.className = `Delete Column${indexColumn}`;
+
+    Description.style.color = "black";
+    Description.style.padding = "0px";
+    Description.style.backgroundColor = "white";
+
+    const Input = document.createElement("input");
+
+    Input.style.display = "none";
+    Input.style = "border: none;"
+    Input.style.width = "100%";
+    Input.style.height = "100%";
+
+    Description.addEventListener("click", function () {
+        if (document.getElementById("Editing").checked) {
+            Input.style.display = "flex";
+            Description.firstChild.textContent = "";
+            Input.focus();
+        }
+    });
+    Input.addEventListener("keypress", function (event) {
+        if (document.getElementById("Editing").checked) {
+            if (event.key === "Enter") {
+                Input.style.display = "none";
+                Description.firstChild.textContent = Input.value;
+                change_data_desciption(Description.id.slice(11), Input.value);
+            }
+        }
+    })
+    Input.addEventListener("blur", function () {
+        if (document.getElementById("Editing").checked) {
+
+            Input.style.display = "none";
+            Description.firstChild.textContent = Input.value;
+            change_data_desciption(Description.id.slice(11), Input.value);
+        }
+    })
+    Description.appendChild(Input);
+}
 function AddDate() {
     const DateKey = document.getElementById("Keyword").insertCell();
     let today = new Date();
@@ -337,13 +381,60 @@ function AddTypeWork() {
     change_data_TypeWork(TypeWork.id.slice(8), Work.options[Work.selectedIndex].text);
 }
 
-function LoadHeader(date, typework) {
+function LoadHeader(date, description) {
     create_data();
     create_delete_Column();
     LoadDate(date);
-
+    LoadDesciption(description);
 }
 
+function LoadDesciption(description) {
+    const Description = document.getElementById("Description").insertCell();
+
+    Description.innerHTML = description;
+
+    Description.id = "Description" + indexColumn;
+    Description.className = `Delete Column${indexColumn}`;
+
+    Description.style.color = "black";
+    Description.style.padding = "0px";
+    Description.style.backgroundColor = "white";
+
+    const Input = document.createElement("input");
+    
+    Input.style.display = "none";
+
+    Input.style = "border: none;"
+    Input.style.width = "100%";
+    Input.style.height = "100%";
+
+    Description.addEventListener("click", function () {
+        if (document.getElementById("Editing").checked) {
+            Input.style.display = "flex";
+            Input.value = Description.textContent;
+            Description.firstChild.textContent = "";
+            Input.focus();
+        }
+    });
+    Input.addEventListener("keypress", function (event) {
+        if (document.getElementById("Editing").checked) {
+            if (event.key === "Enter") {
+                Input.style.display = "none";
+                Description.firstChild.textContent = Input.value;
+                change_data_desciption(Description.id.slice(11), Input.value);
+            }
+        }
+    })
+    Input.addEventListener("blur", function () {
+        if (document.getElementById("Editing").checked) {
+
+            Input.style.display = "none";
+            Description.firstChild.textContent = Input.value;
+            change_data_desciption(Description.id.slice(11), Input.value);
+        }
+    })
+    Description.appendChild(Input);
+}
 function LoadDate(today) {
     const DateKey = document.getElementById("Keyword").insertCell();
     const normDate = today.slice(6) + "-" + today.slice(3, 5) + "-" + today.slice(0, 2)
@@ -582,7 +673,8 @@ function create_data() {
     data.push({
         Date: "DD.MM.YYYY",
         TypeWork: "typeWork",
-        Value: "+"
+        Value: "+",
+        Description: ""
     });
 
 }
@@ -598,7 +690,17 @@ function change_data_date(id, date) {
         PersonData[i][id].Date = date;
     }
 }
+function change_data_desciption(id, description) {
 
+    data[Number(id)].Description = description;
+    for (let i = 0; i < countPerson; i++) {
+        if (!PersonData[i][id]) {
+            PersonData[i][id] = data[id];
+        }
+
+        PersonData[i][id].Description = description;
+    }
+}
 function change_data_TypeWork(id, typework) {
     data[id].TypeWork = typework;
     for (let i = 0; i < countPerson; i++) {

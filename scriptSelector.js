@@ -42,7 +42,7 @@ async function fill_selector() {
         }
     }
     else {
-        document.getElementById("LabelSubject").textContent = "Группы";
+        document.getElementById("LabelSubject").textContent = user.Group;
         Classes = oldClasses.filter(item => item.slice(item.indexOf('\\') + 1, item.lastIndexOf('\\')) === user.Group);
         CountClasses = Classes.length;
         if (CountClasses !== 0) {
