@@ -16,8 +16,8 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         maxAge: 60 * 60 * 1000,
-        sameSite: 'lax', // или 'none' если фронтенд на другом домене
-        secure: false    // true только если https
+        sameSite: 'lax', 
+        secure: false    
     }
 }));
 

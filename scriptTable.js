@@ -54,11 +54,12 @@ async function send_to_Server() {
 
 export async function AddTable(Subject, Group) {
     LoadDoc()
+    const user = await get_User();
     PersonData = await parseJSONStudent(Subject, Group);
     countPerson = PersonData.length;
     subject = Subject;
     group = Group;
-    var Table = document.getElementById("Table");
+    const Table = document.getElementById("Table");
     for (let i = 0; i < countPerson; i++) {
 
         indexInput++;
@@ -66,12 +67,15 @@ export async function AddTable(Subject, Group) {
         const Row = Table.insertRow();
         Row.className = "Delete Row";
 
+        
         const Num = Row.insertCell();
         Num.innerHTML = i + 1;
 
         const Cell = Row.insertCell();
 
         Cell.innerHTML = PersonData[i].info.name;
+        
+        
         Cell.id = i;
         // const InputName = document.createElement("input");
 
@@ -107,7 +111,12 @@ export async function AddTable(Subject, Group) {
         //         }
         //     }
         // })
-
+        console.log(user.Surname + " "+user.Name+" "+user.Secondname);
+        if(user.Surname + " "+user.Name+" "+user.Secondname === PersonData[i].info.name){
+            Row.style.backgroundColor = "yellow";
+            Num.style.backgroundColor = "yellow";
+            console.log(user.Role);
+        }
     }
     if (PersonData.length > 0) {
         Object.keys(PersonData[0]).forEach(element => {
@@ -600,6 +609,7 @@ function LoadGrade(Grades) {
         });
         cCell++;
         Cell.appendChild(GradeInput);
+        
     });
 }
 
