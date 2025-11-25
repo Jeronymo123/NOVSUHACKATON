@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Расписание - UniAttend</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> -->
     <style>
         .schedule-container {
             max-width: 1200px;
@@ -375,12 +375,12 @@ async function getDemoScheduleData() {
                     {
                         day: 'Суббота',
                         date: '2024-12-21',
-                        lessons: [] // Нет занятий в субботу
+                        lessons: [] 
                     },
                     {
                         day: 'Воскресенье', 
                         date: '2024-12-22',
-                        lessons: [] // Нет занятий в воскресенье
+                        lessons: [] 
                     }
                 ]
             });
@@ -388,7 +388,6 @@ async function getDemoScheduleData() {
     });
 }
 
-        // Рендеринг расписания
         function renderSchedule(data) {
             const scheduleTable = document.getElementById('scheduleTable');
             
@@ -442,7 +441,6 @@ async function getDemoScheduleData() {
             scheduleTable.innerHTML = scheduleHTML;
         }
 
-        // Функция для начала отметки посещаемости
         function startAttendance(time, subject) {
             alert(`Запуск отметки посещаемости для:\n${subject}\n${time}\n\nQR-код будет сгенерирован для студентов.`);
         }

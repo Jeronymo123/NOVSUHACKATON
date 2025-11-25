@@ -360,40 +360,71 @@ footer {
     font-weight: 500;
 }
 
-
-#Subject{
-    padding: 10px 15px;
-    border: 2px solid #e2e8f0;
-    border-radius: 6px;
-    font-size: 14px;
+#Subject {
+    padding: 12px 16px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
     background: white;
-    min-width: 150px;
-    transition: border-color 0.3s;
+    min-width: 200px;
+    transition: all 0.3s;
+    appearance: none;
+    background-image: none;
+    cursor: pointer;
 }
 
 #Subject:focus {
     outline: none;
-    border-color: #2563eb;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Обертка для красивого селектора */
+.select-container {
+    position: relative;
+    display: inline-block;
+}
+
+.select-container::after {
+    content: "▼";
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+    pointer-events: none;
+    font-size: 0.8rem;
 }
 
 /* Таблица */
 #Table {
-    width: 100%;
+    width: auto; /* Меняем с 100% на auto */
+    min-width: 100%; /* Но не меньше контейнера */
     border-collapse: collapse;
     background: white;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    table-layout: fixed;
+    margin-bottom: 0;
 }
+
 
 /* Заголовок таблицы */
 #Table thead {
+    display: table;
+    width: 100%;
     background: #1e293b;
     color: white;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    overflow: hidden;
 }
 
 #Table thead tr {
-    border-bottom: 2px solid #334155;
+    display: table-row;
+    width: 100%;
 }
 
 #Table thead td {
@@ -403,17 +434,108 @@ footer {
     font-size: 14px;
     border-right: 1px solid #334155;
     position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 120px; /* Увеличиваем минимальную ширину */
+    width: 120px; /* Фиксированная ширина */
 }
 
 #Table thead td:last-child {
     border-right: none;
 }
 
+#Table thead td:first-child {
+    position: sticky;
+    left: 0;
+    background: #1e293b;
+    color: white;
+    z-index: 90;
+    min-width: 60px;
+    width: 60px;
+    border-right: 2px solid #334155;
+}
+
+#Table thead td:nth-child(2) {
+    position: sticky;
+    left: 60px;
+    background: #1e293b;
+    color: white;
+    z-index: 95; /* Увеличиваем z-index */
+    min-width: 200px;
+    width: 200px;
+    border-right: 2px solid #334155;
+}
+
+#Table thead td:first-child,
+#Table tbody td:first-child {
+    position: sticky;
+    left: 0;
+    background: #1e293b;
+    color: white;
+    z-index: 50;
+    min-width: 60px;
+    width: 60px;
+}
+
+#Table thead td:nth-child(2),
+#Table tbody td:nth-child(2) {
+    position: sticky;
+    left: 60px; /* Ширина первого столбца */
+    background: #1e293b;
+    color: white;
+    z-index: 50;
+    min-width: 200px;
+    width: 200px;
+}
+
+#Table tbody::-webkit-scrollbar {
+    width: 8px;
+}
+
+#Table tbody::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+#Table tbody::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+#Table tbody::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+#DeleteColumn {
+    display: table-row;
+}
 
 #DeleteColumn td {
     background: #dc2626;
     padding: 5px !important;
     text-align: center !important;
+    color: white;
+    font-weight: 600;
+}
+
+#DeleteColumn td:first-child {
+    left: 0;
+    min-width: 60px;
+    width: 60px;
+}
+
+#DeleteColumn td:nth-child(2) {
+    left: 60px;
+    min-width: 200px;
+    width: 200px;
+}
+
+#DeleteColumn td:first-child,
+#DeleteColumn td:nth-child(2) {
+    background: #dc2626;
+    color: white;
+    position: sticky;
+    z-index: 95;
 }
 
 #DeleteColumn button {
@@ -424,15 +546,26 @@ footer {
     border-radius: 4px;
     border: none;
     cursor: pointer;
+    font-weight: 600;
 }
 
 #DeleteColumn button:hover {
     background: white;
-    transform: none;
 }
 
+#Table tbody {
+    display: block;
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+    table-layout: fixed;
+}
 
 #Table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
     border-bottom: 1px solid #e2e8f0;
     transition: background-color 0.3s;
 }
@@ -447,11 +580,48 @@ footer {
     border-right: 1px solid #e2e8f0;
     font-size: 14px;
     position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: table-cell;
+    min-width: 120px; /* Увеличиваем минимальную ширину */
+    width: 120px; /* Фиксированная ширина */
 }
 
 #Table tbody td:first-child {
+    position: sticky;
+    left: 0;
+    background: white;
+    z-index: 80;
+    min-width: 60px;
+    width: 60px;
     font-weight: 600;
-    background: #f1f5f9;
+    border-right: 2px solid #e2e8f0;
+    color: var(--text); /* Добавляем цвет текста */
+}
+
+#Table tbody td:nth-child(2) {
+    position: sticky;
+    left: 60px;
+    background: white;
+    z-index: 85; /* Увеличиваем z-index */
+    min-width: 200px;
+    width: 200px;
+    text-align: left;
+    border-right: 2px solid #e2e8f0;
+    color: var(--text);
+}
+
+#Table tbody tr:hover td:first-child {
+    background: #f8fafc;
+}
+
+#Table tbody tr:hover td:nth-child(2) {
+    background: #f8fafc;
+}
+
+#Table tbody tr:hover td:not(:first-child):not(:nth-child(2)) {
+    background: #f8fafc;
 }
 
 #Table tbody td:last-child {
@@ -461,11 +631,24 @@ footer {
 #Table tbody td:not(:first-child):not(:nth-child(2)) {
     cursor: pointer;
     transition: all 0.3s;
-    min-width: 60px;
+    min-width: 120px; /* Увеличиваем фиксированную минимальную ширину */
+    width: 120px; /* Фиксированная ширина */
 }
 
 #Table tbody td:not(:first-child):not(:nth-child(2)):hover {
     background: #e0f2fe;
+}
+
+#Table thead,
+#Table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+#Table thead td,
+#Table tbody td {
+    box-sizing: border-box;
 }
 
 /* Символы посещаемости */
@@ -486,7 +669,6 @@ footer {
     color: #991b1b;
     font-weight: 600;
 }
-
 
 .RowInput, .InputDate, #Work {
     width: 100%;
@@ -648,11 +830,13 @@ footer {
 .lab-cell { background: #fdf4ff; }
 .exam-cell { background: #fef2f2; }
 
-
 .table-container {
     overflow-x: auto;
     border-radius: 10px;
     margin-top: 10px;
+    max-height: 70vh;
+    position: relative;
+    overflow-y: auto; /* Добавляем вертикальный скролл для всего контейнера */
 }
 
 
@@ -676,20 +860,38 @@ button:disabled {
 
 
 .table-container::-webkit-scrollbar {
-    height: 8px;
+    height: 12px;
 }
 
 .table-container::-webkit-scrollbar-track {
     background: #f1f5f9;
-    border-radius: 4px;
+    border-radius: 6px;
 }
 
 .table-container::-webkit-scrollbar-thumb {
     background: #cbd5e1;
-    border-radius: 4px;
+    border-radius: 6px;
+    border: 2px solid #f1f5f9;
 }
 
 .table-container::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+#Table tbody::-webkit-scrollbar {
+    width: 8px;
+}
+
+#Table tbody::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+#Table tbody::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+#Table tbody::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
 }
 
@@ -697,6 +899,23 @@ button:disabled {
 .form-group {
     margin-bottom: 1.5rem;
     text-align: left;
+}
+
+/* Стилизация селектора */
+/* Стили для горизонтального селектора */
+.form-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+    flex: 1;
+    min-width: 200px;
 }
 
 .form-group label {
@@ -718,7 +937,9 @@ button:disabled {
 .form-control:focus {
     outline: none;
     border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
+
 .form-select {
     width: 100%;
     padding: 1rem;
@@ -727,4 +948,125 @@ button:disabled {
     font-size: 1rem;
     background: white;
     cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Горизонтальная группа форм */
+.horizontal-form {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--surface);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.horizontal-form .form-group {
+    margin-bottom: 0;
+    flex: 1;
+}
+
+.horizontal-form .btn {
+    margin-bottom: 0;
+    white-space: nowrap;
+}
+
+/* Дополнительные стили для улучшения внешнего вида */
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper::after {
+    content: "▼";
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+    pointer-events: none;
+    font-size: 0.8rem;
+}
+
+.form-select {
+    appearance: none;
+    background-image: none;
+    padding-right: 2.5rem;
+}
+
+.horizontal-subject-selector {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.horizontal-subject-selector h2 {
+    color: var(--surface);
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.horizontal-subjects {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 1rem 0;
+}
+
+.horizontal-subject-card {
+    background: var(--surface);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 180px;
+    text-align: center;
+    border: 2px solid transparent;
+}
+
+.horizontal-subject-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.horizontal-subject-card.active {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, var(--surface), #f0f7ff);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.2);
+}
+
+.horizontal-subject-icon {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.horizontal-subject-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+}
+
+.horizontal-subject-group {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.no-subjects {
+    background: var(--surface);
+    padding: 2rem;
+    border-radius: 12px;
+    color: var(--text-light);
+    font-size: 1.1rem;
+    text-align: center;
 }

@@ -12,55 +12,101 @@ async function get_User() {
     }
 }
 
-async function fill_selector() {
-    const oldClasses = await fLoadClasses();
-    var Classes;
-    var CountClasses = 0;
-    const Group = document.getElementById("Subject");
-
-    const user = await get_User();
-    if (user.Role === "Студент") {
-        Classes = oldClasses.filter(item => item.slice(item.lastIndexOf('\\') + 1).replace(/.json/, '') === user.Group);
-        CountClasses = Classes.length;
-
-        document.getElementById("LabelSubject").textContent = "Предмет";
-        if (CountClasses !== 0) {
-            for (let i = 0; i < CountClasses; i++) {
-                const OptionSelect = document.createElement("option");
-
-                OptionSelect.text = Classes[i].slice(Classes[i].indexOf('\\') + 1, Classes[i].lastIndexOf('\\'));
-                OptionSelect.value = Classes[i];
-
-                Group.add(OptionSelect);
-            }
-            Group.addEventListener("change", function () {
-                DeleteTable();
-                AddTable(Group.value.slice(Group.value.indexOf('\\') + 1, Group.value.lastIndexOf('\\')), Group.value.slice(Group.value.lastIndexOf('\\')));
-            });
-            Group.selectionIndex = 0;
-            AddTable(Classes[0].slice(Classes[0].indexOf('\\') + 1, Classes[0].lastIndexOf('\\')), Classes[0].slice(Classes[0].lastIndexOf('\\')));
+function getSubjectIcon(subjectName) {
+    const icons = {
+        'математика': 'calculator',
+        'физика': 'atom',
+        'химия': 'flask',
+        'информатика': 'laptop-code',
+        'программирование': 'code',
+        'история': 'monument',
+        'литература': 'book',
+        'биология': 'dna',
+        'английский': 'language',
+        'русский': 'language',
+        'обществознание': 'globe',
+        'география': 'globe-americas',
+        'экономика': 'chart-line',
+        'философия': 'brain',
+        'физическая культура': 'running',
+        'физкультура': 'running'
+    };
+    
+    const lowerName = subjectName.toLowerCase();
+    for (const [key, icon] of Object.entries(icons)) {
+        if (lowerName.includes(key)) {
+            return icon;
         }
     }
-    else {
-        document.getElementById("LabelSubject").textContent = user.Group;
-        Classes = oldClasses.filter(item => item.slice(item.indexOf('\\') + 1, item.lastIndexOf('\\')) === user.Group);
-        CountClasses = Classes.length;
-        if (CountClasses !== 0) {
-            for (let i = 0; i < CountClasses; i++) {
-                const OptionSelect = document.createElement("option");
+    
+    return 'book';
+}
 
-                OptionSelect.text = Classes[i].slice(Classes[i].lastIndexOf('\\')+1).replace(/.json/,'');
-                OptionSelect.value = Classes[i];
+function getSubjectNameFromPath(filePath) {
+    return filePath.slice(filePath.indexOf('\\') + 1, filePath.lastIndexOf('\\'));
+}
 
-                Group.add(OptionSelect);
-            }
-            Group.addEventListener("change", function () {
-                DeleteTable();
-                AddTable(Group.value.slice(Group.value.indexOf('\\') + 1, Group.value.lastIndexOf('\\')), Group.value.slice(Group.value.lastIndexOf('\\')));
-            });
-            Group.selectionIndex = 0;
-            AddTable(Classes[0].slice(Classes[0].indexOf('\\') + 1, Classes[0].lastIndexOf('\\')), Classes[0].slice(Classes[0].lastIndexOf('\\')));
+function getGroupNameFromPath(filePath) {
+    return filePath.slice(filePath.lastIndexOf('\\') + 1).replace(/.json/, '');
+}
+
+async function fill_selector() {
+    try {
+        const oldClasses = await fLoadClasses();
+        const user = await get_User();
+
+        let Classes = [];
+
+        if (user.Role === "Студент") {
+            Classes = oldClasses.filter(item => getGroupNameFromPath(item) === user.Group);
+        } else {
+            Classes = oldClasses.filter(item => getSubjectNameFromPath(item) === user.Group);
         }
+
+        const container = document.getElementById('subjectHorizontal');
+        
+        if (Classes.length === 0) {
+            container.innerHTML = '<div class="no-subjects">Нет доступных предметов</div>';
+            return;
+        }
+
+        container.innerHTML = '';
+        
+        Classes.forEach((classItem, index) => {
+            const subjectName = getSubjectNameFromPath(classItem);
+            const groupName = getGroupNameFromPath(classItem);
+
+            const card = document.createElement('div');
+            card.className = 'horizontal-subject-card';
+            card.innerHTML = `
+                <div class="horizontal-subject-icon">
+                    <i class="fas fa-${getSubjectIcon(subjectName)}"></i>
+                </div>
+                <div class="horizontal-subject-name">${subjectName}</div>
+                <div class="horizontal-subject-group">Группа: ${groupName}</div>
+            `;
+            
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.horizontal-subject-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                DeleteTable();
+                AddTable(subjectName, "\\" + groupName + ".json");
+            });
+            
+            if (index === 0) {
+                card.classList.add('active');
+                DeleteTable();
+                AddTable(subjectName, "\\" + groupName + ".json");
+            }
+            
+            container.appendChild(card);
+        });
+
+    } catch (error) {
+        document.getElementById('subjectHorizontal').innerHTML = '<div class="no-subjects">Ошибка загрузки данных</div>';
     }
 }
-fill_selector();
+
+document.addEventListener('DOMContentLoaded', function() {
+    fill_selector();
+});

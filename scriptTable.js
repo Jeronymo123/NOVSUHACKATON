@@ -70,13 +70,12 @@ export async function AddTable(Subject, Group) {
         
         const Num = Row.insertCell();
         Num.innerHTML = i + 1;
+        Num.className = "fixed-first";
 
         const Cell = Row.insertCell();
-
         Cell.innerHTML = PersonData[i].info.name;
-        
-        
         Cell.id = i;
+        Cell.className = "fixed-second";
         // const InputName = document.createElement("input");
 
         // InputName.className = "RowInput";
@@ -444,6 +443,7 @@ function LoadDesciption(description) {
     })
     Description.appendChild(Input);
 }
+
 function LoadDate(today) {
     const DateKey = document.getElementById("Keyword").insertCell();
     const normDate = today.slice(6) + "-" + today.slice(3, 5) + "-" + today.slice(0, 2)
@@ -738,6 +738,7 @@ function change_data_Value(id, ind, grade) {
     PersonData[id][Number(ind)].Value = grade;
 
 }
+
 
 // function change_data_Name(ind, Name) {
 //     PersonData[ind].info.name = Name;

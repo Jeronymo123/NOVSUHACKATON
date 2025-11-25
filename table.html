@@ -29,14 +29,14 @@
     </header>
 
     <main style="margin-top: 100px; padding: 2rem;">
-        
         <div class="container">
-            <div class="controls" style="justify-content: center; display: flex;">
-                <label id="LabelSubject" style="font-weight:bold; font-size: 16px; text-transform: uppercase">Предмет</label>
-                <select id="Subject">
-            </select>
-            
+            <div class="horizontal-subject-selector">
+                <h2>Выберите предмет</h2>
+                <div class="horizontal-subjects" id="subjectHorizontal">
+                    <!-- Карточки будут генерироваться через JavaScript -->
+                </div>
             </div>
+
             <div class="controls" id="Role" style="display: none">
                 <button id="AddColumn">Добавить колонку</button>
                 
@@ -68,26 +68,25 @@
             <div class="table-container">
                 <table id="Table">
                     <thead>
-                        
-                        <tr id="Keyword">
+                        <tr id="Keyword">     <!-- Заголовки колонок -->
                             <td>№</td>
                             <td>ФИО</td>
                         </tr>
-                        <tr id="Description">
-                            <td></td>
-                            <td></td>
-                        <tr id="DeleteColumn" style="display: none">
-                            <td> </td>
-                            <td> </td>
-                        </tr>
-                        <tr id="TypeWork">
+                        <tr id="Description"> <!-- Описания -->
                             <td></td>
                             <td></td>
                         </tr>
-                        
+                        <tr id="DeleteColumn" style="display: none"> <!-- Кнопки удаления -->
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+                        <tr id="TypeWork">    <!-- Типы работ -->
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </thead>
                     <tbody>
-                        <tr id="Body"></tr>
+                        <tr id="Body"></tr>   <!-- Сюда добавляются студенты -->
                     </tbody>
                 </table>
             </div>
