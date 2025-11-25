@@ -1,5 +1,5 @@
 document.getElementById("LogBut").onclick = toTable;
-
+document.getElementById("LogBut").focus();
 async function toTable() {
     const response = await fetch(`/authorization`, {
         method: "POST",

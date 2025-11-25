@@ -32,19 +32,17 @@ async function toTable() {
         bool = false;
     }
     var Role;
-    if (document.getElementById("Role").options[document.getElementById("Role").selectedIndex].value === "student") {
-        Role = document.getElementById("GrouP").value;
+    if (document.getElementById("Role").options[document.getElementById("Role").selectedIndex].value !== "professor") {
+        Group = document.getElementById("GrouP").options[document.getElementById("GrouP").selectedIndex].text;
     }
-    else {
-        Role = document.getElementById("Subject").options[document.getElementById("Subject").selectedIndex].text;
-    }
+
     if (!bool) {
-        return;
+        return; 
     }
     if (document.getElementById("Doc").checked) {
         const data = {
             Role: document.getElementById("Role").options[document.getElementById("Role").selectedIndex].textContent,
-            Group: Role,
+            Group: Group,
             Login: document.getElementById("LogReg").value,
             Email: document.getElementById("Email").value,
             Password: document.getElementById("PasswordReg").value,
@@ -69,41 +67,28 @@ async function toTable() {
         }
     }
     else {
-        document.getElementById("Check").style.color="red";
-        document.getElementById("Check").style.fontWeight="bold";
+        document.getElementById("Check").style.color = "red";
+        document.getElementById("Check").style.fontWeight = "bold";
     }
 
 
 }
 async function load() {
-    const Role = document.getElementById("Role");
-
-    const response = await fetch("/loadclasses");
-    var res = await response.json();
-    var newres = [];
-    res.forEach(element => {
-        newres.push(element.slice(element.indexOf('\\') + 1, element.lastIndexOf('\\')));
-    });
-    res = newres.filter(function (item, pos) {
-        return newres.indexOf(item) == pos;
-    });
-    res.forEach(element => {
+    const groups = await fetch("/getgroups");
+    const res_groups = await groups.json();
+    res_groups.forEach(element => {
         const Option = document.createElement("option");
         Option.value = element;
         Option.text = element;
-        document.getElementById("Subject").add(Option);
+        document.getElementById("GrouP").add(Option);
     });
     Role.addEventListener("change", function () {
-        if (Role.options[Role.selectedIndex].value === "student") {
-            document.getElementById("Group").style.display = "";
-            document.getElementById("SubjecT").style.display = "none";
-            document.getElementById("Subject").style.display = "none";
+        if (Role.options[Role.selectedIndex].value === "professor") {
+            document.getElementById("Group").style.display = "none";
 
         }
         else {
-            document.getElementById("Group").style.display = "none";
-            document.getElementById("Subject").style.display = "";
-            document.getElementById("SubjecT").style.display = "";
+            document.getElementById("Group").style.display = "";
         }
     });
 }
