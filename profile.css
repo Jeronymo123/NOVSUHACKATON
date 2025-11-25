@@ -28,6 +28,7 @@
     color: white;
     font-size: 3rem;
     flex-shrink: 0;
+    animation: fadeInUp 0.8s ease-out;
 }
 
 .profile-info {
@@ -90,7 +91,12 @@
     padding: 2rem;
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     margin-bottom: 2rem;
+    animation: fadeInUp 0.8s ease-out;
 }
+
+.profile-section:nth-child(1) { animation-delay: 0.1s; }
+.profile-section:nth-child(2) { animation-delay: 0.2s; }
+.profile-section:nth-child(3) { animation-delay: 0.3s; }
 
 .profile-section h2 {
     color: var(--text);
@@ -170,36 +176,27 @@
     font-size: 1.2rem;
 }
 
-.form-group {
-    margin-bottom: 1.5rem;
-    text-align: left;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: var(--text);
-}
-
-.form-control {
-    width: 100%;
-    padding: 1rem;
-    border: 2px solid var(--border);
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.3s;
-}
-
-.form-control:focus {
-    outline: none;
-    border-color: var(--primary);
-}
-
 .btn-group {
     display: flex;
     gap: 1rem;
     margin-top: 2rem;
+}
+
+/* Стили для формы редактирования */
+.edit-form {
+    display: none;
+}
+
+.edit-form.active {
+    display: block;
+}
+
+.view-mode {
+    display: block;
+}
+
+.view-mode.hidden {
+    display: none;
 }
 
 @media (max-width: 768px) {
@@ -241,34 +238,4 @@
     .profile-section {
         padding: 1.5rem;
     }
-}
-
-/* Анимации для профиля */
-.profile-avatar {
-    animation: fadeInUp 0.8s ease-out;
-}
-
-.profile-section {
-    animation: fadeInUp 0.8s ease-out;
-}
-
-.profile-section:nth-child(1) { animation-delay: 0.1s; }
-.profile-section:nth-child(2) { animation-delay: 0.2s; }
-.profile-section:nth-child(3) { animation-delay: 0.3s; }
-
-/* Стили для формы редактирования */
-.edit-form {
-    display: none;
-}
-
-.edit-form.active {
-    display: block;
-}
-
-.view-mode {
-    display: block;
-}
-
-.view-mode.hidden {
-    display: none;
 }
