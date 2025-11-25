@@ -1,0 +1,106 @@
+{
+  "academicYear": "2024-2025",
+  "semester": "autumn",
+  "lastUpdated": "2024-12-20T10:00:00Z",
+  "weeks": {
+    "upper": {
+      "weekNumber": 1,
+      "description": "Верхняя неделя",
+      "days": {
+        "monday": [
+          {
+            "id": "upper_mon_1",
+            "time": "09:00-10:30",
+            "subject": "Веб-разработка",
+            "type": "Лекция",
+            "groups": ["ПИ-201", "ПИ-202"],
+            "classroom": "А-101",
+            "teacher": "Иванов А.С.",
+            "teacherId": "teacher1"
+          },
+          {
+            "id": "upper_mon_2",
+            "time": "11:00-12:30",
+            "subject": "Алгоритмы и структуры данных",
+            "type": "Практика",
+            "groups": ["ПИ-201"],
+            "classroom": "Б-205",
+            "teacher": "Петрова М.В.",
+            "teacherId": "teacher2"
+          }
+        ],
+        "tuesday": [
+          {
+            "id": "upper_tue_1",
+            "time": "13:00-14:30",
+            "subject": "Базы данных",
+            "type": "Лабораторная",
+            "groups": ["ПИ-201"],
+            "classroom": "К-301",
+            "teacher": "Кузнецова Е.Л.",
+            "teacherId": "teacher3"
+          }
+        ],
+        "wednesday": [
+          {
+            "id": "upper_wed_1",
+            "time": "10:00-11:30",
+            "subject": "Математический анализ",
+            "type": "Лекция",
+            "groups": ["ПИ-201"],
+            "classroom": "А-102",
+            "teacher": "Сидоров П.И.",
+            "teacherId": "teacher4"
+          }
+        ],
+        "thursday": [],
+        "friday": [],
+        "saturday": [],
+        "sunday": []
+      }
+    },
+    "lower": {
+      "weekNumber": 2,
+      "description": "Нижняя неделя",
+      "days": {
+        "monday": [
+          {
+            "id": "lower_mon_1",
+            "time": "09:00-10:30",
+            "subject": "Математический анализ",
+            "type": "Лекция",
+            "groups": ["ПИ-201", "ПИ-202"],
+            "classroom": "А-102",
+            "teacher": "Сидоров П.И.",
+            "teacherId": "teacher4"
+          }
+        ],
+        "tuesday": [],
+        "wednesday": [],
+        "thursday": [],
+        "friday": [],
+        "saturday": [],
+        "sunday": []
+      }
+    }
+  },
+  "modifications": {
+    "2024-12-25": {
+      "date": "2024-12-25",
+      "description": "Изменения на 25 декабря",
+      "changes": [
+        {
+          "action": "remove",
+          "lessonId": "upper_mon_1",
+          "reason": "Выходной день"
+        }
+      ]
+    }
+  },
+  "holidays": [
+    "2024-12-31",
+    "2025-01-01",
+    "2025-01-02",
+    "2025-01-07"
+  ]
+}
