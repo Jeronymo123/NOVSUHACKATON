@@ -810,4 +810,3 @@ function change_data_Value(id, ind, grade) {
 // function change_data_Name(ind, Name) {
 //     PersonData[ind].info.name = Name;
 // }
-

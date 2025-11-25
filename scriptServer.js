@@ -4,26 +4,47 @@ const path = require('path');
 const cors = require('cors');
 const bcrypt = require("bcrypt");
 const session = require("express-session");
+const FileStore = require('session-file-store')(session);
 
 const app = express();
 const port = 3000;
 
 const main_directory = "data/";
+const session_dir = path.join(__dirname, "session");
+fs.mkdirSync(session_dir, { recursive: true });
+
+const fileStoreOptions = {
+    path: session_dir,
+    retries: 2,
+    fileExtension: ".json",
+    ttl: 3600,
+    reapInterval: 3600,
+    retryOnInitFail: false
+};
+
+const fileStore = new FileStore(fileStoreOptions);
+
+// Add error handling to the store
+fileStore.on('disconnect', () => console.log('Session store disconnected'));
+fileStore.on('connect', () => console.log('Session store connected'));
+fileStore.on('error', (error) => console.error('Session store error:', error));
 
 app.use(session({
     secret: 'secret-key',
     resave: false,
     saveUninitialized: false,
+    store: fileStore,
     cookie: {
         maxAge: 60 * 60 * 1000,
-        sameSite: 'lax', 
-        secure: false    
+        sameSite: 'lax',
+        secure: false
     }
 }));
 
 app.use(express.json());
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.header("Access-Control-Allow-Credentials", "true");
     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
     next();
@@ -65,6 +86,7 @@ app.post('/savestudent', (req, res) => {
     }
 });
 
+
 app.get('/loadstudent', (req, res) => {
     try {
         const file = path.join(main_directory + req.query.subject, req.query.group);
@@ -86,7 +108,7 @@ function getAllFiles(dir, result = []) {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
     for (const entry of entries) {
         const fullPath = path.join(dir, entry.name);
-        if (entry.isDirectory()) {
+        if (entry.isDirectory() && fullPath.indexOf("sessions") === -1) {
             getAllFiles(fullPath, result);
         } else {
             result.push(fullPath);
@@ -102,6 +124,7 @@ app.get('/loadclasses', (req, res) => {
         const file = path.join(main_directory, "Classes.json");
 
         const folders = getAllFiles(main_directory);
+        folders.shift();
         folders.shift();
         folders.shift();
         fs.writeFileSync(file, JSON.stringify(folders, null, 2), 'utf8');
@@ -120,9 +143,31 @@ app.get('/loadclasses', (req, res) => {
 
 });
 
+app.get('/getgroups', (req, res) => {
+    try {
+        fs.mkdirSync(main_directory, { recursive: true });
+        const folders = getAllFiles(main_directory);
+        folders.shift();
+        folders.shift();
+        folders.shift();
+        const new_folders = folders.map(item => item.slice(item.lastIndexOf('\\') + 1).replace(/.json/, ''));
+        const groups = new_folders.filter(function (item, pos) {
+            return new_folders.indexOf(item) == pos;
+        });
+        if (folders) {
+            res.send(groups);
+        }
+        else {
+            return;
+        }
+    }
+    catch {
+        console.error("Invalid getclass!!!");
+        res.status(400).json({ status: "error", message: err.message });
+    }
+})
+
 app.post('/registration', async (req, res) => {
-
-
     try {
         fs.mkdirSync(main_directory, { recursive: true });
         const file = path.join(main_directory, "User.json");
@@ -171,7 +216,7 @@ app.post('/registration', async (req, res) => {
     }
 });
 
-app.post('/authorization', async (req, res) => {
+app.post(`/authorization`, async (req, res) => {
     try {
         const dir = path.join(main_directory, "User.json");
         const file = fs.readFileSync(dir, 'utf8');
@@ -184,7 +229,6 @@ app.post('/authorization', async (req, res) => {
         }
         const valid = await bcrypt.compare(req.body.Password, users[indexLogin].Password);
         if (valid) {
-
             const user = users[indexLogin];
             req.session.user = {
                 Login: user.Login,
@@ -217,8 +261,35 @@ app.post('/authorization', async (req, res) => {
 })
 
 app.get('/profile', (req, res) => {
-    if (!req.session.user) return res.status(401).json({ status: 'not_logged_in' });
+    if (!req.session.user) return res.status(400).json({ status: 'not_logged_in' });
     res.json({ status: 'ok', user: req.session.user });
+});
+
+app.post('/sendgroup', (req, res) => {
+    try {
+        const dir = path.join(main_directory, "User.json");
+        const file = fs.readFileSync(dir, 'utf8');
+        const users = JSON.parse(file);
+        const indexLogin = users.findIndex(user => user.Login === req.session.user.Login);
+        if (indexLogin !== -1) {
+            console.log(req.body);
+            users[indexLogin].Group = req.body;
+            fs.writeFileSync(dir, JSON.stringify(users, null, 2), 'utf-8');
+            req.session.user.Group=req.body;
+            req.session.save(err => {
+                if (err) {
+                    return res.status(500).json({ status: "error" });
+                }
+                res.json({ status: "sendgroup" });
+            });;
+        } else {
+            res.status(404).json({ status: "user_not_found" });
+        }
+    }
+    catch (err) {
+        console.error("Error send group!!!");
+        res.status(400).json({ status: 'not_send_group' });
+    }
 });
 
 app.post('/logout', (req, res) => {

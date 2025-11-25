@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,7 +27,7 @@
             background: white;
             padding: 3rem;
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 500px;
         }
@@ -76,6 +77,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="auth-container">
         <div class="auth-forms">
@@ -93,7 +95,7 @@
                 <!-- Форма входа -->
                 <div id="loginForm" class="form-content active">
                     <h2 style="text-align: center; margin-bottom: 2rem; color: #1e293b;">Вход в систему</h2>
-                    
+
                     <div class="Login">
                         <div class="form-group">
                             <label for="Login">Логин</label>
@@ -103,13 +105,16 @@
 
                         <div class="form-group">
                             <label for="PasswordLog">Пароль</label>
-                            <input type="password" id="PasswordLog" class="form-control" placeholder="Введите ваш пароль" required>
+                            <input type="password" id="PasswordLog" class="form-control"
+                                placeholder="Введите ваш пароль" required>
                             <label for="PasswrodLog" id="ErrorPass" style="display:none">Неверный пароль</label>
                         </div>
 
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; font-size: 0.9rem;">
-                            <a href="#" style="color: #2563eb; text-decoration: none; font-weight: 500;">Забыли пароль?</a>
-                            
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; font-size: 0.9rem;">
+                            <a href="#" style="color: #2563eb; text-decoration: none; font-weight: 500;">Забыли
+                                пароль?</a>
+
                         </div>
 
                         <button id="LogBut" class="btn btn-primary" style="width: 100%; margin-bottom: 1.5rem;">
@@ -122,7 +127,7 @@
 
                 <div id="registrationForm" class="form-content">
                     <h2 style="text-align: center; margin-bottom: 2rem; color: #1e293b;">Создать аккаунт</h2>
-                    
+
                     <div class="Registartion">
                         <div class="form-group">
                             <label for="LogReg">Логин</label>
@@ -136,7 +141,7 @@
                                 <input type="text" id="Surname" class="form-control" placeholder="Иванов" required>
                                 <label for="Surname" id="ErrorSurname" style="display:none">Неверная фамилия</label>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="Name">Имя</label>
                                 <input type="text" id="Name" class="form-control" placeholder="Иван" required>
@@ -149,44 +154,46 @@
                             <input type="text" id="Secondname" class="form-control" placeholder="Иванович">
                             <label for="Secondname" id="ErrorSecondName" style="display:none">Неверное отчество</label>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="Email">Email</label>
-                            <input type="email" id="Email" class="form-control" placeholder="example@university.ru" required>
+                            <input type="email" id="Email" class="form-control" placeholder="example@university.ru"
+                                required>
                             <label for="Email" id="ErrorEmail" style="display:none">Неверная электронная почта</label>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="PasswordReg">Пароль</label>
-                            <input type="password" id="PasswordReg" class="form-control" placeholder="Минимум 8 символов" required minlength="8">
-                            <label for="PasswordReg"  id="ErrorPassword" style="display:none">Неверный пароль</label>
-                        </div>
-
-                        <div class="form-group" id="Group" style="display: none;">
-                            <label for="Group" >Группа</label>
-                            <input type="text" id="GrouP" class="form-control" placeholder="5092">
-                        </div>
-                        <div class="form-group">
-                            <label id="SubjecT">Предмет</label>
-                            <select id="Subject" class="form-select" required>
-                            </select>
+                            <input type="password" id="PasswordReg" class="form-control"
+                                placeholder="Минимум 8 символов" required minlength="8">
+                            <label for="PasswordReg" id="ErrorPassword" style="display:none">Неверный пароль</label>
                         </div>
                         <div class="form-group">
                             <label for="Role">Роль</label>
                             <select id="Role" class="form-select" required>
-                                <option value="professor">Преподаватель</option>
                                 <option value="student">Студент</option>
+                                <option value="headman">Староста</option>
+                                <option value="professor">Преподаватель</option>
                                 <!-- <option value="admin">Администратор</option> -->
                             </select>
                         </div>
-                        
+                        <div class="form-group" id="Group">
+                            <label id="Group">Группа</label>
+                            <select id="GrouP" class="form-select" required>
+                            </select>
+                        </div>
+
+
                         <div style="margin-bottom: 2rem;">
-                            <label id="Check" style="display: flex; align-items: center; gap: 0.5rem; color: #64748b; cursor: pointer; font-size: 0.9rem;">
-                                <input type="checkbox" id="Doc" required style="width: 16px; height: 16px; accent-color: #2563eb;">
-                                Я согласен с <a href="#" style="color: #2563eb; text-decoration: none;">условиями использования</a>
+                            <label id="Check"
+                                style="display: flex; align-items: center; gap: 0.5rem; color: #64748b; cursor: pointer; font-size: 0.9rem;">
+                                <input type="checkbox" id="Doc" required
+                                    style="width: 16px; height: 16px; accent-color: #2563eb;">
+                                Я согласен с <a href="#" style="color: #2563eb; text-decoration: none;">условиями
+                                    использования</a>
                             </label>
                         </div>
-                        
+
                         <button id="RegBut" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">
                             <i class="fas fa-user-plus"></i>Зарегистрироваться
                         </button>
@@ -198,26 +205,27 @@
         </div>
     </div>
 
-    <script >
+    <script>
         function showTab(tabName) {
 
-    document.querySelectorAll('.form-content').forEach(form => {
-        form.classList.remove('active');
-    });
+            document.querySelectorAll('.form-content').forEach(form => {
+                form.classList.remove('active');
+            });
 
 
-    document.querySelectorAll('.tab-button').forEach(button => {
-        button.classList.remove('active');
-    });
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
 
 
-    document.getElementById(tabName + 'Form').classList.add('active');
+            document.getElementById(tabName + 'Form').classList.add('active');
 
 
-    event.target.classList.add('active');
-}
+            event.target.classList.add('active');
+        }
 
     </script>
 
 </body>
+
 </html>

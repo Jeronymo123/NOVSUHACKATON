@@ -74,28 +74,42 @@
                                 <span class="info-value" id="Email">ivanov@university.ru</span>
                             </div>
                             <div class="info-item">
-                                <span class="info-label">Телефон:</span>
+                                <span class="info-label" style="display:none">Телефон:</span>
                                 <span class="info-value" id="Phone">+7 (900) 123-45-67</span>
                             </div>
-                            <div class="info-item">
-                                <span class="info-label" style="display: none;">Кафедра:</span>
+                            <div class="info-item" style="display:none">
+                                <span class="info-label">Кафедра:</span>
                                 <span class="info-value">Программной инженерии</span>
                             </div>
-                            <div class="info-item">
+                            <div class="info-item" style="display:none">
                                 <span class="info-label"style="display: none;">Стаж работы:</span>
                                 <span class="info-value">8 лет</span>
                             </div>
                         </div>
                     </div>
-
+                    <div>
+                        <div class="profile-section" id="SelectGroup" style="display: none;">
+                            <h2>Группы</h2>
+                            
+                            <select id="Select-Group"></select>
+                            <div id="SpanGroup"></div>
+                            <input type="text" id="Input-Group">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="profile-section" id="Headman" style="display: none;">
+                            <h2>Староста</h2>
+                            <input type="text" id="Input-Headman">
+                        </div>
+                    </div>
                     <div class="profile-section" id="Stats" style="display: none;">
                         <h2>Академическая информация</h2>
                         <div class="info-grid">
-                            <div class="info-item" >
-                                <span class="info-label">Ученая степень:</span>
+                            <div class="info-item">
+                                <span class="info-label" >Ученая степень:</span>
                                 <span class="info-value">Кандидат технических наук</span>
                             </div>
-                            <div class="info-item">
+                            <div class="info-item" >
                                 <span class="info-label" style="display: none;">Должность:</span>
                                 <span class="info-value" style="display: none;">Доцент</span>
                             </div>
@@ -138,6 +152,7 @@
         </div>
     </footer>
 
-    <script src="scriptProfile.js" type="module"></script>
+    
 </body>
+<script src="scriptProfile.js" type="module"></script>
 </html>

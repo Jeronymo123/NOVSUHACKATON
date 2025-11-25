@@ -1,7 +1,14 @@
 [
   {
     "Role": "Преподаватель",
-    "Group": "Математика",
+    "Group": {
+      "Математика": [
+        "5092"
+      ],
+      "Физическая культура": [
+        "5011"
+      ]
+    },
     "Login": "322",
     "Email": "322@322.322",
     "Password": "$2b$10$KlOleauVqOKlSl3e3E6T8.Ci0BpLpShG5rKmy/ZK/boqTdsPIuoPO",
@@ -28,5 +35,15 @@
     "Name": "Руслан",
     "SurName": "Коротков",
     "SecondName": "Романович"
+  },
+  {
+    "Role": "Староста",
+	"Group": "5092",
+    "Login": "123456",
+    "Email": "test123@gmail.com",
+    "Password": "$2b$10$rlHfOqymHK3dnyDo9sZzWec7Ug3Az.7bqULVfpqvXSjHnTPAE2gAC",
+    "Name": "1234",
+    "SurName": "1234",
+    "SecondName": "1234"
   }
 ]
