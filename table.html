@@ -65,30 +65,46 @@
                 <button id="AddStudent">Cохранить</button>
             </div>
 
+            <!-- Замените весь блок table-container на этот: -->
             <div class="table-container">
-                <table id="Table">
-                    <thead>
-                        <tr id="Keyword">     <!-- Заголовки колонок -->
-                            <td>№</td>
-                            <td>ФИО</td>
-                        </tr>
-                        <tr id="Description"> <!-- Описания -->
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr id="DeleteColumn" style="display: none"> <!-- Кнопки удаления -->
-                            <td> </td>
-                            <td> </td>
-                        </tr>
-                        <tr id="TypeWork">    <!-- Типы работ -->
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr id="Body"></tr>   <!-- Сюда добавляются студенты -->
-                    </tbody>
-                </table>
+                <!-- Левая фиксированная часть (первые 2 колонки) -->
+                <div class="table-fixed">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>№</td>
+                                <td>ФИО студента</td>
+                            </tr>
+                        </thead>
+                        <tbody id="FixedTableBody">
+                            <!-- Строки будут добавляться JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Правая прокручиваемая часть (остальные колонки) -->
+                <div class="table-scrollable">
+                    <table>
+                        <thead id="ScrollableTableHeader">
+                            <!-- ВАЖНО: Добавляем базовые строки заголовков -->
+                            <tr id="Keyword">
+                                <!-- Заголовки дат будут добавляться сюда -->
+                            </tr>
+                            <tr id="TypeWork">
+                                <!-- Типы работ будут добавляться сюда -->
+                            </tr>
+                            <tr id="Description">
+                                <!-- Описания будут добавляться сюда -->
+                            </tr>
+                            <tr id="DeleteColumn" style="display: none;">
+                                <!-- Кнопки удаления будут добавляться сюда -->
+                            </tr>
+                        </thead>
+                        <tbody id="ScrollableTableBody">
+                            <!-- Данные с 3-й колонки будут добавляться JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </main>

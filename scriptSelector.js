@@ -72,6 +72,9 @@ async function fill_selector() {
 
         container.innerHTML = '';
         
+        // Добавляем задержку между переключениями
+        let isSwitching = false;
+        
         Classes.forEach((classItem, index) => {
             const subjectName = getSubjectNameFromPath(classItem);
             const groupName = getGroupNameFromPath(classItem);
@@ -86,23 +89,40 @@ async function fill_selector() {
                 <div class="horizontal-subject-group">Группа: ${groupName}</div>
             `;
             
-            card.addEventListener('click', () => {
+            card.addEventListener('click', async () => {
+                // Защита от множественных кликов
+                if (isSwitching) return;
+                isSwitching = true;
+                
                 document.querySelectorAll('.horizontal-subject-card').forEach(c => c.classList.remove('active'));
                 card.classList.add('active');
+                
+                // Полностью очищаем таблицу перед загрузкой новых данных
                 DeleteTable();
+                
+                // Добавляем небольшую задержку для гарантии очистки
+                await new Promise(resolve => setTimeout(resolve, 50));
+                
                 AddTable(subjectName, "\\" + groupName + ".json");
+                
+                // Снимаем блокировку после загрузки
+                setTimeout(() => { isSwitching = false; }, 100);
             });
             
             if (index === 0) {
                 card.classList.add('active');
-                DeleteTable();
-                AddTable(subjectName, "\\" + groupName + ".json");
+                // Для первой карточки тоже используем асинхронную загрузку
+                setTimeout(() => {
+                    DeleteTable();
+                    AddTable(subjectName, "\\" + groupName + ".json");
+                }, 100);
             }
             
             container.appendChild(card);
         });
 
     } catch (error) {
+        console.error('Ошибка загрузки селектора:', error);
         document.getElementById('subjectHorizontal').innerHTML = '<div class="no-subjects">Ошибка загрузки данных</div>';
     }
 }
