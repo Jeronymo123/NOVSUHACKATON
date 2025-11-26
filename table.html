@@ -66,45 +66,46 @@
                 <button id="AddStudent">Cохранить</button>
             </div>
 
-            <!-- Замените весь блок table-container на этот: -->
-            <div class="table-container">
-                <!-- Левая фиксированная часть (первые 2 колонки) -->
-                <div class="table-fixed">
-                    <table>
-                        <thead>
-                            <tr>
-                                <td>№</td>
-                                <td>ФИО студента</td>
-                            </tr>
-                        </thead>
-                        <tbody id="FixedTableBody">
-                            <!-- Строки будут добавляться JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
+            <!-- Обновленный блок table-container -->
+            <div class="table-wrapper">
+                <div class="table-container">
+                    <!-- Левая фиксированная часть (первые 2 колонки) -->
+                    <div class="table-fixed">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="fixed-num">№</th>
+                                    <th class="fixed-name">ФИО студента</th>
+                                </tr>
+                            </thead>
+                            <tbody id="FixedTableBody">
+                                <!-- Строки будут добавляться JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
 
-                <!-- Правая прокручиваемая часть (остальные колонки) -->
-                <div class="table-scrollable">
-                    <table>
-                        <thead id="ScrollableTableHeader">
-                            <!-- ВАЖНО: Добавляем базовые строки заголовков -->
-                            <tr id="Keyword">
-                                <!-- Заголовки дат будут добавляться сюда -->
-                            </tr>
-                            <tr id="TypeWork">
-                                <!-- Типы работ будут добавляться сюда -->
-                            </tr>
-                            <tr id="Description">
-                                <!-- Описания будут добавляться сюда -->
-                            </tr>
-                            <tr id="DeleteColumn" style="display: none;">
-                                <!-- Кнопки удаления будут добавляться сюда -->
-                            </tr>
-                        </thead>
-                        <tbody id="ScrollableTableBody">
-                            <!-- Данные с 3-й колонки будут добавляться JavaScript -->
-                        </tbody>
-                    </table>
+                    <!-- Правая прокручиваемая часть (остальные колонки) -->
+                    <div class="table-scrollable">
+                        <table>
+                            <thead id="ScrollableTableHeader">
+                                <tr id="Keyword">
+                                    <!-- Заголовки дат будут добавляться сюда -->
+                                </tr>
+                                <tr id="TypeWork">
+                                    <!-- Типы работ будут добавляться сюда -->
+                                </tr>
+                                <tr id="Description">
+                                    <!-- Описания будут добавляться сюда -->
+                                </tr>
+                                <tr id="DeleteColumn" style="display: none;">
+                                    <!-- Кнопки удаления будут добавляться сюда -->
+                                </tr>
+                            </thead>
+                            <tbody id="ScrollableTableBody">
+                                <!-- Данные с 3-й колонки будут добавляться JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

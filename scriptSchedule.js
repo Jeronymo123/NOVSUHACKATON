@@ -1,25 +1,73 @@
 // scriptSchedule.js
 let currentWeekOffset = 0;
 let scheduleData = null;
+let currentUser = null;
+let isEditMode = false;
 
 document.addEventListener('DOMContentLoaded', function() {
     initializePage();
 });
 
-function initializePage() {
-    profile();
+async function initializePage() {
+    await loadUserProfile();
     setupEventListeners();
     updateWeekDisplay();
     loadScheduleData();
 }
 
 function setupEventListeners() {
-    // Обработчики для кнопок навигации недель
     document.getElementById('prevWeekBtn').onclick = () => changeWeek(-1);
     document.getElementById('nextWeekBtn').onclick = () => changeWeek(1);
     document.getElementById('todayBtn').onclick = resetToCurrentWeek;
     document.getElementById('refreshBtn').onclick = loadScheduleData;
     document.getElementById("Logout").onclick = Logout;
+    
+    // Обработчики для модального окна редактирования
+    document.getElementById('editScheduleBtn').onclick = openEditModal;
+    document.getElementById('closeModal').onclick = closeEditModal;
+    document.getElementById('cancelEdit').onclick = closeEditModal;
+    document.getElementById('saveSchedule').onclick = saveScheduleChanges;
+}
+
+async function loadUserProfile() {
+    try {
+        const response = await fetch("/profile", { credentials: "include" });
+        const res = await response.json();
+
+        if (res.status === "ok") {
+            currentUser = res.user;
+            
+            const userName = currentUser.Surname + " " + currentUser.Name;
+            document.querySelectorAll("#NameProfile").forEach(item => {
+                item.textContent = userName;
+            });
+            
+            // Показываем кнопку редактирования только для преподавателей
+            if (currentUser.Role === "Преподаватель") {
+                document.getElementById('editScheduleBtn').style.display = 'flex';
+            }
+            
+        } else {
+            window.location.href = "entry_form.html";
+        }
+    } catch (error) {
+        console.error('Ошибка загрузки профиля:', error);
+        useDemoStudentData();
+    }
+}
+
+function useDemoStudentData() {
+    currentUser = {
+        id: 'student1',
+        Name: 'Сергей',
+        Surname: 'Петров',
+        Group: '5092',
+        Role: 'Студент'
+    };
+    
+    document.querySelectorAll("#NameProfile").forEach(item => {
+        item.textContent = currentUser.Surname + " " + currentUser.Name;
+    });
 }
 
 function resetToCurrentWeek() {
@@ -28,62 +76,12 @@ function resetToCurrentWeek() {
     loadScheduleData();
 }
 
-document.getElementById("Logout").onclick = Logout;
-
 async function Logout() {
     const response = await fetch("/logout", { method: "POST", credentials: "include" });
     const res = await response.json();
     if (res.status === "logout") {
         window.location.href = "entry_form.html";
     }
-}
-
-async function profile() {
-    try {
-        const response = await fetch("/profile", { credentials: "include" });
-        const res = await response.json();
-        if (res.status === "ok") {
-            document.querySelectorAll("#NameProfile").forEach(item => {
-                item.textContent = res.user.Surname + " " + res.user.Name;
-            });
-            
-            localStorage.setItem('currentUser', JSON.stringify(res.user));
-            localStorage.setItem('userRole', res.user.role || 'student');
-            localStorage.setItem('userGroup', res.user.group || 'ПИ-201');
-            
-            initializeSchedule();
-        } else {
-            window.location.href = "entry_form.html";
-        }
-    } catch (error) {
-        console.error('Ошибка загрузки профиля:', error);
-        initializeScheduleWithDemoData();
-    }
-}
-
-function initializeSchedule() {
-    updateWeekDisplay();
-    loadScheduleData();
-}
-
-function initializeScheduleWithDemoData() {
-    const demoUser = {
-        id: 'demo1',
-        Name: 'Алексей',
-        Surname: 'Иванов',
-        group: 'ПИ-201',
-        role: 'student'
-    };
-    
-    document.querySelectorAll("#NameProfile").forEach(item => {
-        item.textContent = demoUser.Surname + " " + demoUser.Name;
-    });
-    
-    localStorage.setItem('currentUser', JSON.stringify(demoUser));
-    localStorage.setItem('userRole', 'student');
-    localStorage.setItem('userGroup', 'ПИ-201');
-    
-    initializeSchedule();
 }
 
 // Загрузка данных расписания
@@ -100,7 +98,6 @@ async function loadScheduleData() {
             </div>
         `;
 
-        // Пробуем загрузить из JSON, если не получится - используем встроенные данные
         scheduleData = await loadScheduleFromJSON();
         
     } catch (error) {
@@ -108,14 +105,30 @@ async function loadScheduleData() {
         scheduleData = getBuiltInScheduleData();
     }
     
-    const userSchedule = generateUserSchedule();
-    renderSchedule(userSchedule);
+    try {
+        const userSchedule = generateUserSchedule();
+        renderSchedule(userSchedule);
+    } catch (error) {
+        console.error('Ошибка загрузки расписания:', error);
+        scheduleTable.innerHTML = `
+            <div class="empty-schedule">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Ошибка загрузки расписания</h3>
+                <p>${error.message}</p>
+            </div>
+        `;
+    }
 }
 
-// Упрощенная загрузка из JSON
 async function loadScheduleFromJSON() {
     try {
-        const response = await fetch('/data/schedule.json');
+        let scheduleFile = 'data/schedule.json';
+        
+        if (currentUser?.Role === "Преподаватель") {
+            scheduleFile = 'data/schedule_math.json';
+        }
+        
+        const response = await fetch(scheduleFile);
         if (!response.ok) throw new Error('File not found');
         return await response.json();
     } catch (error) {
@@ -123,83 +136,61 @@ async function loadScheduleFromJSON() {
     }
 }
 
-// Встроенные данные расписания
 function getBuiltInScheduleData() {
+    if (currentUser?.Role === "Преподаватель" && currentUser?.Login === "322") {
+        return {
+            weeks: {
+                upper: {
+                    description: "Верхняя неделя",
+                    days: {
+                        monday: [
+                            {
+                                id: "upper_mon_1",
+                                time: "09:00-10:30",
+                                subject: "Математика",
+                                type: "Практика",
+                                groups: ["5091"],
+                                classroom: "3315",
+                                teacher: "Матвеева Ольга Павловна",
+                                teacherId: "322"
+                            }
+                        ],
+                        tuesday: [],
+                        wednesday: [],
+                        thursday: [],
+                        friday: [],
+                        saturday: [],
+                        sunday: []
+                    }
+                },
+                lower: {
+                    description: "Нижняя неделя",
+                    days: {
+                        monday: [],
+                        tuesday: [],
+                        wednesday: [],
+                        thursday: [],
+                        friday: [],
+                        saturday: [],
+                        sunday: []
+                    }
+                }
+            },
+            modifications: {},
+            holidays: []
+        };
+    }
+    
     return {
         weeks: {
             upper: {
                 description: "Верхняя неделя",
                 days: {
-                    monday: [
-                        {
-                            id: "upper_mon_1",
-                            time: "09:00-10:30",
-                            subject: "Веб-разработка",
-                            type: "Лекция",
-                            groups: ["ПИ-201", "ПИ-202"],
-                            classroom: "А-101",
-                            teacher: "Иванов А.С.",
-                            teacherId: "teacher1"
-                        },
-                        {
-                            id: "upper_mon_2",
-                            time: "11:00-12:30",
-                            subject: "Алгоритмы и структуры данных",
-                            type: "Практика",
-                            groups: ["ПИ-201"],
-                            classroom: "Б-205",
-                            teacher: "Петрова М.В.",
-                            teacherId: "teacher2"
-                        }
-                    ],
-                    tuesday: [
-                        {
-                            id: "upper_tue_1",
-                            time: "13:00-14:30",
-                            subject: "Базы данных",
-                            type: "Лабораторная",
-                            groups: ["ПИ-201"],
-                            classroom: "К-301",
-                            teacher: "Кузнецова Е.Л.",
-                            teacherId: "teacher3"
-                        }
-                    ],
-                    wednesday: [
-                        {
-                            id: "upper_wed_1",
-                            time: "10:00-11:30",
-                            subject: "Математический анализ",
-                            type: "Лекция",
-                            groups: ["ПИ-201"],
-                            classroom: "А-102",
-                            teacher: "Сидоров П.И.",
-                            teacherId: "teacher4"
-                        }
-                    ],
-                    thursday: [
-                        {
-                            id: "upper_thu_1",
-                            time: "14:00-15:30",
-                            subject: "Архитектура компьютеров",
-                            type: "Лекция",
-                            groups: ["ПИ-201"],
-                            classroom: "А-104",
-                            teacher: "Федоров С.М.",
-                            teacherId: "teacher5"
-                        }
-                    ],
-                    friday: [
-                        {
-                            id: "upper_fri_1",
-                            time: "09:00-10:30",
-                            subject: "Теория вероятностей",
-                            type: "Лекция",
-                            groups: ["ПИ-201"],
-                            classroom: "А-105",
-                            teacher: "Николаева О.П.",
-                            teacherId: "teacher6"
-                        }
-                    ],
+                    monday: [],
+                    tuesday: [],
+                    wednesday: [],
+                    thursday: [],
+                    friday: [],
                     saturday: [],
                     sunday: []
                 }
@@ -207,110 +198,47 @@ function getBuiltInScheduleData() {
             lower: {
                 description: "Нижняя неделя",
                 days: {
-                    monday: [
-                        {
-                            id: "lower_mon_1",
-                            time: "09:00-10:30",
-                            subject: "Математический анализ",
-                            type: "Лекция",
-                            groups: ["ПИ-201", "ПИ-202"],
-                            classroom: "А-102",
-                            teacher: "Сидоров П.И.",
-                            teacherId: "teacher4"
-                        }
-                    ],
-                    tuesday: [
-                        {
-                            id: "lower_tue_1",
-                            time: "15:00-16:30",
-                            subject: "Операционные системы",
-                            type: "Лекция",
-                            groups: ["ПИ-201"],
-                            classroom: "А-103",
-                            teacher: "Федоров С.М.",
-                            teacherId: "teacher5"
-                        }
-                    ],
-                    wednesday: [
-                        {
-                            id: "lower_wed_1",
-                            time: "12:00-13:30",
-                            subject: "Иностранный язык",
-                            type: "Практика",
-                            groups: ["ПИ-201"],
-                            classroom: "Л-201",
-                            teacher: "Смирнова О.К.",
-                            teacherId: "teacher7"
-                        }
-                    ],
-                    thursday: [
-                        {
-                            id: "lower_thu_1",
-                            time: "16:00-17:30",
-                            subject: "Физическая культура",
-                            type: "Практика",
-                            groups: ["ПИ-201"],
-                            classroom: "Спортзал",
-                            teacher: "Петров В.И.",
-                            teacherId: "teacher8"
-                        }
-                    ],
-                    friday: [
-                        {
-                            id: "lower_fri_1",
-                            time: "11:00-12:30",
-                            subject: "Проектный практикум",
-                            type: "Лабораторная",
-                            groups: ["ПИ-201"],
-                            classroom: "К-302",
-                            teacher: "Иванов А.С.",
-                            teacherId: "teacher1"
-                        }
-                    ],
+                    monday: [],
+                    tuesday: [],
+                    wednesday: [],
+                    thursday: [],
+                    friday: [],
                     saturday: [],
                     sunday: []
                 }
             }
         },
-        modifications: {
-            "2024-12-25": {
-                date: "2024-12-25",
-                description: "Рождественские каникулы",
-                changes: [
-                    {
-                        action: "remove",
-                        lessonId: "upper_mon_1",
-                        reason: "Выходной день"
-                    }
-                ]
-            }
-        },
-        holidays: [
-            "2024-12-31",
-            "2025-01-01",
-            "2025-01-02",
-            "2025-01-07"
-        ]
+        modifications: {},
+        holidays: []
     };
 }
 
-// Остальные функции остаются без изменений
 function generateUserSchedule() {
     if (!scheduleData) {
-        console.warn('Нет данных расписания');
         return { days: [], weekType: 'unknown', weekDescription: 'Демо-расписание' };
     }
     
-    const userGroup = localStorage.getItem('userGroup') || 'ПИ-201';
-    const userRole = localStorage.getItem('userRole') || 'student';
+    let userGroup = '5092';
+    
+    if (currentUser?.Role === "Студент") {
+        if (currentUser.Group && typeof currentUser.Group === 'object') {
+            const groupKeys = Object.keys(currentUser.Group);
+            if (groupKeys.length > 0) {
+                userGroup = groupKeys[0];
+            }
+        } else if (typeof currentUser.Group === 'string') {
+            userGroup = currentUser.Group;
+        }
+    } else if (currentUser?.Role === "Преподаватель") {
+        userGroup = null;
+    }
+    
     const weekDates = getCurrentWeekDates();
     
-    // Определяем тип недели для отображаемого периода
     const displayWeekType = getWeekTypeForDate(new Date(weekDates.monday));
     const baseWeek = scheduleData.weeks[displayWeekType];
     
     if (!baseWeek) {
-        console.warn('Не найдена неделя типа:', displayWeekType);
         return { days: [], weekType: displayWeekType, weekDescription: 'Неизвестная неделя' };
     }
     
@@ -327,25 +255,29 @@ function generateUserSchedule() {
     const resultDays = days.map(dayInfo => {
         const baseLessons = baseWeek.days[dayInfo.key] || [];
         
-        let filteredLessons = baseLessons.filter(lesson => {
-            if (userRole === 'teacher') {
-                const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-                return lesson.teacherId === currentUser.id;
-            }
-            return lesson.groups && lesson.groups.includes(userGroup);
-        });
+        let filteredLessons = [];
         
-        filteredLessons = applyModifications(filteredLessons, dayInfo.date);
-        
-        if (scheduleData.holidays && scheduleData.holidays.includes(dayInfo.date)) {
-            filteredLessons = [];
+        if (currentUser?.Role === "Преподаватель") {
+            filteredLessons = baseLessons.filter(lesson => {
+                return lesson.teacherId === currentUser.Login;
+            });
+        } else if (currentUser?.Role === "Студент") {
+            filteredLessons = baseLessons.filter(lesson => {
+                if (!lesson.groups) return false;
+                
+                return Array.isArray(lesson.groups) 
+                    ? lesson.groups.includes(userGroup)
+                    : lesson.groups === userGroup;
+            });
+        } else {
+            filteredLessons = baseLessons;
         }
         
         return {
             day: dayInfo.day,
             date: dayInfo.date,
             lessons: filteredLessons,
-            isHoliday: scheduleData.holidays && scheduleData.holidays.includes(dayInfo.date)
+            isHoliday: false
         };
     });
     
@@ -354,11 +286,6 @@ function generateUserSchedule() {
         weekType: displayWeekType,
         weekDescription: baseWeek.description || (displayWeekType === 'upper' ? 'Верхняя неделя' : 'Нижняя неделя')
     };
-}
-
-function getCurrentWeekType() {
-    const now = new Date();
-    return getWeekTypeForDate(now);
 }
 
 function applyModifications(lessons, date) {
@@ -509,7 +436,6 @@ function updateWeekDisplay() {
         `${endOfWeek.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}` +
         `<span class="week-type-badge ${weekTypeClass}">${weekTypeText}</span>`;
     
-    // Обновляем состояние кнопки "Сегодня"
     updateTodayButton();
 }
 
@@ -551,44 +477,150 @@ function getCurrentWeekDates() {
 }
 
 function getLessonActions(lesson) {
-    const userRole = localStorage.getItem('userRole') || 'student';
+    // Убрана кнопка QR-кода
+    return `
+        <button class="btn btn-secondary" onclick="viewLessonDetails('${lesson.subject}', '${lesson.teacher}', '${lesson.type}', '${lesson.classroom}')">
+            <i class="fas fa-info-circle"></i> Подробнее
+        </button>
+    `;
+}
+
+// Функции для редактирования расписания
+function openEditModal() {
+    if (currentUser?.Role !== "Преподаватель") {
+        alert('Редактирование расписания доступно только преподавателям');
+        return;
+    }
     
-    if (userRole === 'teacher') {
-        return `
-            <button class="btn btn-secondary attendance-btn" onclick="startAttendance('${lesson.time}', '${lesson.subject}', '${lesson.id}')">
-                <i class="fas fa-qrcode"></i> QR
-            </button>
-        `;
-    } else {
-        return `
-            <button class="btn btn-secondary" onclick="viewLessonDetails('${lesson.subject}', '${lesson.teacher}')">
-                <i class="fas fa-info-circle"></i> Подробнее
-            </button>
-        `;
+    const modal = document.getElementById('editModal');
+    const formContainer = document.getElementById('editFormContainer');
+    
+    // Заполняем форму редактирования
+    formContainer.innerHTML = createEditForm();
+    
+    modal.style.display = 'flex';
+    isEditMode = true;
+}
+
+function closeEditModal() {
+    const modal = document.getElementById('editModal');
+    modal.style.display = 'none';
+    isEditMode = false;
+}
+
+function createEditForm() {
+    const currentSchedule = generateUserSchedule();
+    
+    return `
+        <div class="edit-form">
+            <div class="form-group">
+                <label>Неделя:</label>
+                <input type="text" value="${currentSchedule.weekDescription}" disabled>
+            </div>
+            
+            ${currentSchedule.days.map(day => `
+                <div class="schedule-day-edit">
+                    <h4>${day.day} (${new Date(day.date).toLocaleDateString('ru-RU')})</h4>
+                    ${day.lessons.length > 0 ? 
+                        day.lessons.map(lesson => `
+                            <div class="lesson-edit-item">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Время:</label>
+                                        <input type="text" value="${lesson.time}" class="lesson-time-input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Предмет:</label>
+                                        <input type="text" value="${lesson.subject}" class="lesson-subject-input">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Тип занятия:</label>
+                                        <select class="lesson-type-input">
+                                            <option value="Лекция" ${lesson.type === 'Лекция' ? 'selected' : ''}>Лекция</option>
+                                            <option value="Практика" ${lesson.type === 'Практика' ? 'selected' : ''}>Практика</option>
+                                            <option value="Лабораторная" ${lesson.type === 'Лабораторная' ? 'selected' : ''}>Лабораторная</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Аудитория:</label>
+                                        <input type="text" value="${lesson.classroom}" class="lesson-classroom-input">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Группы:</label>
+                                    <input type="text" value="${Array.isArray(lesson.groups) ? lesson.groups.join(', ') : lesson.groups}" class="lesson-groups-input">
+                                </div>
+                                <div class="lesson-edit-actions">
+                                    <button class="btn btn-danger" onclick="removeLesson('${lesson.id}')">
+                                        <i class="fas fa-trash"></i> Удалить
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('') : 
+                        '<p style="color: var(--text-light); text-align: center;">Нет занятий в этот день</p>'
+                    }
+                    <button class="btn btn-primary" onclick="addNewLesson('${day.key}')" style="margin-top: 1rem;">
+                        <i class="fas fa-plus"></i> Добавить занятие
+                    </button>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+function addNewLesson(dayKey) {
+    // Реализация добавления нового занятия
+    alert(`Добавление нового занятия для ${dayKey}`);
+    // Здесь будет логика добавления занятия
+}
+
+function removeLesson(lessonId) {
+    if (confirm('Вы уверены, что хотите удалить это занятие?')) {
+        // Реализация удаления занятия
+        alert(`Удаление занятия с ID: ${lessonId}`);
+        // Здесь будет логика удаления занятия
     }
 }
 
-function startAttendance(time, subject) {
-    alert(`Запуск отметки посещаемости для:\n${subject}\n${time}\n\nQR-код будет сгенерирован для студентов.`);
-}
-
-function viewLessonDetails(subject, teacher) {
-    alert(`Детали занятия:\nПредмет: ${subject}\nПреподаватель: ${teacher}`);
-}
-
-window.onload = profile;
-
-// Глобальные функции для вызова из HTML
-window.startAttendance = function(time, subject, lessonId) {
-    alert(`Запуск отметки посещаемости для:\n${subject}\n${time}\n\nQR-код будет сгенерирован для студентов.`);
+function saveScheduleChanges() {
+    if (currentUser?.Role !== "Преподаватель") {
+        alert('Сохранение изменений доступно только преподавателям');
+        return;
+    }
     
-    // В реальной системе здесь будет генерация QR-кода
-    console.log(`Генерация QR-кода для занятия: ${subject}, ID: ${lessonId}`);
-};
+    // Реализация сохранения изменений
+    alert('Изменения расписания сохранены');
+    closeEditModal();
+    loadScheduleData(); // Перезагружаем расписание
+}
 
-window.viewLessonDetails = function(subject, teacher) {
-    alert(`Детали занятия:\nПредмет: ${subject}\nПреподаватель: ${teacher}`);
+// Глобальные функции
+window.viewLessonDetails = function(subject, teacher, type, classroom) {
+    let message = `Детали занятия:\nПредмет: ${subject}\nПреподаватель: ${teacher}`;
+    if (type) message += `\nТип: ${type}`;
+    if (classroom) message += `\nАудитория: ${classroom}`;
+    alert(message);
 };
 
 window.changeWeek = changeWeek;
 window.loadScheduleData = loadScheduleData;
+window.openEditModal = openEditModal;
+window.closeEditModal = closeEditModal;
+window.addNewLesson = addNewLesson;
+window.removeLesson = removeLesson;
+window.saveScheduleChanges = saveScheduleChanges;
+
+// Функция для принудительной перезагрузки
+window.forceReloadSchedule = function() {
+    currentWeekOffset = 0;
+    updateWeekDisplay();
+    loadScheduleData();
+};
+
+setTimeout(() => {
+    if (!scheduleData) {
+        loadScheduleData();
+    }
+}, 1000);

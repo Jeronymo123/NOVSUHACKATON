@@ -7,18 +7,6 @@ document.getElementById('Presence').addEventListener("change", Presence);
 document.getElementById('Disease').addEventListener("change", Disease);
 document.getElementById('AddStudent').onclick = send_to_Server;
 
-function resetTableState() {
-    indexInput = 0;
-    countPerson = 0;
-    type_editing = 0;
-    indexColumn = 0;
-    countCell = 0;
-    PersonData = [];
-    data = [];
-    subject = "";
-    group = "";
-}
-
 async function get_User() {
     const response = await fetch("/profile", { credentials: "include" });
     const res = await response.json();
@@ -32,7 +20,7 @@ async function LoadDoc() {
 
     const user = await get_User();
     const divRole = document.getElementById("Role");
-    if (user.Role !== "Студент") {
+    if (user.Role === "Преподаватель") {
         divRole.style.display = "";
     }
 }
@@ -50,7 +38,7 @@ var subject;
 var group;
 async function send_to_Server() {
     const user = await get_User();
-    if (user.Role !== "Студент") {
+    if (user.Role === "Преподаватель") {
         change_new_data_Value();
         PersonData.forEach(item => {
             fetch(`/savestudent?subject=${subject}&group=${group}`, {
@@ -71,53 +59,29 @@ export async function AddTable(Subject, Group) {
     countPerson = PersonData.length;
     subject = Subject;
     group = Group;
-    
     const FixedTableBody = document.getElementById("FixedTableBody");
     const ScrollableTableBody = document.getElementById("ScrollableTableBody");
-    
-    // Очищаем обе части
-    FixedTableBody.innerHTML = '';
-    ScrollableTableBody.innerHTML = '';
-    
+
     for (let i = 0; i < countPerson; i++) {
-        // Добавляем в фиксированную часть
-        const fixedRow = document.createElement("tr");
-        fixedRow.className = "Delete Row";
-        fixedRow.innerHTML = `
-            <td>${i + 1}</td>
-            <td id="${i}">${PersonData[i].info.name}</td>
-        `;
-        FixedTableBody.appendChild(fixedRow);
 
-        // Добавляем в прокручиваемую часть
-        const scrollableRow = document.createElement("tr");
-        scrollableRow.className = "Delete Row";
-        ScrollableTableBody.appendChild(scrollableRow);
+        indexInput++;
+        
+        const FixedRow = FixedTableBody.insertRow();
+        FixedRow.className = "Delete Row";
 
-        console.log(user.Surname + " "+user.Name+" "+user.Secondname);
-        if(user.Surname + " "+user.Name+" "+user.Secondname === PersonData[i].info.name){
-            fixedRow.style.backgroundColor = "yellow";
-            scrollableRow.style.backgroundColor = "yellow";
-        }
-    }
-    
-    if (PersonData.length > 0) {
-        Object.keys(PersonData[0]).forEach(element => {
-            let regex = /\d/;
-            if (regex.test(element)) {
-                var PersonGrades = [];
-                for (let i = 0; i < countPerson; i++) {
-                    PersonGrades.push(PersonData[i][element].Value);
-                }
-                LoadHeader(PersonData[0][element].Date, PersonData[0][element].Description);
-                LoadTypeWork(PersonData[0][element].TypeWork);
-                LoadGrade(PersonGrades);
-                indexColumn++;
-            }
-        })
-    }
+        const Num = FixedRow.insertCell();
+        Num.className = "fixed-num";
+        Num.innerHTML = i + 1;
 
-    // const InputName = document.createElement("input");
+        const NameCell = FixedRow.insertCell();
+         NameCell.innerHTML = PersonData[i].info.name;
+        NameCell.className = "fixed-name";
+        NameCell.id = i;
+        
+        const ScrollableRow = ScrollableTableBody.insertRow();
+        ScrollableRow.className = "Delete Row";
+        
+        // const InputName = document.createElement("input");
 
         // InputName.className = "RowInput";
         // InputName.type = 'text'
@@ -151,92 +115,86 @@ export async function AddTable(Subject, Group) {
         //         }
         //     }
         // })
+        console.log(user.Surname + " "+user.Name+" "+user.Secondname);
+        if(user.Surname + " "+user.Name+" "+user.Secondname === PersonData[i].info.name){
+            FixedRow.style.backgroundColor = "yellow";
+            ScrollableRow.style.backgroundColor = "yellow";
+            Num.style.backgroundColor = "yellow";
+        }
+    }
+    if (PersonData.length > 0) {
+        Object.keys(PersonData[0]).forEach(element => {
+            let regex = /\d/;
+            if (regex.test(element)) {
+                var PersonGrades = [];
+                for (let i = 0; i < countPerson; i++) {
+                    PersonGrades.push(PersonData[i][element].Value);
+                }
+                LoadHeader(PersonData[0][element].Date, PersonData[0][element].Description);
+                LoadTypeWork(PersonData[0][element].TypeWork);
+                LoadGrade(PersonGrades);
+
+                indexColumn++;
+            }
+        })
+    }
 }
 
 export function DeleteTable() {
-    const FixedTableBody = document.getElementById("FixedTableBody");
-    const ScrollableTableBody = document.getElementById("ScrollableTableBody");
-    const ScrollableTableHeader = document.getElementById("ScrollableTableHeader");
-    
-    // Полностью очищаем содержимое
-    FixedTableBody.innerHTML = '';
-    ScrollableTableBody.innerHTML = '';
-    ScrollableTableHeader.innerHTML = '';
-    
-    // Восстанавливаем базовую структуру заголовков
-    ScrollableTableHeader.innerHTML = `
-        <tr id="Keyword"></tr>
-        <tr id="TypeWork"></tr>
-        <tr id="Description"></tr>
-        <tr id="DeleteColumn" style="display: none;"></tr>
-    `;
-    
-    // Сбрасываем состояние
-    resetTableState();
+    const Rows = document.querySelectorAll(".Delete");
+    Rows.forEach(element => {
+        element.remove();
+    });
+    indexColumn = 0;
+    countCell = 0;
+    indexInput = 0;
+    data = [];
 }
 
 function create_delete_Column() {
-    const deleteRow = document.getElementById("DeleteColumn");
-    if (!deleteRow) {
-        console.error('Строка DeleteColumn не найдена');
-        return;
-    }
-    
-    const DeleteCol = deleteRow.insertCell();
+    const DeleteCol = document.getElementById("DeleteColumn").insertCell();
     DeleteCol.className = `Delete Column${indexColumn}`;
     DeleteCol.innerHTML = ".";
     DeleteCol.style.color = "rgba(0, 0, 0, 0)";
-    
+    DeleteCol.style.alignItems = "center";
     const DeleteButton = document.createElement("button");
-    DeleteButton.textContent = "✕";
-    DeleteButton.style.cssText = `
-        background: rgba(255,255,255,0.9);
-        color: #dc2626;
-        padding: 4px 8px;
-        font-size: 12px;
-        border-radius: 4px;
-        border: none;
-        cursor: pointer;
-        font-weight: 600;
-    `;
-    
     DeleteCol.onclick = function () {
-        const columnIndex = Number(DeleteCol.className.slice(13));
-        const columns = document.querySelectorAll(`.Column${columnIndex}`);
-        columns.forEach(element => {
+        const Columns = document.querySelectorAll(`.${DeleteCol.className.slice(7)}`);
+        Columns.forEach(element => {
             element.remove();
-        });
-        
-        // Удаляем из данных
+        })
         for (let i = 0; i < countPerson; i++) {
-            for (let j = columnIndex; j < data.length - 1; j++) {
-                PersonData[i][j] = PersonData[i][j + 1];
+            for (let j = Number(`${DeleteCol.className.slice(13)}`); j < data.length - 1; j++) {
+                PersonData[i][j] = PersonData[i][j + 1]
+
             }
             delete PersonData[i][data.length - 1];
+
         };
         indexColumn--;
         countCell -= countPerson;
         data.pop();
     };
-    
+
     DeleteButton.style.display = 'none';
     DeleteCol.appendChild(DeleteButton);
 }
 
 async function AddColumn() {
+
     create_data();
     create_delete_Column();
     AddDate();
     AddTypeWork();
     AddDesciption();
-    
-    const scrollableRows = document.querySelectorAll('#ScrollableTableBody .Row');
-    scrollableRows.forEach(element => {
+    const elements = document.querySelectorAll('.Row');
+    elements.forEach(element => {
         const Cell = element.insertCell();
         const GradeInput = document.createElement("input");
 
         Cell.id = countCell;
         Cell.className = `Column${indexColumn}`;
+
         countCell++;
 
         if (!Cell._clickFunc) {
@@ -245,8 +203,8 @@ async function AddColumn() {
                     Cell.firstChild.textContent = change_attendance(Cell.id);
                 }
             };
+
         }
-        
         Cell.className += " Grade";
         Cell.innerHTML = "+";
         Cell.addEventListener("click", Cell._clickFunc);
@@ -257,17 +215,15 @@ async function AddColumn() {
         });
         Cell.appendChild(GradeInput);
     });
+
+
+
     indexColumn++;
 }
 
 function AddDesciption() {
-    const descriptionRow = document.getElementById("Description");
-    if (!descriptionRow) {
-        console.error('Строка Description не найдена');
-        return;
-    }
+    const Description = document.getElementById("Description").insertCell();
 
-    const Description = descriptionRow.insertCell();
     Description.innerHTML = "Описание";
 
     Description.id = "Description" + indexColumn;
@@ -311,22 +267,17 @@ function AddDesciption() {
     Description.appendChild(Input);
 }
 function AddDate() {
-    const keywordRow = document.getElementById("Keyword");
-    if (!keywordRow) {
-        console.error('Строка Keyword не найдена');
-        return;
-    }
-    const DateKey = keywordRow.insertCell();
+    const DateKey = document.getElementById("Keyword").insertCell();
     let today = new Date();
     DateKey.innerHTML = today.getDate() + "." + String(Number(today.getMonth()) + 1) + "." + today.getFullYear();
     DateKey.id = "Date" + indexColumn;
     DateKey.className = `Delete Column${indexColumn}`;
-
     const InputDate = document.createElement("input");
+
     InputDate.className = "InputDate";
     InputDate.type = 'date';
     InputDate.style.display = "none";
-    InputDate.value = today.getFullYear() + "-" + String(Number(today.getMonth()) + 1).padStart(2, '0') + "-" + today.getDate().toString().padStart(2, '0');
+    InputDate.value = DateKey.textContent;
     DateKey.appendChild(InputDate);
 
     DateKey.addEventListener("click", function () {
@@ -357,13 +308,7 @@ function AddDate() {
 }
 
 function AddTypeWork() {
-    const typeWorkRow = document.getElementById("TypeWork");
-    if (!typeWorkRow) {
-        console.error('Строка TypeWork не найдена');
-        return;
-    }
-
-    const TypeWork = typeWorkRow.insertCell();
+    const TypeWork = document.getElementById("TypeWork").insertCell();
     TypeWork.id = "TypeWork" + indexColumn;
     TypeWork.className = `Delete Column${indexColumn}`;
     const Work = document.createElement("select");
@@ -457,10 +402,7 @@ function LoadHeader(date, description) {
 }
 
 function LoadDesciption(description) {
-    const descriptionRow = document.getElementById("Description");
-    if (!descriptionRow) return;
-
-    const Description = descriptionRow.insertCell();
+    const Description = document.getElementById("Description").insertCell();
 
     Description.innerHTML = description;
 
@@ -506,11 +448,8 @@ function LoadDesciption(description) {
     })
     Description.appendChild(Input);
 }
-
 function LoadDate(today) {
-    const keywordRow = document.getElementById("Keyword");
-    if (!keywordRow) return;
-    const DateKey = keywordRow.insertCell();
+    const DateKey = document.getElementById("Keyword").insertCell();
     const normDate = today.slice(6) + "-" + today.slice(3, 5) + "-" + today.slice(0, 2)
     DateKey.innerHTML = today;
     DateKey.id = "Date" + indexColumn;
@@ -551,10 +490,7 @@ function LoadDate(today) {
 }
 
 function LoadTypeWork(typework) {
-    const typeWorkRow = document.getElementById("TypeWork");
-    if (!typeWorkRow) return;
-
-    const TypeWork = typeWorkRow.insertCell();
+    const TypeWork = document.getElementById("TypeWork").insertCell();
     TypeWork.id = "TypeWork" + indexColumn;
     TypeWork.className = `Delete Column${indexColumn}`
     const Work = document.createElement("select");
@@ -635,16 +571,15 @@ function LoadTypeWork(typework) {
 }
 
 function LoadGrade(Grades) {
-    const scrollableRows = document.querySelectorAll('#ScrollableTableBody .Row');
+    const elements = document.querySelectorAll('#ScrollableTableBody .Row');
     let cCell = 0;
-    
-    scrollableRows.forEach(element => {
+    elements.forEach(element => {
         const Cell = element.insertCell();
         const GradeInput = document.createElement("input");
 
         Cell.id = countCell;
         Cell.className = `Column${indexColumn}`;
-        const typework = document.getElementById(`TypeWork${indexColumn}`);
+        const typework = document.getElementById(`TypeWork${Cell.className.slice(6)}`);
 
         countCell++;
 
@@ -655,13 +590,14 @@ function LoadGrade(Grades) {
                 }
             };
         }
-        
-        const work = typework.querySelector("select");
+
+        const work = typework ? typework.querySelector("select") : null;
         if (work && work.options[work.selectedIndex].text !== "Посещаемость") {
             Cell.className += " Grades";
             if (Number(Grades[cCell])) {
                 Cell.innerHTML = Grades[cCell];
-            } else {
+            }
+            else {
                 Cell.innerHTML = 0;
             }
         } else {
@@ -806,7 +742,7 @@ function change_data_Value(id, ind, grade) {
 
 }
 
-
 // function change_data_Name(ind, Name) {
 //     PersonData[ind].info.name = Name;
 // }
+

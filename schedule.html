@@ -37,12 +37,14 @@
                     <div class="week-navigation">
                         <button class="week-nav-btn" id="prevWeekBtn">
                             <i class="fas fa-chevron-left"></i>
+                            <span class="btn-arrow">←</span>
                         </button>
                         <span class="week-display" id="currentWeek">
                             <!-- Здесь будет отображаться неделя -->
                         </span>
                         <button class="week-nav-btn" id="nextWeekBtn">
                             <i class="fas fa-chevron-right"></i>
+                            <span class="btn-arrow">→</span>
                         </button>
                         <button class="today-btn" id="todayBtn">
                             <i class="fas fa-calendar-day"></i> Сегодня
@@ -50,6 +52,9 @@
                     </div>
                     <button class="btn btn-primary" id="refreshBtn">
                         <i class="fas fa-sync-alt"></i> Обновить
+                    </button>
+                    <button class="btn btn-edit" id="editScheduleBtn" style="display: none;">
+                        <i class="fas fa-edit"></i> Редактировать
                     </button>
                 </div>
             </div>
@@ -63,6 +68,26 @@
                 </div>
             </div>
         </div>
+
+        <!-- Модальное окно редактирования -->
+        <div id="editModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Редактирование расписания</h3>
+                    <button class="close-modal" id="closeModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="editFormContainer">
+                        <!-- Форма редактирования будет загружена здесь -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="cancelEdit">Отмена</button>
+                    <button class="btn btn-primary" id="saveSchedule">Сохранить изменения</button>
+                </div>
+            </div>
+        </div>
+
         <script src="scriptSchedule.js" type="module"></script>
     </main>
 

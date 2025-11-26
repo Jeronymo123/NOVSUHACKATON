@@ -1,0 +1,178 @@
+{
+  "academicYear": "2024-2025",
+  "semester": "autumn",
+  "lastUpdated": "2024-12-20T10:00:00Z",
+  "weeks": {
+    "upper": {
+      "weekNumber": 1,
+      "description": "Верхняя неделя",
+      "days": {
+        "monday": [
+          {
+            "id": "upper_mon_1",
+            "time": "09:00-10:30",
+            "subject": "Математика",
+            "type": "Практика",
+            "groups": ["5091"],
+            "classroom": "3315",
+            "teacher": "Матвеева Ольга Павловна",
+            "teacherId": "322"
+          },
+          {
+            "id": "upper_mon_2",
+            "time": "12:00-13:30",
+            "subject": "Математика",
+            "type": "Практика",
+            "groups": ["5092"],
+            "classroom": "3315",
+            "teacher": "Матвеева Ольга Павловна",
+            "teacherId": "322"
+          }
+        ],
+        "tuesday": [
+          {
+            "id": "upper_tue_1",
+            "time": "12:00-13:30",
+            "subject": "Математика",
+            "type": "Лекция",
+            "groups": ["5091", "5092", "5093", "5094"],
+            "classroom": "2-я поточная",
+            "teacher": "Матвеева Ольга Павловна",
+            "teacherId": "322"
+          }
+        ],
+        "wednesday": [],
+        "thursday": [
+          {
+            "id": "upper_thu_1",
+            "time": "09:00-10:30",
+            "subject": "Математика",
+            "type": "Практика",
+            "groups": ["5094"],
+            "classroom": "3312",
+            "teacher": "Матвеева Ольга Павловна",
+            "teacherId": "322"
+          }
+        ],
+        "friday": [
+          {
+            "id": "upper_fri_1",
+            "time": "09:00-10:30",
+            "subject": "Алгебра, геометрия и математическая логика",
+            "type": "Лекция",
+            "groups": ["4311", "4312"],
+            "classroom": "4-я поточная",
+            "teacher": "Матвеева Ольга Павловна",
+            "teacherId": "322"
+          }
+        ],
+        "saturday": [],
+        "sunday": []
+      }
+    },
+    "lower": {
+      "weekNumber": 2,
+      "description": "Нижняя неделя",
+      "days": {
+        "monday": [
+          {
+            "id": "lower_mon_1",
+            "time": "09:00-10:30",
+            "subject": "Математика",
+            "type": "Практика",
+            "groups": ["5091"],
+            "classroom": "3315",
+            "teacher": "Матвеева Ольга Павловна",
+            "teacherId": "322"
+          },
+          {
+            "id": "lower_mon_2",
+            "time": "12:00-13:30",
+            "subject": "Математика",
+            "type": "Практика",
+            "groups": ["5092"],
+            "classroom": "3315",
+            "teacher": "Матвеева Ольга Павловна",
+            "teacherId": "322"
+          }
+        ],
+        "tuesday": [
+          {
+            "id": "lower_tue_1",
+            "time": "12:00-13:30",
+            "subject": "Математика",
+            "type": "Лекция",
+            "groups": ["5091", "5092", "5093", "5094"],
+            "classroom": "2-я поточная",
+            "teacher": "Матвеева Ольга Павловна",
+            "teacherId": "322"
+          }
+        ],
+        "wednesday": [],
+        "thursday": [
+          {
+            "id": "lower_thu_1",
+            "time": "09:00-10:30",
+            "subject": "Алгебра, геометрия и математическая логика",
+            "type": "Практика",
+            "groups": ["4311"],
+            "classroom": "1311",
+            "teacher": "Матвеева Ольга Павловна",
+            "teacherId": "322"
+          },
+          {
+            "id": "lower_thu_2",
+            "time": "09:00-10:30",
+            "subject": "Алгебра, геометрия и математическая логика",
+            "type": "Практика",
+            "groups": ["4312"],
+            "classroom": "1316",
+            "teacher": "Матвеева Ольга Павловна",
+            "teacherId": "322"
+          }
+        ],
+        "friday": [
+          {
+            "id": "lower_fri_1",
+            "time": "09:00-10:30",
+            "subject": "Математика",
+            "type": "Практика",
+            "groups": ["5093"],
+            "classroom": "1316",
+            "teacher": "Матвеева Ольга Павловна",
+            "teacherId": "322"
+          }
+        ],
+        "saturday": [],
+        "sunday": []
+      }
+    }
+  },
+  "modifications": {
+    "2024-11-24": {
+      "date": "2024-11-24",
+      "description": "Изменения на 24 ноября",
+      "changes": [
+        {
+          "action": "modify",
+          "lessonId": "upper_mon_1",
+          "changes": {
+            "classroom": "2808"
+          },
+          "reason": "Смена аудитории"
+        },
+        {
+          "action": "remove",
+          "lessonId": "upper_mon_2",
+          "reason": "Занятий не будет"
+        }
+      ]
+    }
+  },
+  "holidays": [
+    "2024-12-31",
+    "2025-01-01",
+    "2025-01-02",
+    "2025-01-07"
+  ]
+}

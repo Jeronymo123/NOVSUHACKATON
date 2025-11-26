@@ -7,55 +7,107 @@
       "weekNumber": 1,
       "description": "Верхняя неделя",
       "days": {
-        "monday": [
-          {
-            "id": "upper_mon_1",
-            "time": "09:00-10:30",
-            "subject": "Веб-разработка",
-            "type": "Лекция",
-            "groups": ["ПИ-201", "ПИ-202"],
-            "classroom": "А-101",
-            "teacher": "Иванов А.С.",
-            "teacherId": "teacher1"
-          },
-          {
-            "id": "upper_mon_2",
-            "time": "11:00-12:30",
-            "subject": "Алгоритмы и структуры данных",
-            "type": "Практика",
-            "groups": ["ПИ-201"],
-            "classroom": "Б-205",
-            "teacher": "Петрова М.В.",
-            "teacherId": "teacher2"
-          }
-        ],
+        "monday": [],
         "tuesday": [
           {
             "id": "upper_tue_1",
-            "time": "13:00-14:30",
-            "subject": "Базы данных",
-            "type": "Лабораторная",
-            "groups": ["ПИ-201"],
-            "classroom": "К-301",
-            "teacher": "Кузнецова Е.Л.",
-            "teacherId": "teacher3"
+            "time": "12:00-13:30",
+            "subject": "Математика",
+            "type": "Лекция",
+            "groups": ["5092"],
+            "classroom": "2-я лекционная",
+            "teacher": "Матвеева Ольга Павловна",
+            "teacherId": "math_teacher"
+          },
+          {
+            "id": "upper_tue_2",
+            "time": "14:00-15:30",
+            "subject": "Психология",
+            "type": "Лекция",
+            "groups": ["5092"],
+            "classroom": "2-я лекционная",
+            "teacher": "Гаджибабаева Джаганат Рахидиновна",
+            "teacherId": "psychology_teacher"
+          },
+          {
+            "id": "upper_tue_3",
+            "time": "16:00-17:30",
+            "subject": "Информатика",
+            "type": "Лекция",
+            "groups": ["5092"],
+            "classroom": "2-я лекционная",
+            "teacher": "Алексеева Юлия Владимировна",
+            "teacherId": "informatics_teacher"
           }
         ],
         "wednesday": [
           {
             "id": "upper_wed_1",
             "time": "10:00-11:30",
-            "subject": "Математический анализ",
-            "type": "Лекция",
-            "groups": ["ПИ-201"],
-            "classroom": "А-102",
-            "teacher": "Сидоров П.И.",
-            "teacherId": "teacher4"
+            "subject": "Основы программирования: Алгоритмические языки и программирование",
+            "type": "Практика",
+            "groups": ["5092"],
+            "classroom": "3315",
+            "teacher": "Кулаков Игорь Юрьевич",
+            "teacherId": "programming_teacher1"
+          },
+          {
+            "id": "upper_wed_2",
+            "time": "10:00-11:30",
+            "subject": "Основы программирования: Алгоритмические языки и программирование",
+            "type": "Практика",
+            "groups": ["5092"],
+            "classroom": "3312",
+            "teacher": "Иванов Денис Дмитриевич",
+            "teacherId": "programming_teacher2"
           }
         ],
-        "thursday": [],
-        "friday": [],
-        "saturday": [],
+        "thursday": [
+          {
+            "id": "upper_thu_1",
+            "time": "09:00-10:30",
+            "subject": "Информатика",
+            "type": "Практика",
+            "groups": ["5092"],
+            "classroom": "4207",
+            "teacher": "Архипова Гелиря Аскатовна",
+            "teacherId": "informatics_practice_teacher"
+          },
+          {
+            "id": "upper_thu_2",
+            "time": "14:00-15:30",
+            "subject": "Основы проектной деятельности",
+            "type": "Лекция/Практика",
+            "groups": ["5092"],
+            "classroom": "Онлайн",
+            "teacher": "-",
+            "teacherId": "project_teacher"
+          }
+        ],
+        "friday": [
+          {
+            "id": "upper_fri_1",
+            "time": "13:00-14:30",
+            "subject": "Иностранный язык",
+            "type": "Практика",
+            "groups": ["5092"],
+            "classroom": "1331",
+            "teacher": "Лебедева Елена Анатольевна",
+            "teacherId": "english_teacher"
+          }
+        ],
+        "saturday": [
+          {
+            "id": "upper_sat_1",
+            "time": "12:00-13:30",
+            "subject": "Основы программирования: Алгоритмические языки и программирование",
+            "type": "Лекция",
+            "groups": ["5092"],
+            "classroom": "2-я лекционная",
+            "teacher": "Винник Л.И.",
+            "teacherId": "programming_lecture_teacher"
+          }
+        ],
         "sunday": []
       }
     },
@@ -66,33 +118,167 @@
         "monday": [
           {
             "id": "lower_mon_1",
-            "time": "09:00-10:30",
-            "subject": "Математический анализ",
-            "type": "Лекция",
-            "groups": ["ПИ-201", "ПИ-202"],
-            "classroom": "А-102",
-            "teacher": "Сидоров П.И.",
-            "teacherId": "teacher4"
+            "time": "10:00-11:30",
+            "subject": "Правоведение",
+            "type": "Практика",
+            "groups": ["5092"],
+            "classroom": "5-я лекционная",
+            "teacher": "Антонова Татьяна Александровна",
+            "teacherId": "law_teacher"
+          },
+          {
+            "id": "lower_mon_2",
+            "time": "11:00-12:30",
+            "subject": "Психология",
+            "type": "Практика",
+            "groups": ["5092"],
+            "classroom": "5-я лекционная",
+            "teacher": "Птушенко Н.С.",
+            "teacherId": "psychology_practice_teacher"
+          },
+          {
+            "id": "lower_mon_3",
+            "time": "12:00-13:30",
+            "subject": "Математика",
+            "type": "Практика",
+            "groups": ["5092"],
+            "classroom": "3315",
+            "teacher": "Матвеева Ольга Павловна",
+            "teacherId": "math_teacher"
+          },
+          {
+            "id": "lower_mon_4",
+            "time": "17:00-18:30",
+            "subject": "Основы российской государственности",
+            "type": "Практика",
+            "groups": ["5092"],
+            "classroom": "4-я лекционная",
+            "teacher": "Шипулин Всеволод Олегович",
+            "teacherId": "statehood_teacher"
           }
         ],
-        "tuesday": [],
-        "wednesday": [],
+        "tuesday": [
+          {
+            "id": "lower_tue_1",
+            "time": "10:00-11:30",
+            "subject": "История России",
+            "type": "Практика",
+            "groups": ["5092"],
+            "classroom": "3315",
+            "teacher": "Борисевич Даниил Андреевич",
+            "teacherId": "history_teacher1"
+          },
+          {
+            "id": "lower_tue_2",
+            "time": "15:00-16:30",
+            "subject": "История России",
+            "type": "Лекция",
+            "groups": ["5092"],
+            "classroom": "2-я лекционная",
+            "teacher": "Матвеев Олег Владимирович",
+            "teacherId": "history_teacher2"
+          },
+          {
+            "id": "lower_tue_3",
+            "time": "17:00-18:30",
+            "subject": "Информатика",
+            "type": "Лекция",
+            "groups": ["5092"],
+            "classroom": "2-я лекционная",
+            "teacher": "Алексеева Юлия Владимировна",
+            "teacherId": "informatics_teacher"
+          }
+        ],
+        "wednesday": [
+          {
+            "id": "lower_wed_1",
+            "time": "08:00-09:30",
+            "subject": "Физическая культура и спорт",
+            "type": "Лекция/Практика",
+            "groups": ["5092"],
+            "classroom": "Спортзал",
+            "teacher": "Кирсанова Ольга Николаевна",
+            "teacherId": "pe_teacher"
+          }
+        ],
         "thursday": [],
-        "friday": [],
-        "saturday": [],
+        "friday": [
+          {
+            "id": "lower_fri_1",
+            "time": "10:00-11:30",
+            "subject": "Русский язык и культура речи",
+            "type": "Практика",
+            "groups": ["5092"],
+            "classroom": "5-я лекционная",
+            "teacher": "Макаров Владлен Иванович",
+            "teacherId": "russian_teacher"
+          }
+        ],
+        "saturday": [
+          {
+            "id": "lower_sat_1",
+            "time": "13:00-14:30",
+            "subject": "Психология",
+            "type": "Лекция",
+            "groups": ["5092"],
+            "classroom": "Онлайн",
+            "teacher": "Гаджибабаева Джаганат Рахидиновна",
+            "teacherId": "psychology_teacher"
+          },
+          {
+            "id": "lower_sat_2",
+            "time": "14:00-15:30",
+            "subject": "Правоведение",
+            "type": "Лекция",
+            "groups": ["5092"],
+            "classroom": "Онлайн",
+            "teacher": "Антонова Татьяна Александровна",
+            "teacherId": "law_teacher"
+          },
+          {
+            "id": "lower_sat_3",
+            "time": "15:00-16:30",
+            "subject": "Правоведение",
+            "type": "Практика",
+            "groups": ["5092"],
+            "classroom": "Онлайн",
+            "teacher": "Антонова Татьяна Александровна",
+            "teacherId": "law_teacher"
+          },
+          {
+            "id": "lower_sat_4",
+            "time": "16:00-17:30",
+            "subject": "Психология",
+            "type": "Практика",
+            "groups": ["5092"],
+            "classroom": "Онлайн",
+            "teacher": "Птушенко Н.С.",
+            "teacherId": "psychology_practice_teacher"
+          },
+          {
+            "id": "lower_sat_5",
+            "time": "17:00-18:30",
+            "subject": "Иностранный язык",
+            "type": "Практика",
+            "groups": ["5092"],
+            "classroom": "Онлайн",
+            "teacher": "Лебедева Елена Анатольевна",
+            "teacherId": "english_teacher"
+          }
+        ],
         "sunday": []
       }
     }
   },
   "modifications": {
-    "2024-12-25": {
-      "date": "2024-12-25",
-      "description": "Изменения на 25 декабря",
+    "2024-11-24": {
+      "date": "2024-11-24",
+      "description": "Отмена занятия по математике",
       "changes": [
         {
           "action": "remove",
-          "lessonId": "upper_mon_1",
-          "reason": "Выходной день"
+          "lessonId": "lower_mon_3",
+          "reason": "Занятий не будет"
         }
       ]
     }
