@@ -8,18 +8,30 @@ async function Logout() {
     }
 }
 
-async function profile() {
+async function get_User() {
     const response = await fetch("/profile", { credentials: "include" });
     const res = await response.json();
-    if (res.status === "ok") {
-        document.querySelectorAll("#NameProfile").forEach(item=>{
-            item.textContent=res.user.Surname+" "+res.user.Name;
-        });
 
+    if (res.status === "ok") {
+        return res.user;
+    } else {
+        window.location.href = "entry_form.html"
     }
-    else{
-        window.location.href = "entry_form.html";
+}
+
+async function profile() {
+    const user = await get_User();
+    
+    document.querySelectorAll("#NameProfile").forEach(item=>{
+        item.textContent = user.Surname + " " + user.Name;
+    });
+    document.getElementById("NameProfileMain").textContent = user.Surname + " " + user.Name;
+
+    // Проверка роли пользователя по вашей логике
+    if (user.Role === "Преподаватель") {
+        document.getElementById("teacherStats").style.display = "grid";
     }
-    console.log(res.user.Name);
+    
+    console.log(user.Name);
 }
 window.onload = profile;
