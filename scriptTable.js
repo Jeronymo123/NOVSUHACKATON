@@ -1,5 +1,33 @@
 import { parseJSONStudent } from './scriptStudent.js'
 
+
+document.addEventListener("DOMContentLoaded", function () {
+    var leftBody = document.querySelector("#Table1 tbody");
+    var rightBody = document.querySelector("#Table tbody");
+
+    var isSyncingLeft = false;
+    var isSyncingRight = false;
+
+    leftBody.addEventListener("scroll", function () {
+        if (isSyncingLeft) {
+            isSyncingLeft = false;
+            return;
+        }
+        isSyncingRight = true;
+        rightBody.scrollTop = leftBody.scrollTop;
+    });
+
+    rightBody.addEventListener("scroll", function () {
+        if (isSyncingRight) {
+            isSyncingRight = false;
+            return;
+        }
+        isSyncingLeft = true;
+        leftBody.scrollTop = rightBody.scrollTop;
+    });
+});
+
+
 document.getElementById('AddColumn').onclick = AddColumn;
 document.getElementById('Editing').addEventListener("change", create_edit)
 document.getElementById('Pass').addEventListener("change", Pass);
@@ -59,29 +87,29 @@ export async function AddTable(Subject, Group) {
     countPerson = PersonData.length;
     subject = Subject;
     group = Group;
-    const FixedTableBody = document.getElementById("FixedTableBody");
-    const ScrollableTableBody = document.getElementById("ScrollableTableBody");
-
+    const Table = document.getElementById("Table");
+    const Table1 = document.getElementById("Table1");
     for (let i = 0; i < countPerson; i++) {
 
         indexInput++;
-        
-        const FixedRow = FixedTableBody.insertRow();
-        FixedRow.className = "Delete Row";
 
-        const Num = FixedRow.insertCell();
-        Num.className = "fixed-num";
+        const Row = Table.insertRow();
+        const Row1 = Table1.insertRow();
+
+        Row.className = "Delete Row";
+
+
+        const Num = Row1.insertCell();
+        Num.className = "Num";
         Num.innerHTML = i + 1;
 
-        const NameCell = FixedRow.insertCell();
-         NameCell.innerHTML = PersonData[i].info.name;
-        NameCell.className = "fixed-name";
-        NameCell.id = i;
-        
-        const ScrollableRow = ScrollableTableBody.insertRow();
-        ScrollableRow.className = "Delete Row";
-        
-        // const InputName = document.createElement("input");
+        const Cell = Row1.insertCell();
+
+        Cell.innerHTML = PersonData[i].info.name;
+        Cell.className = "NamePerson";
+
+        Cell.id = i;
+        //const InputName = document.createElement("input");
 
         // InputName.className = "RowInput";
         // InputName.type = 'text'
@@ -115,11 +143,11 @@ export async function AddTable(Subject, Group) {
         //         }
         //     }
         // })
-        console.log(user.Surname + " "+user.Name+" "+user.Secondname);
-        if(user.Surname + " "+user.Name+" "+user.Secondname === PersonData[i].info.name){
-            FixedRow.style.backgroundColor = "yellow";
-            ScrollableRow.style.backgroundColor = "yellow";
+        if (user.Surname + " " + user.Name + " " + user.Secondname === PersonData[i].info.name) {
+            Row.style.backgroundColor = "yellow";
+            Cell.style.backgroundColor = "yellow";
             Num.style.backgroundColor = "yellow";
+
         }
     }
     if (PersonData.length > 0) {
@@ -211,7 +239,15 @@ async function AddColumn() {
         GradeInput.value = Cell.textContent;
         GradeInput.style.display = "none";
         GradeInput.addEventListener("change", function () {
-            change_data_Value(Cell.id % countPerson, Cell.className.replace(/Grades/, '').slice(6), GradeInput.value);
+            if (!isNaN(GradeInput.value)) {
+                change_data_Value(Cell.id % countPerson, Cell.className.replace(/Grades/, '').slice(6), GradeInput.value);
+                Cell.style.backgroundColor="white";
+                Cell.firstChild.textContent=GradeInput.value;
+            }
+            else{
+                GradeInput.value=0;
+                Cell.style.backgroundColor="#dc2626";
+            }
         });
         Cell.appendChild(GradeInput);
     });
@@ -236,13 +272,13 @@ function AddDesciption() {
     const Input = document.createElement("input");
 
     Input.style.display = "none";
-    Input.style = "border: none;"
+    Input.style.border= "none";
     Input.style.width = "100%";
     Input.style.height = "100%";
 
     Description.addEventListener("click", function () {
         if (document.getElementById("Editing").checked) {
-            Input.style.display = "flex";
+            Input.style.display = "block";
             Description.firstChild.textContent = "";
             Input.focus();
         }
@@ -318,14 +354,16 @@ function AddTypeWork() {
         "Лекция",
         "Практика",
         "Лабораторная",
-        "Экзамен"
+        "Экзамен",
+        "Своё"
     ];
     const typevalue = [
         "Посещаемость",
         "Лекция",
         "Практика",
         "Лабораторная",
-        "Экзамен"
+        "Экзамен",
+        "Своё"
     ];
     for (let i = 0; i < typetext.length; i++) {
         const Option = document.createElement("option");
@@ -366,14 +404,16 @@ function AddTypeWork() {
 
                     Int.style.display = 'inline-block';
                     Int.value = 0;
+                    element.style.color="rgba(0,0,0,0)";
                     if (element.className === `Column${TypeWork.id.slice(8)} Grade`) {
                         element.className += "s";
                     }
-                    element.firstChild.textContent = "";
+                    
                 }
                 else {
                     const Int = element.querySelector("input");
                     Int.style.display = 'none';
+                    element.style.color="rgba(0,0,0,1)";
                     element.firstChild.textContent = "+";
                     element.addEventListener("click", element._clickFunc);
                     element.className = String(element.className).replace("s", '');
@@ -404,7 +444,7 @@ function LoadHeader(date, description) {
 function LoadDesciption(description) {
     const Description = document.getElementById("Description").insertCell();
 
-    Description.innerHTML = description;
+    
 
     Description.id = "Description" + indexColumn;
     Description.className = `Delete Column${indexColumn}`;
@@ -414,16 +454,16 @@ function LoadDesciption(description) {
     Description.style.backgroundColor = "white";
 
     const Input = document.createElement("input");
-    
+
     Input.style.display = "none";
 
-    Input.style = "border: none;"
+    Input.style.border="none;"
     Input.style.width = "100%";
     Input.style.height = "100%";
-
+    Description.innerHTML = description;
     Description.addEventListener("click", function () {
         if (document.getElementById("Editing").checked) {
-            Input.style.display = "flex";
+            Input.style.display = "block";
             Input.value = Description.textContent;
             Description.firstChild.textContent = "";
             Input.focus();
@@ -500,7 +540,8 @@ function LoadTypeWork(typework) {
         "Лекция",
         "Практика",
         "Лабораторная",
-        "Экзамен"
+        "Экзамен",
+        "Своё"
     ];
 
     for (let i = 0; i < typetext.length; i++) {
@@ -545,11 +586,12 @@ function LoadTypeWork(typework) {
                     if (element.className === `Column${TypeWork.id.slice(8)} Grade`) {
                         element.className += "s";
                     }
-                    element.firstChild.textContent = "";
+                    element.element.style.color="rgba(0, 0, 0, 0)";
                 }
                 else {
                     const Int = element.querySelector("input");
                     Int.style.display = 'none';
+                    element.style.color="rgba(0, 0, 0, 1)";
                     element.firstChild.textContent = "+";
                     element.addEventListener("click", element._clickFunc);
                     element.className = String(element.className).replace("s", '');
@@ -571,7 +613,7 @@ function LoadTypeWork(typework) {
 }
 
 function LoadGrade(Grades) {
-    const elements = document.querySelectorAll('#ScrollableTableBody .Row');
+    const elements = document.querySelectorAll('.Row');
     let cCell = 0;
     elements.forEach(element => {
         const Cell = element.insertCell();
@@ -589,10 +631,10 @@ function LoadGrade(Grades) {
                     Cell.firstChild.textContent = change_attendance(Cell.id);
                 }
             };
-        }
 
-        const work = typework ? typework.querySelector("select") : null;
-        if (work && work.options[work.selectedIndex].text !== "Посещаемость") {
+        }
+        const work = typework.querySelector("select");
+        if (work.options[work.selectedIndex].text !== "Посещаемость") {
             Cell.className += " Grades";
             if (Number(Grades[cCell])) {
                 Cell.innerHTML = Grades[cCell];
@@ -601,18 +643,28 @@ function LoadGrade(Grades) {
                 Cell.innerHTML = 0;
             }
         } else {
+
             Cell.className += " Grade";
             Cell.innerHTML = Grades[cCell];
             Cell.addEventListener("click", Cell._clickFunc);
         }
-        
         GradeInput.value = Cell.textContent;
         GradeInput.style.display = "none";
         GradeInput.addEventListener("change", function () {
-            change_data_Value(Cell.id % countPerson, Cell.className.replace(/Grades/, '').slice(6), GradeInput.value);
+            if (!isNaN(GradeInput.value)) {
+                change_data_Value(Cell.id % countPerson, Cell.className.replace(/Grades/, '').slice(6), GradeInput.value);
+                Cell.style.backgroundColor="white";
+                Cell.firstChild.textContent=GradeInput.value;
+            }
+            else{
+                GradeInput.value=0;
+                Cell.style.backgroundColor="#dc2626";
+            }
+            
         });
         cCell++;
         Cell.appendChild(GradeInput);
+
     });
 }
 
@@ -639,12 +691,12 @@ async function create_edit() {
             document.getElementById('Pass').style.display = "inline-block";
             document.getElementById('Presence').style.display = "inline-block";
             document.getElementById('Disease').style.display = "inline-block";
-            document.getElementById("DeleteColumn").style.display = "table-row";
-
+            document.getElementById("DeleteColumn").style.display = "table";
+            document.getElementById("DeleteColumn1").style.display = "";
             const Grade = document.querySelectorAll(".Grades");
             Grade.forEach(element => {
-                element.querySelector("input").style.display = "flex";
-                element.firstChild.textContent = "";
+                element.querySelector("input").style.display = "";
+                element.style.color="rgba(0, 0, 0, 0)";
             });
 
         }
@@ -653,11 +705,12 @@ async function create_edit() {
             document.getElementById('Presence').style.display = "none";
             document.getElementById('Disease').style.display = "none";
             document.getElementById("DeleteColumn").style.display = "none";
+            document.getElementById("DeleteColumn1").style.display = "none";
             const Grade = document.querySelectorAll(".Grades");
             Grade.forEach(element => {
                 const GradeInput = element.querySelector("input");
                 GradeInput.style.display = "none";
-                element.firstChild.textContent = !isNaN(Number(GradeInput.value)) ? GradeInput.value : 0;
+                element.style.color="rgba(0, 0, 0, 1)";
                 change_data_Value(element.id % countPerson, element.className.replace(/Grades/, '').slice(6), !isNaN(Number(GradeInput.value)) ? GradeInput.value : 0);
             });
         }
@@ -687,7 +740,7 @@ function create_data() {
         Date: "DD.MM.YYYY",
         TypeWork: "typeWork",
         Value: "+",
-        Description: ""
+        Description: "",
     });
 
 }

@@ -19,6 +19,7 @@ async function toTable() {
     else {
         document.getElementById("ErrorLogin").style.display = "";
         document.getElementById("ErrorPass").style.display = "";
+        document.getElementById("PasswordLog").value="";
     }
 }
 

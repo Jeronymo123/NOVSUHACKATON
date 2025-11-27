@@ -1,3 +1,13 @@
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --background: #f8fafc;
+    --surface: #ffffff;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+}
+
 /* Стили для страницы профиля */
 .profile-container {
     max-width: 1000px;
@@ -182,7 +192,61 @@
     margin-top: 2rem;
 }
 
-/* Стили для формы редактирования */
+/* Стили для группы */
+#SelectGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#SelectGroup select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+}
+
+#Input-Group {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid var(--primary);
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+}
+
+#Input-Group:focus {
+    border-color: var(--primary-dark);
+}
+
+#SpanGroup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    background: var(--primary);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.TagLabel {
+    margin-right: 6px;
+}
+
+.TagRemove {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Форма редактирования */
 .edit-form {
     display: none;
 }
@@ -239,6 +303,7 @@
         padding: 1.5rem;
     }
 }
+<<<<<<< HEAD
 
 /* Добавляем в конец файла profile.css */
 
@@ -300,3 +365,5 @@
         width: 100%;
     }
 }
+=======
+>>>>>>> 2f9010d (Работа)

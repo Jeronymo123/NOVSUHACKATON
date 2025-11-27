@@ -275,7 +275,7 @@ app.post('/sendgroup', (req, res) => {
             console.log(req.body);
             users[indexLogin].Group = req.body;
             fs.writeFileSync(dir, JSON.stringify(users, null, 2), 'utf-8');
-            req.session.user.Group=req.body;
+            req.session.user.Group = req.body;
             req.session.save(err => {
                 if (err) {
                     return res.status(500).json({ status: "error" });
@@ -295,13 +295,29 @@ app.post('/sendgroup', (req, res) => {
 app.post('/logout', (req, res) => {
     if (req.session.user) {
         console.log(`Logout: ${req.session.user.Login} ${req.session.user.Email}`);
-    }
-    req.session.destroy(err => {
-        if (err) {
-            return res.status(500).json({ status: 'error' });
-        }
+
+
+        const userInfo = { ...req.session.user };
+
+        req.session.destroy(err => {
+            if (err) {
+                console.error('Error destroying session:', err);
+                return res.status(500).json({ status: 'error' });
+            }
+
+            res.clearCookie('connect.sid', {
+                path: '/',
+                httpOnly: true,
+                sameSite: 'lax'
+            });
+
+            console.log(`Session destroyed for user: ${userInfo.Login}`);
+            res.json({ status: 'logout' });
+        });
+    } else {
+
         res.json({ status: 'logout' });
-    });
+    }
 });
 // function GeneratorFile() {
 //     const Person = {

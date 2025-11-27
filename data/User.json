@@ -1,14 +1,7 @@
 [
   {
     "Role": "Преподаватель",
-    "Group": {
-      "Математика": [
-        "5092"
-      ],
-      "Физическая культура": [
-        "5011"
-      ]
-    },
+    "Group": "",
     "Login": "322",
     "Email": "322@322.322",
     "Password": "$2b$10$KlOleauVqOKlSl3e3E6T8.Ci0BpLpShG5rKmy/ZK/boqTdsPIuoPO",

@@ -53,6 +53,7 @@ async function loadSpan() {
     spanGroup.innerHTML = '';
     
     data = Group;
+<<<<<<< HEAD
     
     // Проверяем, что Group существует и не пустой
     if (Group && Object.keys(Group).length > 0 && select.selectedIndex >= 0) {
@@ -63,6 +64,14 @@ async function loadSpan() {
                 const span = document.createElement("span");
                 const spanlabel = document.createElement("span");
                 const spanremove = document.createElement("span");
+=======
+    console.log(Group);
+    if (Group.length !== 0) {
+        Group[select.options[select.selectedIndex].textContent].forEach(item => {
+            const span = document.createElement("span");
+            const spanlabel = document.createElement("span");
+            const spanremove = document.createElement("span");
+>>>>>>> 2f9010d (Работа)
 
                 spanremove.textContent = "x";
                 spanremove.title = "Удалить";
