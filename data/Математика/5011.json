@@ -1,16 +1,20 @@
 [
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
-      "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
+      "Value": "54",
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "П",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 0,
     "info": {
@@ -21,16 +25,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "П",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 1,
     "info": {
@@ -41,16 +49,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "П",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 2,
     "info": {
@@ -61,16 +73,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "+",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 3,
     "info": {
@@ -81,16 +97,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "+",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 4,
     "info": {
@@ -101,16 +121,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "+",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 5,
     "info": {
@@ -121,16 +145,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "Б",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 6,
     "info": {
@@ -141,16 +169,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "Б",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 7,
     "info": {
@@ -161,16 +193,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "+",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 8,
     "info": {
@@ -181,16 +217,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "+",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 9,
     "info": {
@@ -201,16 +241,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "+",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 10,
     "info": {
@@ -221,16 +265,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "+",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 11,
     "info": {
@@ -241,16 +289,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "+",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 12,
     "info": {
@@ -261,16 +313,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "+",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 13,
     "info": {
@@ -281,16 +337,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "+",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 14,
     "info": {
@@ -301,16 +361,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "+",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 15,
     "info": {
@@ -321,16 +385,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "+",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 16,
     "info": {
@@ -341,16 +409,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "+",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 17,
     "info": {
@@ -361,16 +433,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "+",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 18,
     "info": {
@@ -381,16 +457,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "+",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 19,
     "info": {
@@ -401,16 +481,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "+",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 20,
     "info": {
@@ -421,16 +505,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "+",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 21,
     "info": {
@@ -441,16 +529,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "+",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 22,
     "info": {
@@ -461,16 +553,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "+",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 23,
     "info": {
@@ -481,16 +577,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "+",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 24,
     "info": {
@@ -501,16 +601,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "+",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 25,
     "info": {
@@ -521,16 +625,20 @@
   },
   {
     "0": {
-      "Date": "01.12.2025",
-      "TypeWork": "Практика",
+      "Date": "27.11.2025",
+      "TypeWork": "Лекция",
       "Value": "0",
-      "Description": "Контрольная работа №4 fgfgfdgfdf"
+      "MaxValue": "58",
+      "Description": "jkjkfdffsd",
+      "Role": "Студент"
     },
     "1": {
-      "Date": "03.12.2025",
-      "TypeWork": "Посещаемость",
-      "Value": "+",
-      "Description": "Практика №4"
+      "Date": "27.11.2025",
+      "TypeWork": "Практика",
+      "Value": "0",
+      "MaxValue": 0,
+      "Description": "dfsdfksdkfds",
+      "Role": "Студент"
     },
     "id": 26,
     "info": {

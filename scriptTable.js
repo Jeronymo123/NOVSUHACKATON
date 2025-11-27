@@ -34,6 +34,7 @@ document.getElementById('Pass').addEventListener("change", Pass);
 document.getElementById('Presence').addEventListener("change", Presence);
 document.getElementById('Disease').addEventListener("change", Disease);
 document.getElementById('AddStudent').onclick = send_to_Server;
+document.getElementById('AddStudentHeadman').onclick = send_to_Server;
 
 async function get_User() {
     const response = await fetch("/profile", { credentials: "include" });
@@ -51,13 +52,17 @@ async function LoadDoc() {
     if (user.Role === "Преподаватель") {
         divRole.style.display = "";
     }
+    else if (user.Role === "Староста") {
+        document.getElementById("EditingHeadman").style.display = "";
+        Headman = true;
+    }
 }
 
-var Headman = true;
-
+var Headman = false;
+var Headman_buffer=[];
 var indexInput = 0;
 var countPerson = 0;
-var type_editing = 0;
+var type_editing = 1;
 var indexColumn = 0;
 var countCell = 0;
 var PersonData = [];
@@ -66,7 +71,7 @@ var subject;
 var group;
 async function send_to_Server() {
     const user = await get_User();
-    if (user.Role === "Преподаватель") {
+    if (user.Role === "Преподаватель" || user.Role === "Староста") {
         change_new_data_Value();
         PersonData.forEach(item => {
             fetch(`/savestudent?subject=${subject}&group=${group}`, {
@@ -163,7 +168,6 @@ export async function AddTable(Subject, Group) {
 
             Num.style.backgroundColor = "lime";
         }
-
     }
     if (PersonData.length > 0) {
         Object.keys(PersonData[0]).forEach(element => {
@@ -174,9 +178,9 @@ export async function AddTable(Subject, Group) {
                     PersonGrades.push(PersonData[i][element].Value);
                 }
                 LoadHeader(PersonData[0][element].Date, PersonData[0][element].Description);
-                LoadTypeWork(PersonData[0][element].TypeWork,PersonData[0][element].MaxValue);
+                LoadTypeWork(PersonData[0][element].TypeWork, PersonData[0][element].MaxValue);
                 LoadGrade(PersonGrades);
-
+                Headman_buffer.push(PersonData[0][element].Visit);
                 indexColumn++;
             }
         })
@@ -237,13 +241,15 @@ async function AddColumn() {
 
         Cell.id = countCell;
         Cell.className = `Column${indexColumn}`;
-
+        Cell.type = 1;
         countCell++;
 
         if (!Cell._clickFunc) {
             Cell._clickFunc = function () {
-                if (document.getElementById("Editing").checked) {
+                if (document.getElementById("Editing").checked || (document.getElementById("HeadmanEditing").checked && Headman === true)) {
+                    type_editing = Cell.type;
                     Cell.firstChild.textContent = change_attendance(Cell.id);
+                    Cell.type = Cell.type = (type_editing + 1) % 3;
                 }
             };
 
@@ -388,7 +394,7 @@ function AddTypeWork() {
     }
 
     Work.className = "Work";
-    Work.id="Work"+indexColumn;
+    Work.id = "Work" + indexColumn;
     Work.style.display = "none";
     Work.selectedIndex = 0;
 
@@ -399,12 +405,12 @@ function AddTypeWork() {
     MaxValue.value = 0;
     MaxValue.id = "MaxValue" + indexColumn;
     MaxValue.style.display = 'none';
-    MaxValue.style.width="20px";
+    MaxValue.style.width = "20px";
 
     const MaxValueText = document.createElement('h');
     if (TypeWork.firstChild.textContent !== "Посещаемость") {
         MaxValueText.innerHTML = MaxValue.value;
-        change_data_MaxValue(indexColumn,MaxValue.value);
+        change_data_MaxValue(MaxValue.id.slice(8), MaxValue.value);
     }
     else {
         MaxValueText.innerHTML = "";
@@ -587,7 +593,7 @@ function LoadTypeWork(typework, maxvalue) {
     MaxValue.value = maxvalue;
     MaxValue.id = "MaxValue" + indexColumn;
     MaxValue.style.display = 'none';
-    MaxValue.style.width="20px";
+    MaxValue.style.width = "20px";
 
     const MaxValueText = document.createElement('h');
     if (TypeWork.firstChild.textContent !== "Посещаемость") {
@@ -600,7 +606,8 @@ function LoadTypeWork(typework, maxvalue) {
     MaxValueText.style.padding = "20px";
     MaxValue.addEventListener('change', function () {
         MaxValueText.innerHTML = MaxValue.value;
-        change_data_MaxValue(indexColumn,MaxValue.value);
+        change_data_MaxValue(MaxValue.id.slice(8), MaxValue.value);
+
     });
 
     Work.addEventListener("change", function () {
@@ -652,8 +659,9 @@ function LoadGrade(Grades) {
     elements.forEach(element => {
         const Cell = element.insertCell();
         const GradeInput = document.createElement("input");
-
+        GradeInput.id = `GradeInput${indexColumn}`;
         Cell.id = countCell;
+        Cell.type = 1;
         Cell.className = `Column${indexColumn}`;
         const typework = document.getElementById(`TypeWork${Cell.className.slice(6)}`);
 
@@ -662,7 +670,15 @@ function LoadGrade(Grades) {
         if (!Cell._clickFunc) {
             Cell._clickFunc = function () {
                 if (document.getElementById("Editing").checked) {
+                    type_editing = Cell.type;
                     Cell.firstChild.textContent = change_attendance(Cell.id);
+                    Cell.type = (type_editing + 1) % 3;
+                }
+                
+                else if (document.getElementById("HeadmanEditing").checked && Headman === true && Headman_buffer[Math.floor(Cell.id/countPerson)]!==1) {
+                    type_editing = Cell.type;
+                    Cell.firstChild.textContent = change_attendance(Cell.id);
+                    Cell.type = (type_editing + 1) % 3;
                 }
             };
 
@@ -685,7 +701,7 @@ function LoadGrade(Grades) {
         GradeInput.value = Cell.textContent;
         GradeInput.style.display = "none";
         GradeInput.addEventListener("change", function () {
-            if (!isNaN(GradeInput.value)) {
+            if (!isNaN(GradeInput.value) && Number(GradeInput.value) <= Number(document.getElementById(`MaxValue${GradeInput.id.slice(10)}`).value)) {
                 change_data_Value(Cell.id % countPerson, Cell.className.replace(/Grades/, '').slice(6), GradeInput.value);
                 Cell.style.backgroundColor = "white";
                 Cell.firstChild.textContent = GradeInput.value;
@@ -703,6 +719,9 @@ function LoadGrade(Grades) {
 }
 
 function change_attendance(ind) {
+    if(document.getElementById("HeadmanEditing").checked && Headman===true){
+        change_data_Visit(Math.floor(ind / countPerson));
+    }
     if (type_editing === 0) {
         change_data_Value(ind % countPerson, Math.floor(ind / countPerson), "+");
         return "+";
@@ -716,6 +735,7 @@ function change_attendance(ind) {
         change_data_Value(ind % countPerson, Math.floor(ind / countPerson), "Б");
         return "Б";
     }
+    
 }
 
 async function create_edit() {
@@ -736,8 +756,8 @@ async function create_edit() {
             Twork.forEach(elem => {
                 document.getElementById(`TypeWork${elem.id.slice(4)}`).style.color = "rgba(0,0,0,0)";
                 elem.style.display = "inline-block";
-                
-                if (elem.options[elem.selectedIndex].text !=="Посещаемость") {
+
+                if (elem.options[elem.selectedIndex].text !== "Посещаемость") {
                     document.getElementById(`MaxValue${elem.id.slice(4)}`).style.display = "inline-block";
                 }
             })
@@ -788,6 +808,7 @@ function create_data() {
     data.push({
         Date: "DD.MM.YYYY",
         TypeWork: "typeWork",
+        Visit: 0,
         Value: "+",
         MaxValue: 0,
         Description: "",
@@ -840,13 +861,22 @@ function change_new_data_Value() {
         });
     }
 }
-function change_data_MaxValue(id, MaxValue){
-    data[id].Max = MaxValue;
+function change_data_MaxValue(id, MaxValue) {
+    data[id].MaxValue = MaxValue;
     for (let i = 0; i < countPerson; i++) {
         if (!PersonData[i][id]) {
             PersonData[i][id] = data[id];
         }
         PersonData[i][id].MaxValue = MaxValue;
+    }
+}
+function change_data_Visit(id) {
+    data[id].Visit = 1;
+    for (let i = 0; i < countPerson; i++) {
+        if (!PersonData[i][id]) {
+            PersonData[i][id] = data[id];
+        }
+        PersonData[i][id].Visit = 1;
     }
 }
 function change_data_Value(id, ind, grade) {

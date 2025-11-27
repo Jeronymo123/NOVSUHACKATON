@@ -83,7 +83,6 @@ async function fill_selector() {
 
         container.innerHTML = '';
 
-        console.log(Classes);
         Classes.forEach((classItem, index) => {
             const subjectName = classItem.slice(classItem.indexOf('\\') + 1, classItem.lastIndexOf('\\'));
             const groupPath = classItem.slice(classItem.lastIndexOf('\\'));

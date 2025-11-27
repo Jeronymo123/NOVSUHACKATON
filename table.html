@@ -7,7 +7,7 @@
     <title>Таблица посещаемости - UniAttend</title>
     <link rel="stylesheet" href="base.css">
     <link rel="stylesheet" href="table.css">
-    
+
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> -->
 </head>
 
@@ -37,81 +37,85 @@
 
         <div class="container">
             <div class="container_subject">
-            <div class="horizontal-subject-selector">
-                <h2>Выберите предмет</h2>
-                <div class="horizontal-subjects" id="subjectHorizontal">
-                </div>
-            </div>
-
-            </div>
-            <div class="controls" id="Role" style="display: none">
-                <button id="AddColumn">Добавить колонку</button>
-
-                <div class="checkbox-group">
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="Editing">
-                        <label for="Editing">Режим редактирования</label>
-                    </div>
-
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="Presence" checked style="display: none">
-                        <label for="Presence">Присутствие</label>
-                    </div>
-
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="Pass" style="display: none">
-                        <label for="Pass">Пропуск</label>
-                    </div>
-
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="Disease" style="display: none">
-                        <label for="Disease">Болезнь</label>
+                <div class="horizontal-subject-selector">
+                    <h2>Выберите предмет</h2>
+                    <div class="horizontal-subjects" id="subjectHorizontal">
                     </div>
                 </div>
+                <div class="checkbox-item" style="display: none;" id="EditingHeadman">
+                    <input type="checkbox" id="HeadmanEditing">
+                    <label for="HeadmanEditing">Режим редактирования</label>
+                    <button id="AddStudentHeadman"> Сохранить</button>
+                </div>
 
-                <button id="AddStudent">Cохранить</button>
-            </div>
+                <div class="controls" id="Role" style="display: none">
+                    <button id="AddColumn">Добавить колонку</button>
 
-            <div class="table-container">
-                <table class="Table" id="Table1">
-                    <thead>
-                        <tr>
-                            <td class="NumFirst">№</td>
-                            <td class="NamePersonFirst">ФИО</td>
-                        </tr>
-                        <tr>
-                            <td class="Delete1 Num"></td>
-                            <td class="Delete"1></td>
-                        </tr>
-                        <tr id="DeleteColumn1" style="display:none">
-                            <td class="Delete1 Num"></td>
-                            <td class="Delete1"></td>
-                        </tr>
-                        <tr>
-                            <td class="Delete Num"></td>
-                            <td class="Delete1"></td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr></tr>
-                    </tbody>
-                </table>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="Editing">
+                            <label for="Editing">Режим редактирования</label>
+                        </div>
 
-                <div class="table-container1" id="ScrollBox">
-                    <table class="Table" id="Table">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="Presence" style="display: none">
+                            <label for="Presence">Присутствие</label>
+                        </div>
+
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="Pass" style="display: none">
+                            <label for="Pass">Пропуск</label>
+                        </div>
+
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="Disease" style="display: none">
+                            <label for="Disease">Болезнь</label>
+                        </div>
+                    </div>
+
+                    <button id="AddStudent">Cохранить</button>
+                </div>
+
+                <div class="table-container">
+                    <table class="Table" id="Table1">
                         <thead>
-                            <tr id="Keyword"></tr>
-                            <tr id="Description"></tr>
-                            <tr id="DeleteColumn" style="display:none;"></tr>
-                            <tr id="TypeWork"></tr>
+                            <tr>
+                                <td class="NumFirst">№</td>
+                                <td class="NamePersonFirst">ФИО</td>
+                            </tr>
+                            <tr>
+                                <td class="Delete1 Num"></td>
+                                <td class="Delete" 1></td>
+                            </tr>
+                            <tr id="DeleteColumn1" style="display:none">
+                                <td class="Delete1 Num"></td>
+                                <td class="Delete1"></td>
+                            </tr>
+                            <tr>
+                                <td class="Delete Num"></td>
+                                <td class="Delete1"></td>
+                            </tr>
                         </thead>
                         <tbody>
-                            <tr id="Body"></tr>
+                            <tr></tr>   
                         </tbody>
                     </table>
+
+                    <div class="table-container1" id="ScrollBox">
+                        <table class="Table" id="Table">
+                            <thead>
+                                <tr id="Keyword"></tr>
+                                <tr id="Description"></tr>
+                                <tr id="DeleteColumn" style="display:none;"></tr>
+                                <tr id="TypeWork"></tr>
+                            </thead>
+                            <tbody>
+                                <tr id="Body"></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
     </main>
 
     <script src="scriptTable.js" type="module"></script>
