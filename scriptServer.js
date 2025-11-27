@@ -326,5 +326,8 @@ app.post('/logout', (req, res) => {
 // }
 // GeneratorFile();
 
+const scheduleExportRoutes = require('./routes/scheduleExport');
+app.use(scheduleExportRoutes);
 
 app.listen(port, () => console.log(`127.0.0.1:${port}`));
+
