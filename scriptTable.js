@@ -53,7 +53,7 @@ async function LoadDoc() {
     }
 }
 
-
+var Headman = true;
 
 var indexInput = 0;
 var countPerson = 0;
@@ -100,13 +100,13 @@ export async function AddTable(Subject, Group) {
 
 
         const Num = Row1.insertCell();
-        Num.className = "Num";
+        Num.className = "Num Delete";
         Num.innerHTML = i + 1;
 
         const Cell = Row1.insertCell();
 
         Cell.innerHTML = PersonData[i].info.name;
-        Cell.className = "NamePerson";
+        Cell.className = "NamePerson Delete";
 
         Cell.id = i;
         //const InputName = document.createElement("input");
@@ -144,11 +144,26 @@ export async function AddTable(Subject, Group) {
         //     }
         // })
         if (user.Surname + " " + user.Name + " " + user.Secondname === PersonData[i].info.name) {
+
+            if (PersonData[i].info.role !== user.Role) {
+                PersonData[i].info.role = user.Role;
+            }
             Row.style.backgroundColor = "yellow";
+
             Cell.style.backgroundColor = "yellow";
+
             Num.style.backgroundColor = "yellow";
 
         }
+
+        if (PersonData[i].info.role === "Староста") {
+            Row.style.backgroundColor = "lime";
+
+            Cell.style.backgroundColor = "lime";
+
+            Num.style.backgroundColor = "lime";
+        }
+
     }
     if (PersonData.length > 0) {
         Object.keys(PersonData[0]).forEach(element => {
@@ -159,7 +174,7 @@ export async function AddTable(Subject, Group) {
                     PersonGrades.push(PersonData[i][element].Value);
                 }
                 LoadHeader(PersonData[0][element].Date, PersonData[0][element].Description);
-                LoadTypeWork(PersonData[0][element].TypeWork);
+                LoadTypeWork(PersonData[0][element].TypeWork,PersonData[0][element].MaxValue);
                 LoadGrade(PersonGrades);
 
                 indexColumn++;
@@ -241,12 +256,12 @@ async function AddColumn() {
         GradeInput.addEventListener("change", function () {
             if (!isNaN(GradeInput.value)) {
                 change_data_Value(Cell.id % countPerson, Cell.className.replace(/Grades/, '').slice(6), GradeInput.value);
-                Cell.style.backgroundColor="white";
-                Cell.firstChild.textContent=GradeInput.value;
+                Cell.style.backgroundColor = "white";
+                Cell.firstChild.textContent = GradeInput.value;
             }
-            else{
-                GradeInput.value=0;
-                Cell.style.backgroundColor="#dc2626";
+            else {
+                GradeInput.value = 0;
+                Cell.style.backgroundColor = "#dc2626";
             }
         });
         Cell.appendChild(GradeInput);
@@ -272,7 +287,7 @@ function AddDesciption() {
     const Input = document.createElement("input");
 
     Input.style.display = "none";
-    Input.style.border= "none";
+    Input.style.border = "none";
     Input.style.width = "100%";
     Input.style.height = "100%";
 
@@ -372,23 +387,36 @@ function AddTypeWork() {
         Work.add(Option);
     }
 
-    Work.id = "Work";
+    Work.className = "Work";
+    Work.id="Work"+indexColumn;
     Work.style.display = "none";
     Work.selectedIndex = 0;
 
     TypeWork.textContent = Work.options[Work.selectedIndex].textContent;
 
-    TypeWork.addEventListener("click", function () {
-        if (document.getElementById("Editing").checked) {
-            TypeWork.firstChild.textContent = "";
-            Work.style.display = "inline-block";
-            Work.showPicker();
-        }
+    const MaxValue = document.createElement('input');
+    MaxValue.type = "text";
+    MaxValue.value = 0;
+    MaxValue.id = "MaxValue" + indexColumn;
+    MaxValue.style.display = 'none';
+    MaxValue.style.width="20px";
+
+    const MaxValueText = document.createElement('h');
+    if (TypeWork.firstChild.textContent !== "Посещаемость") {
+        MaxValueText.innerHTML = MaxValue.value;
+        change_data_MaxValue(indexColumn,MaxValue.value);
+    }
+    else {
+        MaxValueText.innerHTML = "";
+    }
+    MaxValueText.style.textAlign = "left";
+    MaxValueText.style.padding = "20px";
+    MaxValue.addEventListener('change', function () {
+        MaxValueText.innerHTML = MaxValue.value;
     });
 
     Work.addEventListener("change", function () {
         if (document.getElementById("Editing").checked) {
-            Work.style.display = "none";
             TypeWork.firstChild.textContent = Work.options[Work.selectedIndex].text;
             change_data_TypeWork(TypeWork.id.slice(8), Work.options[Work.selectedIndex].text);
             var ColumnGrade = document.querySelectorAll(`.Column${TypeWork.id.slice(8)}.Grade`);
@@ -404,33 +432,29 @@ function AddTypeWork() {
 
                     Int.style.display = 'inline-block';
                     Int.value = 0;
-                    element.style.color="rgba(0,0,0,0)";
                     if (element.className === `Column${TypeWork.id.slice(8)} Grade`) {
                         element.className += "s";
                     }
-                    
+                    element.style.color = "rgba(0, 0, 0, 0)";
+                    MaxValue.style.display = "inline-block";
                 }
                 else {
                     const Int = element.querySelector("input");
                     Int.style.display = 'none';
-                    element.style.color="rgba(0,0,0,1)";
+                    element.style.color = "rgba(0, 0, 0, 1)";
                     element.firstChild.textContent = "+";
                     element.addEventListener("click", element._clickFunc);
                     element.className = String(element.className).replace("s", '');
+                    MaxValue.style.display = "none";
                 }
             });
         }
     });
 
-    Work.addEventListener("blur", function () {
-        if (document.getElementById("Editing").checked) {
-            Work.style.display = "none";
-            TypeWork.firstChild.textContent = Work.options[Work.selectedIndex].text;
-            change_data_TypeWork(TypeWork.id.slice(8), Work.options[Work.selectedIndex].text);
 
-        }
-    });
     TypeWork.appendChild(Work);
+    TypeWork.appendChild(MaxValueText);
+    TypeWork.appendChild(MaxValue);
     change_data_TypeWork(TypeWork.id.slice(8), Work.options[Work.selectedIndex].text);
 }
 
@@ -444,7 +468,7 @@ function LoadHeader(date, description) {
 function LoadDesciption(description) {
     const Description = document.getElementById("Description").insertCell();
 
-    
+
 
     Description.id = "Description" + indexColumn;
     Description.className = `Delete Column${indexColumn}`;
@@ -457,7 +481,7 @@ function LoadDesciption(description) {
 
     Input.style.display = "none";
 
-    Input.style.border="none;"
+    Input.style.border = "none;"
     Input.style.width = "100%";
     Input.style.height = "100%";
     Description.innerHTML = description;
@@ -529,7 +553,7 @@ function LoadDate(today) {
     change_data_date(DateKey.id.slice(4), DateKey.textContent);
 }
 
-function LoadTypeWork(typework) {
+function LoadTypeWork(typework, maxvalue) {
     const TypeWork = document.getElementById("TypeWork").insertCell();
     TypeWork.id = "TypeWork" + indexColumn;
     TypeWork.className = `Delete Column${indexColumn}`
@@ -554,20 +578,33 @@ function LoadTypeWork(typework) {
     Work.id = `Work${indexColumn}`;
     Work.style.display = "none";
     Work.selectedIndex = typetext.indexOf(typework);
-
+    Work.className = "Work";
     TypeWork.textContent = typework;
 
-    TypeWork.addEventListener("click", function () {
-        if (document.getElementById("Editing").checked) {
-            TypeWork.firstChild.textContent = "";
-            Work.style.display = "inline-block";
-            Work.showPicker();
-        }
+
+    const MaxValue = document.createElement('input');
+    MaxValue.type = "text";
+    MaxValue.value = maxvalue;
+    MaxValue.id = "MaxValue" + indexColumn;
+    MaxValue.style.display = 'none';
+    MaxValue.style.width="20px";
+
+    const MaxValueText = document.createElement('h');
+    if (TypeWork.firstChild.textContent !== "Посещаемость") {
+        MaxValueText.innerHTML = MaxValue.value;
+    }
+    else {
+        MaxValueText.innerHTML = "";
+    }
+    MaxValueText.style.textAlign = "left";
+    MaxValueText.style.padding = "20px";
+    MaxValue.addEventListener('change', function () {
+        MaxValueText.innerHTML = MaxValue.value;
+        change_data_MaxValue(indexColumn,MaxValue.value);
     });
 
     Work.addEventListener("change", function () {
         if (document.getElementById("Editing").checked) {
-            Work.style.display = "none";
             TypeWork.firstChild.textContent = Work.options[Work.selectedIndex].text;
             change_data_TypeWork(TypeWork.id.slice(8), Work.options[Work.selectedIndex].text);
             var ColumnGrade = document.querySelectorAll(`.Column${TypeWork.id.slice(8)}.Grade`);
@@ -586,29 +623,26 @@ function LoadTypeWork(typework) {
                     if (element.className === `Column${TypeWork.id.slice(8)} Grade`) {
                         element.className += "s";
                     }
-                    element.element.style.color="rgba(0, 0, 0, 0)";
+                    element.style.color = "rgba(0, 0, 0, 0)";
+                    MaxValue.style.display = "inline-block";
                 }
                 else {
                     const Int = element.querySelector("input");
                     Int.style.display = 'none';
-                    element.style.color="rgba(0, 0, 0, 1)";
+                    element.style.color = "rgba(0, 0, 0, 1)";
                     element.firstChild.textContent = "+";
                     element.addEventListener("click", element._clickFunc);
                     element.className = String(element.className).replace("s", '');
+                    MaxValue.style.display = "none";
                 }
             });
         }
     });
 
-    Work.addEventListener("blur", function () {
-        if (document.getElementById("Editing").checked) {
-            Work.style.display = "none";
-            TypeWork.firstChild.textContent = Work.options[Work.selectedIndex].text;
-            change_data_TypeWork(TypeWork.id.slice(8), Work.options[Work.selectedIndex].text);
 
-        }
-    });
     TypeWork.appendChild(Work);
+    TypeWork.appendChild(MaxValueText);
+    TypeWork.appendChild(MaxValue);
     change_data_TypeWork(TypeWork.id.slice(8), Work.options[Work.selectedIndex].text);
 }
 
@@ -653,14 +687,14 @@ function LoadGrade(Grades) {
         GradeInput.addEventListener("change", function () {
             if (!isNaN(GradeInput.value)) {
                 change_data_Value(Cell.id % countPerson, Cell.className.replace(/Grades/, '').slice(6), GradeInput.value);
-                Cell.style.backgroundColor="white";
-                Cell.firstChild.textContent=GradeInput.value;
+                Cell.style.backgroundColor = "white";
+                Cell.firstChild.textContent = GradeInput.value;
             }
-            else{
-                GradeInput.value=0;
-                Cell.style.backgroundColor="#dc2626";
+            else {
+                GradeInput.value = 0;
+                Cell.style.backgroundColor = "#dc2626";
             }
-            
+
         });
         cCell++;
         Cell.appendChild(GradeInput);
@@ -696,8 +730,17 @@ async function create_edit() {
             const Grade = document.querySelectorAll(".Grades");
             Grade.forEach(element => {
                 element.querySelector("input").style.display = "";
-                element.style.color="rgba(0, 0, 0, 0)";
+                element.style.color = "rgba(0, 0, 0, 0)";
             });
+            const Twork = document.querySelectorAll(".Work");
+            Twork.forEach(elem => {
+                document.getElementById(`TypeWork${elem.id.slice(4)}`).style.color = "rgba(0,0,0,0)";
+                elem.style.display = "inline-block";
+                
+                if (elem.options[elem.selectedIndex].text !=="Посещаемость") {
+                    document.getElementById(`MaxValue${elem.id.slice(4)}`).style.display = "inline-block";
+                }
+            })
 
         }
         else {
@@ -710,9 +753,15 @@ async function create_edit() {
             Grade.forEach(element => {
                 const GradeInput = element.querySelector("input");
                 GradeInput.style.display = "none";
-                element.style.color="rgba(0, 0, 0, 1)";
+                element.style.color = "rgba(0, 0, 0, 1)";
                 change_data_Value(element.id % countPerson, element.className.replace(/Grades/, '').slice(6), !isNaN(Number(GradeInput.value)) ? GradeInput.value : 0);
             });
+            const Twork = document.querySelectorAll(".Work");
+            Twork.forEach(elem => {
+                document.getElementById(`TypeWork${elem.id.slice(4)}`).style.color = "white";
+                document.getElementById(`MaxValue${elem.id.slice(4)}`).style.display = "none";
+                elem.style.display = "none";
+            })
         }
     }
 }
@@ -740,7 +789,9 @@ function create_data() {
         Date: "DD.MM.YYYY",
         TypeWork: "typeWork",
         Value: "+",
+        MaxValue: 0,
         Description: "",
+        Role: "Студент"
     });
 
 }
@@ -787,6 +838,15 @@ function change_new_data_Value() {
             PersonData[j][i].Value = item.firstChild.textContent;
             j++
         });
+    }
+}
+function change_data_MaxValue(id, MaxValue){
+    data[id].Max = MaxValue;
+    for (let i = 0; i < countPerson; i++) {
+        if (!PersonData[i][id]) {
+            PersonData[i][id] = data[id];
+        }
+        PersonData[i][id].MaxValue = MaxValue;
     }
 }
 function change_data_Value(id, ind, grade) {

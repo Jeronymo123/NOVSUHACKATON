@@ -47,57 +47,41 @@ async function loadSpan() {
     const res = await getUser();
     const Group = res.user.Group;
     const select = document.getElementById("Select-Group");
-    
-    // Очищаем существующие теги
-    const spanGroup = document.getElementById("SpanGroup");
-    spanGroup.innerHTML = '';
-    
-    data = Group;
-<<<<<<< HEAD
-    
-    // Проверяем, что Group существует и не пустой
-    if (Group && Object.keys(Group).length > 0 && select.selectedIndex >= 0) {
-        const selectedGroup = select.options[select.selectedIndex].textContent;
-        
-        if (Group[selectedGroup] && Array.isArray(Group[selectedGroup])) {
-            Group[selectedGroup].forEach(item => {
-                const span = document.createElement("span");
-                const spanlabel = document.createElement("span");
-                const spanremove = document.createElement("span");
-=======
-    console.log(Group);
-    if (Group.length !== 0) {
+    document.querySelectorAll(".tag").forEach(item => {
+        item.remove();
+    });
+    if(Group && Object.keys(Group).length !== 0){
+        data = Group;
+    }
+    else{
+        data={};
+    }
+    if (Group && Object.keys(Group).length !== 0) {
         Group[select.options[select.selectedIndex].textContent].forEach(item => {
             const span = document.createElement("span");
             const spanlabel = document.createElement("span");
             const spanremove = document.createElement("span");
->>>>>>> 2f9010d (Работа)
 
-                spanremove.textContent = "x";
-                spanremove.title = "Удалить";
-                spanremove.className = "TagRemove";
+            spanremove.textContent = "x";
+            spanremove.title = "Удалить";
+            spanremove.classNmae = "TagRemove";
 
-                spanlabel.className = "TagLabel";
+            spanlabel.className = "TagLabel";
 
-                span.textContent = item;
-                span.className = "tag";
-                
-                spanremove.addEventListener('click', function () {
-                    span.remove();
-                    if (data[selectedGroup]) {
-                        const index = data[selectedGroup].indexOf(item);
-                        if (index > -1) {
-                            data[selectedGroup].splice(index, 1);
-                        }
-                    }
-                    sendGroup();
-                });
-                
-                span.appendChild(spanlabel);
-                span.appendChild(spanremove);
-                spanGroup.appendChild(span);
-            });
-        }
+            span.textContent = item;
+            span.className = "tag";
+            spanremove.addEventListener('click', function () {
+                span.remove();
+                if (data[select.options[select.selectedIndex].textContent]) {
+                    data[select.options[select.selectedIndex].textContent].splice(data[select.options[select.selectedIndex].textContent].indexOf(select.options[select.selectedIndex].textContent), 1);
+
+                }
+                sendGroup();
+            })
+            span.appendChild(spanlabel);
+            span.appendChild(spanremove);
+            document.getElementById("SpanGroup").appendChild(span);
+        })
     }
 }
 
@@ -121,14 +105,14 @@ async function groups() {
     const input = document.getElementById("Input-Group");
     input.addEventListener("keypress", function (event) {
         if (event.key === "Enter") {
-            const text = String(input.value).split(/ /);
+            const text = String(input.value).split(" ");
             text.forEach(item => {
                 console.log(data_group);
                 if (data_group.indexOf(item) != -1) {
                     const span = document.createElement("span");
                     const spanlabel = document.createElement("span");
                     const spanremove = document.createElement("span");
-
+                    console.log(text);
                     spanremove.textContent = "x";
                     spanremove.title = "Удалить";
                     spanremove.className = "TagRemove";
@@ -143,10 +127,10 @@ async function groups() {
 
                     if (data[select.options[select.selectedIndex].textContent]) {
 
-                        data[select.options[select.selectedIndex].textContent].push(input.value);
+                        data[select.options[select.selectedIndex].textContent].push(item);
                     }
                     else {
-                        data[select.options[select.selectedIndex].textContent] = [input.value];
+                        data[select.options[select.selectedIndex].textContent] = [item];
                     }
                     spanremove.addEventListener('click', function () {
                         span.remove();
@@ -280,18 +264,18 @@ async function performExport(format) {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        
+
         // Получаем имя файла из заголовков или генерируем
         const contentDisposition = response.headers.get('Content-Disposition');
         let filename = `schedule_export.${format === 'excel' ? 'xlsx' : 'pdf'}`;
-        
+
         if (contentDisposition) {
             const filenameMatch = contentDisposition.match(/filename="?(.+)"?/);
             if (filenameMatch) {
                 filename = filenameMatch[1];
             }
         }
-        
+
         a.download = filename;
         document.body.appendChild(a);
         a.click();
@@ -305,12 +289,12 @@ async function performExport(format) {
 
     } catch (error) {
         console.error('Ошибка экспорта:', error);
-        
+
         // Восстанавливаем кнопку
         const exportBtn = document.querySelector('.action-button:nth-child(4)');
         exportBtn.innerHTML = '<i class="fas fa-download"></i> Экспорт данных';
         exportBtn.disabled = false;
-        
+
         alert('Ошибка при экспорте данных: ' + error.message);
     }
 }
@@ -330,14 +314,14 @@ function showExportNotification(message) {
         z-index: 1001;
         animation: slideInRight 0.3s ease-out;
     `;
-    
+
     notification.innerHTML = `
         <i class="fas fa-check-circle" style="margin-right: 0.5rem;"></i>
         ${message}
     `;
-    
+
     document.body.appendChild(notification);
-    
+
     setTimeout(() => {
         notification.style.animation = 'slideOutRight 0.3s ease-in';
         setTimeout(() => {
@@ -398,19 +382,23 @@ async function profile() {
         document.getElementById("Role").textContent = user.Role;
         document.getElementById("Login").textContent = user.Login;
         document.getElementById("Email").textContent = user.Email;
-        
-        // Убираем кнопку экспорта для студентов
+
+
         const exportButton = document.querySelector('.action-button:nth-child(4)');
         if (user.Role !== "Преподаватель") {
+            document.getElementById("Group").style.display = "";
+            document.getElementById("InfoGroup").firstChild.textContent = user.Group;
             if (exportButton) {
+
                 exportButton.style.display = 'none';
             }
         } else {
-            // Добавляем обработчик для кнопки экспорта
+
             if (exportButton) {
                 exportButton.onclick = exportData;
+
             }
-            
+
             document.querySelectorAll("#Stats").forEach(item => {
                 item.style.display = "";
             })
@@ -421,14 +409,24 @@ async function profile() {
             });
             groups();
         }
-        
+
         if (user.Role === "Староста") {
             document.getElementById("Headman").style.display = "";
+            document.getElementById("Button-Headman").onclick = changeRole;
         }
     }
     else {
         window.location.href = "entry_form.html";
     }
 }
-
+function changeRole() {
+    fetch('/changerole', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({ login: document.getElementById("Input-Headman").value }),
+    });
+}
 window.onload = profile;

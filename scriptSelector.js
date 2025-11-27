@@ -55,13 +55,21 @@ async function fill_selector() {
         const oldClasses = await fLoadClasses();
         const user = await get_User();
         let Classes = [];
+        const list = [];
 
         if (user.Role !== "Преподаватель") {
             Classes = oldClasses.filter(item => item.slice(item.lastIndexOf('\\') + 1).replace(/.json/, '') === user.Group);
             const label = document.getElementById("LabelSubject");
             if (label) label.textContent = "Предмет";
         } else {
-            Classes = oldClasses.filter(item => item.slice(item.indexOf('\\') + 1, item.lastIndexOf('\\')) === user.Group);
+            Object.entries(user.Group).forEach(([subject, items]) => {
+                items.forEach(value => {
+                    list.push(subject + "\\" + value);
+                }
+                )
+            }
+            );
+            Classes = oldClasses.filter(item => list.includes(item.slice(item.indexOf('\\') + 1).replace(/.json/, '')));;
             const label = document.getElementById("LabelSubject");
             if (label) label.textContent = user.Group;
         }
@@ -75,7 +83,7 @@ async function fill_selector() {
 
         container.innerHTML = '';
 
-
+        console.log(Classes);
         Classes.forEach((classItem, index) => {
             const subjectName = classItem.slice(classItem.indexOf('\\') + 1, classItem.lastIndexOf('\\'));
             const groupPath = classItem.slice(classItem.lastIndexOf('\\'));
@@ -92,7 +100,7 @@ async function fill_selector() {
         `;
 
             card.addEventListener('click', async () => {
-                
+
 
                 document.querySelectorAll('.horizontal-subject-card').forEach(c => c.classList.remove('active'));
                 card.classList.add('active');

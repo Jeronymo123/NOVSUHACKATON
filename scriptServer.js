@@ -92,6 +92,7 @@ app.get('/loadstudent', (req, res) => {
         const file = path.join(main_directory + req.query.subject, req.query.group);
         if (fs.existsSync(file)) {
             const data = fs.readFileSync(file, "utf8");
+            console.log(data);
             res.send(data);
         }
         else {
@@ -127,6 +128,7 @@ app.get('/loadclasses', (req, res) => {
         folders.shift();
         folders.shift();
         folders.shift();
+        folders.shift();
         fs.writeFileSync(file, JSON.stringify(folders, null, 2), 'utf8');
         if (fs.existsSync(file)) {
             const data = fs.readFileSync(file, "utf8");
@@ -147,6 +149,7 @@ app.get('/getgroups', (req, res) => {
     try {
         fs.mkdirSync(main_directory, { recursive: true });
         const folders = getAllFiles(main_directory);
+        folders.shift();
         folders.shift();
         folders.shift();
         folders.shift();
@@ -280,7 +283,7 @@ app.post('/sendgroup', (req, res) => {
                 if (err) {
                     return res.status(500).json({ status: "error" });
                 }
-                res.json({ status: "sendgroup" });
+                res.json({ status: "ok" });
             });;
         } else {
             res.status(404).json({ status: "user_not_found" });
@@ -319,6 +322,34 @@ app.post('/logout', (req, res) => {
         res.json({ status: 'logout' });
     }
 });
+app.post(`/changerole`, (req, res) => {
+    try {
+        const dir = path.join(main_directory, "User.json");
+        const file = fs.readFileSync(dir, 'utf8');
+        const users = JSON.parse(file);
+        const indexLoginnew = users.findIndex(user => user.Login === req.body.login);
+        const indexLogin = users.findIndex(user => user.Login === req.session.user.Login);
+        if (indexLoginnew !== -1 && req.body.login!==req.session.user.Login) {
+            users[indexLoginnew].Role = "Староста";
+            users[indexLogin].Role = "Студент";
+            fs.writeFileSync(dir, JSON.stringify(users, null, 2), 'utf-8');
+            req.session.user.Role = "Студент";
+            req.session.save(err => {
+                if (err) {
+                    return res.status(500).json({ status: "error" });
+                }
+                res.json({ status: "ok" });
+            });
+        }
+        else {
+            console.log(12);
+        }
+    }
+    catch (err) {
+        console.error("Invalig login");
+        res.status(404).json({ status: "not" });
+    }
+})
 // function GeneratorFile() {
 //     const Person = {
 //         id: 0,
@@ -342,8 +373,5 @@ app.post('/logout', (req, res) => {
 // }
 // GeneratorFile();
 
-const scheduleExportRoutes = require('./routes/scheduleExport');
-app.use(scheduleExportRoutes);
 
 app.listen(port, () => console.log(`127.0.0.1:${port}`));
-
